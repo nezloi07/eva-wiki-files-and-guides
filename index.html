@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVA — AION 2 automation wiki</title>
+<style>
+:root{
+  --bg-base:#050a12; --bg:#0a0f1a; --panel-deep:#0f1525; --panel:#141b30;
+  --panel-lift:#1a2240; --surface:#202952;
+  --ink:#e8eef9; --ink-dim:#b8c4e0; --ink-muted:#7d8db8; --ink-faint:#4a5a82;
+  --accent:#3dd9d0; --accent-bright:#5fffe8; --accent-dim:#2a8f8a;
+  --highlight:#f4a261; --danger:#b85fc7;
+  --border:#1f2f58; --border-lift:#2d4070;
+  --shadow-sm:0 2px 8px rgba(0,0,0,.3); --shadow-md:0 4px 16px rgba(0,0,0,.4);
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;
+  --r1:6px;--r2:10px;--r3:14px;--r4:20px;
+  --ease:cubic-bezier(.4,0,.2,1); --fast:150ms var(--ease); --normal:220ms var(--ease);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg-base);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:clamp(14px,.9vw,16px);line-height:1.7;-webkit-font-smoothing:antialiased}
+.layout{display:grid;grid-template-columns:310px minmax(0,1fr);min-height:100vh}
+aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,var(--panel-deep),var(--bg));
+  border-right:1px solid var(--border);padding:var(--s4) var(--s3);scrollbar-width:thin;scrollbar-color:var(--accent-dim) transparent}
+aside::-webkit-scrollbar{width:6px}aside::-webkit-scrollbar-thumb{background:var(--accent-dim);border-radius:3px}
+.brand{display:flex;gap:var(--s3);align-items:center;padding:var(--s2) var(--s3) var(--s4);border-bottom:1px solid var(--border);margin-bottom:var(--s4)}
+.logo{width:40px;height:40px;border-radius:var(--r2);flex:none;display:grid;place-items:center;
+  background:linear-gradient(135deg,#123,#1a2240);border:1px solid var(--border-lift);font-size:20px}
+.brand b{font-size:clamp(15px,1vw,17px);display:block;letter-spacing:.02em}
+.brand small{color:var(--ink-muted);font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+.vbadge{margin-left:auto;font-size:10px;color:var(--accent);border:1px solid var(--accent-dim);border-radius:999px;padding:2px 8px;white-space:nowrap}
+#q{width:100%;padding:var(--s3) var(--s4);border-radius:var(--r2);border:1px solid var(--border);background:var(--panel);
+  color:var(--ink);font-size:14px;margin:var(--s3) 0 var(--s4);transition:border-color var(--fast),box-shadow var(--fast)}
+#q::placeholder{color:var(--ink-faint)}
+#q:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(61,217,208,.1)}
+#toc>summary{list-style:none;cursor:pointer;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--highlight);padding:var(--s3) var(--s4);border:1px solid var(--border-lift);border-radius:var(--r2);
+  background:linear-gradient(135deg,var(--panel),var(--panel-deep));margin:var(--s3) 0;user-select:none;transition:all var(--fast)}
+#toc>summary:hover{background:var(--panel-lift);border-color:var(--accent-dim)}
+#toc>summary::-webkit-details-marker{display:none}
+#toc>summary::before{content:"▸ ";margin-right:var(--s2)}
+#toc[open]>summary::before{content:"▾ "}
+.catlabel{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);
+  margin:var(--s5) var(--s2) var(--s2);padding-left:var(--s2);border-left:3px solid var(--accent-dim)}
+.navitem{display:flex;gap:var(--s3);align-items:center;padding:var(--s2) var(--s3);border-radius:var(--r1);color:var(--ink-dim);
+  text-decoration:none;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:all var(--fast);margin:2px 0}
+.navitem:hover{background:var(--panel-lift);color:var(--ink);transform:translateX(4px)}
+.navitem.active{background:linear-gradient(90deg,var(--accent-dim),var(--surface));color:var(--accent-bright);font-weight:600}
+.navitem .ic{width:20px;text-align:center;flex:none;font-size:15px}
+main{padding:var(--s6) clamp(24px,5vw,56px) var(--s7);max-width:920px;background:var(--bg)}
+.page{display:none}
+.page.on{display:block;animation:fadein var(--normal)}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:clamp(22px,2.5vw,28px);font-weight:700;letter-spacing:-.02em;line-height:1.3;margin:0 0 var(--s4)}
+h1 .pic{margin-right:var(--s2)}
+h2{font-size:clamp(18px,2vw,21px);font-weight:600;letter-spacing:-.01em;margin:var(--s6) 0 var(--s4);
+  padding-bottom:var(--s3);border-bottom:2px solid var(--border-lift)}
+h3{font-size:clamp(16px,1.5vw,18px);font-weight:600;margin:var(--s5) 0 var(--s3);color:var(--accent-bright)}
+p,li{overflow-wrap:break-word}
+p{margin:var(--s4) 0;line-height:1.75}
+a{color:var(--accent);text-decoration:none;transition:color var(--fast)}
+a:hover{color:var(--accent-bright);text-decoration:underline}
+.back{font-size:12px;color:var(--ink-muted);display:inline-block;margin-bottom:var(--s3)}
+.back:hover{color:var(--accent)}
+.hero{width:100%;height:auto;border-radius:var(--r4);box-shadow:var(--shadow-md);display:block;margin-bottom:var(--s5)}
+.chip{display:inline-block;margin:2px 4px 2px 0;padding:3px 10px;border:1px solid var(--border-lift);border-radius:999px;
+  font-size:12px;color:var(--ink-dim);background:var(--panel)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:var(--s4);margin:var(--s5) 0}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r3);padding:var(--s4);box-shadow:var(--shadow-sm)}
+.card b{display:block;margin-bottom:var(--s1)}
+.card span{color:var(--ink-muted);font-size:13px}
+.warnbox{border:2px solid var(--highlight);background:linear-gradient(135deg,var(--panel),var(--panel-deep));
+  border-radius:var(--r3);padding:var(--s4) var(--s5);margin:var(--s5) 0;font-size:14px}
+.dangerbox{border:2px solid var(--danger);background:linear-gradient(135deg,var(--panel),var(--panel-deep));
+  border-radius:var(--r3);padding:var(--s4) var(--s5);margin:var(--s5) 0;font-size:14px}
+.tablewrap{overflow-x:auto;margin:var(--s5) 0;border-radius:var(--r2)}
+table{border-collapse:collapse;width:100%;font-size:14px;border-radius:var(--r2);overflow:hidden}
+th,td{border:1px solid var(--border);padding:var(--s3) var(--s4);text-align:left;vertical-align:top}
+th{background:var(--surface);color:var(--accent-bright);font-weight:600;letter-spacing:.03em}
+tr:nth-child(even) td{background:var(--panel-deep)}
+tr:nth-child(odd) td{background:var(--panel)}
+tr:hover td{background:var(--panel-lift)}
+blockquote{border-left:4px solid var(--highlight);margin:var(--s5) 0;padding:var(--s4) var(--s5);
+  background:linear-gradient(90deg,var(--panel),transparent);border-radius:0 var(--r2) var(--r2) 0;color:var(--ink-dim)}
+kbd{background:var(--surface);border:1px solid var(--border-lift);border-bottom-width:3px;border-radius:var(--r1);
+  padding:2px var(--s2);font:12px "SF Mono",Consolas,monospace;color:var(--accent-bright)}
+code{background:var(--panel-lift);border-radius:var(--r1);padding:2px var(--s2);font-size:13px;font-family:"SF Mono",Consolas,monospace;color:var(--accent)}
+.quick{margin-top:var(--s7);padding:var(--s4) var(--s5);background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--r3);font-size:13px}
+ul,ol{padding-left:var(--s5)}
+li{margin:var(--s2) 0}
+.ver{color:var(--ink-faint);font-size:12px}
+@media (max-width:1024px){.layout{grid-template-columns:280px minmax(0,1fr)}main{padding:var(--s5) var(--s4) var(--s7)}}
+@media (max-width:900px){.layout{grid-template-columns:1fr}
+  aside{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  main{padding:var(--s4) var(--s3) var(--s6);max-width:none}}
+.buybtn{display:inline-block;padding:9px 22px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-dim));color:#04121a;font-weight:700;letter-spacing:.02em;border:none;box-shadow:0 4px 14px rgba(61,217,208,.35);transition:transform var(--fast),box-shadow var(--fast)}
+.buybtn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(61,217,208,.5);text-decoration:none}
+.langs{display:flex;gap:6px;padding:0 var(--s3) var(--s3);flex-wrap:wrap;align-items:center}
+.langs span{font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em;margin-right:2px}
+.langs a{font-size:11px;padding:3px 10px;border:1px solid var(--border-lift);border-radius:999px;color:var(--ink-muted)}
+.langs a:hover{color:var(--accent);border-color:var(--accent-dim);text-decoration:none}
+.langs a.on{background:var(--surface);color:var(--accent-bright);border-color:var(--accent-dim)}
+@media print{aside,.quick,.back{display:none}.page{display:block!important}.layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+  <div class="brand">
+    <div class="logo">🤖</div>
+    <div><b>EVA Wiki</b><small>AION 2 · Steam &amp; Purple</small></div>
+    <span class="vbadge">v5.14</span>
+  </div>
+  <div class="langs"><span>🌐</span><a class="on" href="index.html">EN</a><a href="index-ru.html">RU</a><a href="index-pt.html">PT</a><a href="index-de.html">DE</a><a href="index-fr.html">FR</a></div>
+  <details id="toc" open>
+    <summary>📚 Table of contents</summary>
+    <input id="q" placeholder="🔍 Search sections…">
+    <a class="navitem" href="#home" data-search="home start overview what is"><span class="ic">🏠</span>Home</a>
+    <div class="catlabel">🧭 Getting started</div>
+    <a class="navitem" href="#requirements" data-search="requirements system windows .net vk"><span class="ic">📋</span>Requirements</a>
+    <a class="navitem" href="#install" data-search="install setup first run updates firewall antivirus"><span class="ic">🚀</span>Install &amp; updates</a>
+    <div class="catlabel">👤 Accounts &amp; network</div>
+    <a class="navitem" href="#accounts" data-search="accounts steam purple login nc google grid profiles"><span class="ic">👤</span>Accounts &amp; login</a>
+    <a class="navitem" href="#proxy" data-search="proxy socks5 tun webshare ipv6 fixed ip dns"><span class="ic">🛡</span>Proxy (SOCKS5)</a>
+    <a class="navitem" href="#captcha" data-search="captcha yescaptcha verification guardian ai"><span class="ic">◎</span>Captcha · AI</a>
+    <div class="catlabel">🤖 Activities</div>
+    <a class="navitem" href="#run-order" data-search="run order execution sequence switch character deaths"><span class="ic">🧭</span>Run order</a>
+    <a class="navitem" href="#autoquest" data-search="autoquest quests main side green level"><span class="ic">📋</span>Autoquest</a>
+    <a class="navitem" href="#afk-farm" data-search="afk farm kinah spots combat spiritualist spirit"><span class="ic">⚔</span>AFK Farm</a>
+    <a class="navitem" href="#mining" data-search="auto mining gathering routes resources quota level 45"><span class="ic">⛏</span>Auto mining</a>
+    <a class="navitem" href="#dungeons" data-search="sealed dungeons once per character 40 minutes"><span class="ic">🏰</span>Sealed Dungeons</a>
+    <a class="navitem" href="#expedition" data-search="expedition krall unu fire temple conquest ode team"><span class="ic">🗺</span>Expedition</a>
+    <a class="navitem" href="#abyss" data-search="abyss floors feathers flight energy schedule"><span class="ic">◆</span>Abyss farming</a>
+    <div class="catlabel">🧰 Tools &amp; polish</div>
+    <a class="navitem" href="#routines" data-search="routines monolith market warehouse survival rewards character supplies"><span class="ic">🧰</span>Routines</a>
+    <a class="navitem" href="#humanization" data-search="humanization pauses camera random waits"><span class="ic">🫥</span>Humanization</a>
+    <a class="navitem" href="#speed-fov" data-search="speed fov camera distance animation race mysterious track"><span class="ic">⚡</span>Speed &amp; FOV</a>
+    <a class="navitem" href="#settings" data-search="settings hotkeys languages window resolution tray f10"><span class="ic">⚙</span>Settings &amp; hotkeys</a>
+    <div class="catlabel">🩹 Help</div>
+    <a class="navitem" href="#troubleshoot" data-search="troubleshooting problems errors firewall license crashes"><span class="ic">🩹</span>Troubleshooting</a>
+    <a class="navitem" href="#faq" data-search="faq questions ban safety support"><span class="ic">❓</span>FAQ</a>
+    <a class="navitem" href="#changelog" data-search="changelog updates versions release notes"><span class="ic">📰</span>Latest updates</a>
+    <a class="navitem" href="#specs" data-search="specifications technical summary"><span class="ic">📐</span>Specifications</a>
+  </details>
+</aside>
+<main>
+
+<!-- ============ HOME ============ -->
+<section class="page" id="home">
+  <svg class="hero" viewBox="0 0 920 190" role="img" aria-label="EVA banner">
+    <defs>
+      <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#0f1525"/><stop offset="1" stop-color="#1a2240"/>
+      </linearGradient>
+    </defs>
+    <rect width="920" height="190" rx="20" fill="url(#hg)" stroke="#2d4070"/>
+    <text x="40" y="78" font-family="Segoe UI,Arial" font-size="34" font-weight="700" fill="#e8eef9">EVA</text>
+    <text x="40" y="112" font-family="Segoe UI,Arial" font-size="16" fill="#7d8db8">Automation &amp; multi-account management for AION 2 — Steam and Purple</text>
+    <g font-family="Segoe UI,Arial" font-size="13">
+      <rect x="40" y="132" width="70" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="57" y="151" fill="#3dd9d0">Steam</text>
+      <rect x="118" y="132" width="80" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="132" y="151" fill="#3dd9d0">Purple</text>
+      <rect x="206" y="132" width="92" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="216" y="151" fill="#3dd9d0">SOCKS5</text>
+      <rect x="306" y="132" width="110" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="316" y="151" fill="#3dd9d0">YesCaptcha</text>
+      <rect x="424" y="132" width="160" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="434" y="151" fill="#3dd9d0">1,000,000 Kinah/day</text>
+      <rect x="592" y="132" width="130" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="602" y="151" fill="#3dd9d0">14 languages</text>
+    </g>
+    <text x="880" y="40" text-anchor="end" font-family="Segoe UI,Arial" font-size="12" fill="#4a5a82">wiki · v5.14</text>
+  </svg>
+
+  <h1><span class="pic">🏠</span> EVA — what it is</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+
+  <h2>Highlights</h2>
+  <div class="grid2">
+    <div class="card"><b>🔑 Full login automation</b><span>Separate Steam per account, Purple via NC or Google, terms and cloud prompts handled, hidden game windows.</span></div>
+    <div class="card"><b>🧭 Run order with character loop</b><span>Autoquest → Expedition → Sealed Dungeons → Auto mining → AFK Farm → Abyss, then the next character slot — once per character per game day (04:00).</span></div>
+    <div class="card"><b>🛡 Exclusive proxy per account</b><span>SOCKS5 with HTTPS/latency testing, fixed-IP reservations, IPv6 blocking, TUN mode or the experimental built-in IPv4 backend.</span></div>
+    <div class="card"><b>◎ AI captcha</b><span>Built-in solver, no key needed (YesCaptcha optional), up to 3 attempts, penalty-aware: activities wait out the restriction and resume on their own.</span></div>
+    <div class="card"><b>💰 1,000,000 Kinah/day</b><span>AFK Farm under a daily Kinah cap (1,000,000) that renews at 04:00.</span></div>
+    <div class="card"><b>🧰 Housekeeping routines</b><span>Monolith feathers, Market relisting, warehouse, resurrection, supplies, equipment enhancement — on random intervals.</span></div>
+  </div>
+
+  <h2>Quick start</h2>
+  <ol>
+    <li>Unpack the folder and run <code>SysOpsHelper.exe</code> — no installer, the .NET runtime ships inside (<a href="#install">details</a>).</li>
+    <li>Enter your card key from the store; the app validates it online (app updates use a signed channel).</li>
+    <li>Add your game accounts and link a <a href="#proxy">proxy</a> to each one — Steam and Purple alike.</li>
+    <li>Open <strong>Configure</strong> for a profile, tick the activities in the <a href="#run-order">Run order</a> and press <strong>Start</strong>.</li>
+  </ol>
+
+  <h2>Requirements at a glance</h2>
+  <ul>
+    <li>Windows 10 or 11, 64-bit.</li>
+    <li>The proxy engine additionally needs .NET Framework 4.7.2+ and the Windows Packet Filter driver.</li>
+    <li>The multi-account version requires the VK Multi-Account tool; the single version does not support VK.</li>
+  </ul>
+
+  <div class="quick"><b>Quick links:</b>
+  <a class="buybtn" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 Buy EVA</a> ·
+  <a href="https://gofile.io/d/DtUcYKaT" target="_blank" rel="noopener">⬇️ Download EVA</a> ·
+  <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Community &amp; support</a> ·
+  🛠 <strong>Problems? Contact unic.tools (U.Tools)</strong> ·
+  <a href="#specs">📐 Specifications</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ REQUIREMENTS ============ -->
+<section class="page" id="requirements">
+  <h1><span class="pic">📋</span> Requirements</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>What it needs</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Component</th><th>Requirement</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Operating system</td><td>Windows 10 or Windows 11, 64-bit</td><td>The bot drives the game through its windows and a network engine.</td></tr>
+      <tr><td>App runtime</td><td>None to install — .NET 10 ships inside the folder (<code>_runtime\</code>)</td><td>Portable: run <code>SysOpsHelper.exe</code> and it self-hosts its runtime.</td></tr>
+      <tr><td>Proxy engine</td><td>.NET Framework 4.7.2 or newer; Windows Packet Filter driver</td><td>Only needed if you use the proxy features; the driver install may ask to reboot.</td></tr>
+      <tr><td>Game clients</td><td>AION 2 via Steam and/or Purple</td><td>The bot finds Steam libraries, the Purple installation and “NC\AION 2” folders automatically.</td></tr>
+      <tr><td>Multi-account</td><td>VK Multi-Account tool (BOT MULTI version only)</td><td>Games must be opened with VK already running, or the game’s anti-cheat (NC Guard) blocks them (errors <code>0xE0000015</code> / <code>0xE0000027</code>).</td></tr>
+      <tr><td>License</td><td>Card key from the store (1 month)</td><td>Validated online; no key, no start.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Good to know</h2>
+  <ul>
+    <li>Keep the folder intact: <code>native\</code> and <code>proxy-engine\</code> are checked at startup; if the proxy-engine package is incomplete the app asks to reinstall the bot.</li>
+    <li>Resolutions the bot can set the game to: 960 × 540, 1280 × 720 (default) and 1600 × 900, windowed or fullscreen.</li>
+    <li>Interfaces and skills language is configurable — the app ships 14 UI languages including English, Russian, Portuguese, Spanish, German, Turkish, Korean, Chinese and more.</li>
+  </ul>
+  <div class="quick"><b>Quick links:</b> <a href="#install">🚀 Install &amp; updates</a> · <a href="#accounts">👤 Accounts</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ INSTALL ============ -->
+<section class="page" id="install">
+  <h1><span class="pic">🚀</span> Install &amp; updates</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>First run</h2>
+  <ol>
+    <li>Download the distribution (<a href="https://gofile.io/d/DtUcYKaT" target="_blank" rel="noopener">gofile.io/d/DtUcYKaT</a>) and unpack it <em>as a whole</em> — the app verifies its own components (<code>proxy-engine</code> completeness, native helpers) at startup.</li>
+    <li>Run <code>SysOpsHelper.exe</code>. No installer, no services; everything stays inside the folder.</li>
+    <li>Enter the card key you received after purchase. The license is checked against the store’s online endpoint (app updates additionally use a signed manifest).</li>
+    <li>Allow the proxy-engine host process in Windows Firewall (private and public networks) when Windows asks — the firewall prompt shows its name.</li>
+    <li>Set the game window size in the app’s settings before installing accounts — windowed and fullscreen both work.</li>
+  </ol>
+  <h2>How updates work</h2>
+  <ul>
+    <li>Updates arrive through a <strong>signed online channel</strong>: “Each file is checked against the signed manifest” — invalid hash or signature aborts the update.</li>
+    <li>A new version is announced even while accounts are running, with a “Stop accounts and update” option — running sessions are never killed mid-activity by default.</li>
+    <li>The app closes, updates and reopens by itself; the game stays open. A separate <code>AION2 Update.exe</code> handles the game-side files.</li>
+    <li>When the bot is stopped it checks for updates every six hours; you can also press <strong>Check for updates</strong> at any time.</li>
+  </ul>
+  <h2>Security-mode &amp; antivirus</h2>
+  <p>Antivirus products sometimes flag the proxy-engine host process. The app offers a <strong>Safe mode</strong> in that case:
+  the proxy engine stays off and accounts open directly, without proxies. If you want proxies, whitelist the executable and the folder.</p>
+  <h2>Local data security</h2>
+  <ul>
+    <li>The accounts file is fully encrypted for the current Windows user and the data folder uses restricted permissions.</li>
+    <li>Internal session identifiers are derived per machine, and the updater no longer uses encoded in-memory commands — fewer false antivirus alerts during updates.</li>
+  </ul>
+  <h2>Good to know</h2>
+  <ul>
+    <li>The window name shown in titles, tray and texts is rebrandable by editing <code>projeto.json</code> → <code>nome_mostrado</code> (that’s why some copies are called “UNICOM”).</li>
+    <li>Deleting or editing files inside <code>proxy-engine\</code> breaks the proxy features — reinstall instead of patching by hand.</li>
+    <li>If authorization is rejected after an update, update the app first: “Invalid license response. Update the app and the plugin.”</li>
+  </ul>
+  <div class="quick"><b>Quick links:</b> <a href="#accounts">👤 Accounts</a> · <a href="#proxy">🛡 Proxy</a> · <a href="#troubleshoot">🩹 Troubleshooting</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ ACCOUNTS ============ -->
+<section class="page" id="accounts">
+  <h1><span class="pic">👤</span> Accounts &amp; login</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Main window → Accounts</li><li>“+ Add Steam account” / “Add account for automatic login”</li><li>Open an account’s individual settings</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>Registers, edits and deletes <strong>Steam</strong> and <strong>Purple</strong> accounts; race, server and character slot are configured per account (the slot field was called “Character” before 5.5.0).</li>
+    <li>Logs in automatically: fills the Steam login (accepting the Steam agreement, confirming “Play anyway” on an outdated cloud) and drives Purple, including <strong>NC</strong> or <strong>Google</strong> login.</li>
+    <li>Opens a <strong>separate Steam instance per account</strong> so many accounts can log in on one PC.</li>
+    <li>Recognizes games that are already open; starts and stops each account; cancels a stuck login.</li>
+    <li>Shows class, level, status and per-account logs, respecting the single/multi license.</li>
+    <li>Arranges game windows in grids from 1 × 1 up to 6 × 6; the game opens at 1280 × 720 by default.</li>
+  </ul>
+  <h2>How to use it</h2>
+  <ol>
+    <li>Click “+ Add Steam account” (or add a Purple account) and enter the credentials.</li>
+    <li>Pick race, server and slot. The server list is grouped by region (North America East/West, Europe, South America, …).</li>
+    <li>Set the game window mode and size in the account’s settings, then click <strong>Start</strong>.</li>
+    <li>If a login stalls more than 10 minutes it is stopped — resolve it in the game window and press Start again.</li>
+  </ol>
+  <h2>Settings explained</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Game window</td><td>Window mode and size: 960 × 540, 1280 × 720, 1600 × 900.</td></tr>
+      <tr><td>Window grid</td><td>Arranges open game windows now in the chosen grid (1 × 1 … 6 × 6); the bot never moves windows on its own later.</td></tr>
+      <tr><td>Hide names / classes / levels</td><td>Privacy on the Accounts screen.</td></tr>
+      <tr><td>Profiles (Export/Import)</td><td>Bot profiles are saved as <code>*.json</code> (“AION2 Profiles”) and can be carried between machines.</td></tr>
+      <tr><td>Profile multiplier</td><td>x0.5 / x1 / x1.6 multipliers over the loaded profiles.</td></tr>
+      <tr><td>Copy to accounts</td><td>In the Configure window: copies the checked options (Autoquest, AFK Farm, mining, Dungeons, Routines, Humanization, Speed/FOV) to the checked accounts. Each account keeps its own class and the expeditions it has already done.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Good to know</h2>
+  <ul>
+    <li>Purple asks to accept the AION 2 terms once per account — the bot continues on its own after that.</li>
+    <li>“Another account is entering the game. Wait for it to finish or cancel that login and click Start again.”</li>
+    <li>If Purple’s Start Game stays disabled for a long time, the game is probably already open or an update/verification is in progress — check Purple and start again.</li>
+    <li>Purple accounts run through the proxy too — since 5.8.0 Purple connects only after binding to the account’s proxy, never through your real IP.</li>
+    <li>A new account starts with recommended settings: Autoquest (main and side quests), Expedition, Auto mining, AFK Farm up to the Kinah limit and the Abyss on both floors.</li>
+  </ul>
+  <div class="quick"><b>Quick links:</b> <a href="#proxy">🛡 Proxy</a> · <a href="#run-order">🧭 Run order</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ PROXY ============ -->
+<section class="page" id="proxy">
+  <h1><span class="pic">🛡</span> Proxy (SOCKS5)</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Main window → Proxy tab</li><li>Account settings → proxy assignment</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>Imports <strong>SOCKS5</strong> proxies one by one or in bulk and links each account to its own <strong>exclusive</strong> proxy.</li>
+    <li>Tests each proxy: “Active means a tested HTTPS connection”, with latency shown and per-step diagnostics (a step over 8 seconds is reported).</li>
+    <li>Keeps <strong>fixed-IP reservations</strong> per account; after rotating IPs at the provider, release the old reservation from the proxy’s menu so the account can be re-bound.</li>
+    <li>Blocks the game’s <strong>IPv6</strong> in Windows so no traffic can leak outside the proxy; if blocking fails, the launch is cancelled.</li>
+    <li>Offers two engines: exclusive <strong>TUN</strong> mode or the experimental <strong>built-in IPv4</strong> backend (“Windows DNS, no IPv6 isolation. Its own games end with the session”).</li>
+    <li>Supports automatic distribution: each account receives a dedicated proxy profile before start.</li>
+    <li>On the first account with a proxy the bot sets up the network driver and the engine <strong>by itself</strong> — nothing to download (since 5.8.0).</li>
+  </ul>
+  <h2>How to use it</h2>
+  <ol>
+    <li>Add proxies (own list or via the built-in “Buy proxy on Webshare” link) and let the test confirm HTTPS + latency.</li>
+    <li>Assign one exclusive proxy per account — sharing a profile between reservations is refused until fixed.</li>
+    <li>Enable the proxy mode you want (TUN exclusive or proxy-engine experimental IPv4) and close running game sessions before switching it.</li>
+    <li>Start the account; the bot opens the game inside the proxy session (“Connecting this account’s game to the proxy…”).</li>
+  </ol>
+  <h2>Settings explained</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Add SOCKS5 proxy</td><td>Single or bulk import; double-click edits an entry.</td></tr>
+      <tr><td>Test</td><td>HTTPS connectivity + latency; a test step exceeding 8 s is flagged in the per-step diagnostics.</td></tr>
+      <tr><td>Fixed IP reservation</td><td>“Choose a free proxy to fix an old binding. Fixed IP reservations are preserved.”</td></tr>
+      <tr><td>TUN exclusive</td><td>Full tunneling for the account’s game.</td></tr>
+      <tr><td>built-in IPv4 (experimental)</td><td>DNS via Windows, no per-account IPv6 isolation; games opened by the bot are closed when the session ends.</td></tr>
+      <tr><td>IPv6 guard</td><td>Blocks the game’s IPv6 in Windows; launch is cancelled if it cannot be blocked.</td></tr>
+      <tr><td>Security / Safe mode</td><td>If antivirus blocks <code>proxy-engine host process</code>, accounts open directly without proxies until you whitelist the engine.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="warnbox">⚠️ <strong>Purple accounts run through the proxy too.</strong> Since 5.8.0 the game Purple connects only after it is bound to the account’s proxy — never through your real IP. The engine also requires .NET Framework 4.7.2+ and may need a reboot after the Windows Packet Filter driver installs.</div>
+  <div class="quick"><b>Quick links:</b> <a href="#accounts">👤 Accounts</a> · <a href="#troubleshoot">🩹 Troubleshooting</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ CAPTCHA ============ -->
+<section class="page" id="captcha">
+  <h1><span class="pic">◎</span> Captcha · AI</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Main window → Captcha tab</li><li>Works automatically during any activity</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>When the game shows a verification, the bot stops the current activity, reads the image straight from the game and solves it <strong>automatically</strong> with the built-in EVA captcha service — no key or balance needed.</li>
+    <li>An optional <strong>YesCaptcha</strong> key can be configured on this computer (the field can be shown or hidden).</li>
+    <li>Tries up to <strong>three times</strong>; the activity only resumes after the previous character is confirmed and the verification is gone.</li>
+    <li>Without a confirmed solution the bot closes <strong>only that account’s game</strong> and reopens it right away through the normal login; a game opened outside the bot is only closed.</li>
+    <li>Knows about the game’s <strong>restrictive penalty</strong>: “Every activity of this account stays stopped and resumes by itself when it ends” (with the minutes left shown).</li>
+  </ul>
+  <h2>How to use it</h2>
+  <ol>
+    <li>Nothing to configure: the built-in EVA service solves captchas for every customer — no key or balance needed. Optionally, a YesCaptcha key can be added in the Captcha tab.</li>
+    <li>Leave everything else to the bot: detection → solve → confirm → resume. The activity log records every step.</li>
+  </ol>
+  <h2>Good to know</h2>
+  <ul>
+    <li>If the image can’t be found in the game’s memory, the game has likely been updated — an app update follows on the signed channel.</li>
+    <li>“Captcha: no solution within the time limit; closing and reopening this account’s game.”</li>
+    <li>Penalty files (<code>captcha-penalty.json</code>, <code>captcha-records.json</code>) persist what happened so restarts don’t lose state.</li>
+  </ul>
+  <div class="quick"><b>Quick links:</b> <a href="#run-order">🧭 Run order</a> · <a href="#troubleshoot">🩹 Troubleshooting</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ RUN ORDER ============ -->
+<section class="page" id="run-order">
+  <h1><span class="pic">🧭</span> Run order</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>Run order</strong> tab</li><li>“Copy to accounts” pushes the copied options to the checked accounts</li></ol>
+  <h2>What it does</h2>
+  <p>The Run order is the character’s daily plan — “The order in which Start does the objectives, after the routines, from top to bottom.” Each activity can be toggled, reordered (↑/↓) and configured (⚙):</p>
+  <ol>
+    <li><strong>Autoquest</strong> — “Green quests first, then the main ones, up to the level in the Autoquest tab or until there are no quests.”</li>
+    <li><strong>Expedition</strong> — “Expeditions up to the amount beside it (the same as in the Expedition tab). The count resets on its own at 04:00.”</li>
+    <li><strong>Sealed Dungeons</strong> — “The sealed dungeons switched on in the Sealed Dungeons tab, one at a time, until none is left (once per character, from the chosen level).”</li>
+    <li><strong>Auto mining</strong> — “Routes in the Auto mining tab up to the server’s daily gathering limit.”</li>
+    <li><strong>AFK Farm</strong> — “Spot from the AFK Farm tab up to the daily Kinah limit (the spots’ minutes do not apply).”</li>
+    <li><strong>Abyss</strong> — “Floors ticked on the Abyss tab, one after the other, until each one’s time runs out (level 45 and 1000 power points).”</li>
+  </ol>
+  <h2>Rules below the list</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Rule</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Die X times on the same quest: move on to the next</td><td>After X deaths (default 10) on the same quest, it is set aside for 30 minutes and the next one starts. The green ones still come first.</td></tr>
+      <tr><td>When everything is done, switch character</td><td>The character returns to the selection screen of the same game and the next slot runs the same order, in a loop. It can also create new characters up to a chosen total (free slots only — locked slots are never touched). Each character does the order once per game day (04:00). The gear opens its settings.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Good to know</h2>
+  <ul>
+    <li>Activities hand over to each other automatically: “Abyss: can enter now; AFK Farm hands over to the Abyss”, “Auto mining can come back now: Farm AFK hands over to gathering”.</li>
+    <li>Steps that become unavailable are postponed and resumed when they are available again; the whole order restarts at 04:00.</li>
+    <li>Everything configured here is per profile — <strong>Copy to accounts</strong> copies the checked options (Autoquest, AFK Farm, mining, Dungeons, Routines, Humanization and Speed/FOV) to the checked accounts; each keeps its own class and the expeditions already done.</li>
+  </ul>
+  <div class="quick"><b>Quick links:</b> <a href="#autoquest">📋 Autoquest</a> · <a href="#expedition">🗺 Expedition</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ AUTOQUEST ============ -->
+<section class="page" id="autoquest">
+  <h1><span class="pic">📋</span> Autoquest</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>Autoquest</strong> tab</li><li>Run order → item 1</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>Completes missions automatically, preferring <strong>green side quests first</strong>, then the configurable main quests; stops at the chosen level (0 = no limit).</li>
+    <li>Accepts side quests required by a main quest’s step and follows quest destinations.</li>
+    <li>Auto-retaliates against aggressors and resumes the mission; ranged classes keep their distance — “attacks and backs away from the approaching monster, keeping the range”.</li>
+    <li>Since 5.14 the combat distance respects the real range of your skills, so ranged classes no longer stand too far from a boss without hitting.</li>
+    <li>Can use its own movement speed during Autoquest (disabled when the bot stops).</li>
+    <li>Stuck handling: timeout without progress, new attempt for a postponed mission, option to ignore stuck missions, unstuck via return scroll.</li>
+  </ul>
+  <h2>Settings explained</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>End level</td><td>Autoquest ends at this level (0 = unlimited) and the order moves to the next activity.</td></tr>
+      <tr><td>Main quests / green priority</td><td>Green side quests first, then the main ones.</td></tr>
+      <tr><td>Timeout without progress</td><td>A mission without progress is postponed and retried; “ignore stuck missions” skips it instead.</td></tr>
+      <tr><td>Auto-retaliate + dodge</td><td>Fights back; ranged classes attack while moving away, with a range margin and movement variation.</td></tr>
+      <tr><td>Own movement speed</td><td>Speeds up travelling between objectives; only while the activity runs.</td></tr>
+      <tr><td>Unstuck return scroll</td><td>Teleports out when the character gets stuck (configurable).</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Good to know</h2>
+  <ul>
+    <li>The death rule comes from the Run order: after X deaths (default 10) on the same quest it waits 30 minutes.</li>
+    <li>Progress and problems are logged per account, so a support request can be answered from the logs alone.</li>
+  </ul>
+  <div class="quick"><b>Quick links:</b> <a href="#run-order">🧭 Run order</a> · <a href="#afk-farm">⚔ AFK Farm</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ AFK FARM ============ -->
+<section class="page" id="afk-farm">
+  <h1><span class="pic">⚔</span> AFK Farm</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>AFK Farm</strong> tab</li><li>Run order → item 5</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>Hunts with your class’s skills at a chosen spot: walks the area, selects targets, attacks, loots.</li>
+    <li><strong>Spots</strong>: add/remove/activate locations with a radius, a time limit in minutes (0 = no limit) and monster IDs; an empty ID list accepts all eligible targets in the area.</li>
+    <li><strong>Points</strong>: reads the selected target type, captures your current position as a point, or accepts manual coordinates — several points per spot are allowed; without coordinates the character’s position is used.</li>
+    <li><strong>Combat</strong>: attack distance and search radius; auto-retaliate prioritizes aggressors; against approaching monsters it “attacks and backs away… keeping the range”.</li>
+    <li><strong>Spiritmaster</strong>: chooses the permanent spirit — Water, Fire, Wind or Earth.</li>
+    <li>Under the Run order it farms “up to the daily Kinah limit (the spots’ minutes do not apply)”. The limit is <strong>1,000,000 Kinah per day</strong> and renews at 04:00.</li>
+  </ul>
+  <h2>Resilience (built in)</h2>
+  <ul>
+    <li>A spot that repeatedly kills the character, can’t be reached, or shows no attack for a while is <strong>paused</strong> and the next enabled spot takes over.</li>
+    <li>After many deaths in a row the farm continues in <strong>cautious mode</strong> — a smaller radius — before pausing.</li>
+    <li>“Daily Kinah limit reached; the Farm returns when the limit renews (04:00).”</li>
+  </ul>
+  <h2>Good to know</h2>
+  <ul>
+    <li>“AFK Farm on Start” runs the farm immediately after login, before the Run order.</li>
+    <li>There is also a pure AFK mode (“start only AFK Farm”) that skips quests entirely.</li>
+    <li>Spots are per profile — copy them to other accounts from the Configure window.</li>
+  </ul>
+  <div class="quick"><b>Quick links:</b> <a href="#mining">⛏ Auto mining</a> · <a href="#routines">🧰 Routines</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ MINING ============ -->
+<section class="page" id="mining">
+  <h1><span class="pic">⛏</span> Auto mining</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>Auto mining</strong> tab</li><li>Run order → item 4</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>Gathers natural resources from <strong>level 45</strong>, respecting the <strong>server’s daily gathering quota</strong> — “Limite de coleta do servidor atingido; coleta adiada até…” (the server limit was reached; gathering postponed until reset).</li>
+    <li><strong>Routes</strong>: add/remove, name, activate, reorder; each route has a radius and resource IDs — an empty list gathers every eligible natural resource.</li>
+    <li>Reads the currently selected resource and adds its ID; accepts manual coordinates, several points per route; all points of a route must be on the same map.</li>
+    <li>Walks the route, gathers on the way, resumes the path, and repeats the routes on the current map; a configurable wait time without resources moves it to the next point.</li>
+    <li>Only the area of each route point is gathered — ores on the way between points are ignored; far points are reached on foot along the way (the automatic Kibelisk teleport for points over 500 m was removed in 5.5.0).</li>
+    <li>Auto-retaliates against aggressors and resumes gathering; can hand over to AFK Farm when limits are hit, and vice versa.</li>
+    <li>A map or session change ends gathering; everything is logged per account.</li>
+  </ul>
+  <h2>Settings explained</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Add route</td><td>Creates a named route on the current map with radius + points.</td></tr>
+      <tr><td>Resource IDs</td><td>Restricts what is gathered; empty = all eligible natural resources; “All resources” resets.</td></tr>
+      <tr><td>Wait time without resources</td><td>How long to wait at a point before advancing.</td></tr>
+      <tr><td>Auto-retaliate</td><td>Fights back when attacked, then resumes the route.</td></tr>
+      <tr><td>Server daily limit</td><td>Gathering waits until the server quota resets.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="quick"><b>Quick links:</b> <a href="#afk-farm">⚔ AFK Farm</a> · <a href="#abyss">◆ Abyss</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ SEALED DUNGEONS ============ -->
+<section class="page" id="dungeons">
+  <h1><span class="pic">🏰</span> Sealed Dungeons</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>Sealed Dungeons</strong> tab</li><li>Run order → item 3</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>Runs the dungeons switched on in the tab <strong>one at a time</strong>, <strong>once per character</strong>, from the chosen starting level (default 45).</li>
+    <li>The game’s completed-quest list tells it which dungeons are left — finished ones are never tried again.</li>
+    <li>Travels to Kibelisk, confirms the arrival, then interacts with the entrance portal.</li>
+    <li>Safety rails: “Dying 10 times in the same dungeon or spending more than 40 minutes in one stops the Sealed Dungeons until the next game day (04:00).”</li>
+    <li>When the daily limit is reached it leaves the dungeon on its own.</li>
+  </ul>
+  <h2>How to use it</h2>
+  <ol>
+    <li>Tick the dungeons available to your character and set the starting level.</li>
+    <li>Leave “Sealed Dungeons” enabled in the Run order (or start it individually from the tab).</li>
+    <li>Each dungeon’s status is visible in the account logs.</li>
+  </ol>
+  <div class="quick"><b>Quick links:</b> <a href="#expedition">🗺 Expedition</a> · <a href="#run-order">🧭 Run order</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ EXPEDITION ============ -->
+<section class="page" id="expedition">
+  <h1><span class="pic">🗺</span> Expedition</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>Expedition</strong> tab</li><li>Run order → item 2</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>Runs <strong>Krall</strong>, <strong>Unu</strong> or <strong>Fire Temple</strong> Exploration, or <strong>Krall Conquest</strong>, the chosen number of entries per day (0 = none) — the same amount as in the Run order.</li>
+    <li><strong>Solo or team</strong> mode: a team needs three members. With the multi-account tool (VK) open, matchmaking is unavailable, so the bot creates the team directly or waits for a team you created/accepted in the game.</li>
+    <li>Checks <strong>Ode energy</strong> before entering — 40 for Krall/Unu, 60 for Fire Temple — can use recharge items and buys a Potion/Elixir first; with “Require potions” enabled it only enters with confirmed stock.</li>
+    <li>Death limit (default 5) and a <strong>1,000,000 gold cap</strong> in Conquest protect the run; auto-retaliate and own speed are configurable, speed is restored on exit. A “Use revive stone” option (on by default) revives on the spot when the stone is in the bag.</li>
+    <li>In Krall Conquest the bosses are taken in order — left, right, guardian, final — and the pillar is set as a checkpoint.</li>
+    <li>Since 5.14: in Krall Conquest the bot opens the <strong>reward chest after the final boss</strong> before leaving.</li>
+    <li>Counts reset on their own at 04:00; the expedition team is left automatically before entering the Abyss.</li>
+  </ul>
+  <h2>Settings explained</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Entries per day / achievements per day</td><td>Daily caps for the chosen expedition (0 = none).</td></tr>
+      <tr><td>Solo / team</td><td>Team mode requires 3 members; with VK open the team is created directly.</td></tr>
+      <tr><td>Ode requirement</td><td>40 (Krall/Unu) or 60 (Fire Temple); recharge items and Potion/Elixir purchase before entering.</td></tr>
+      <tr><td>Require potions</td><td>Enter only after confirming stock.</td></tr>
+      <tr><td>Death limit</td><td>Default 5 deaths ends the run for the day.</td></tr>
+      <tr><td>Conquest gold cap</td><td>1,000,000 per day in Krall Conquest.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="quick"><b>Quick links:</b> <a href="#abyss">◆ Abyss</a> · <a href="#dungeons">🏰 Sealed Dungeons</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ ABYSS ============ -->
+<section class="page" id="abyss">
+  <h1><span class="pic">◆</span> Abyss farming</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>Abyss</strong> tab</li><li>Run order → item 6</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>Enters the ticked <strong>Abyss floors</strong> one after the other and farms each one until its time runs out.</li>
+    <li>Requirements: <strong>level 45</strong>, <strong>1000 power points</strong>, and more than three minutes on the floor.</li>
+    <li>Waits for <strong>90% flight energy</strong>, flies to the chosen spot, and recharges to 100% at the nearest landing position when energy runs low mid-run.</li>
+    <li>Hunts monsters, supports automatic <strong>feather collection</strong>, and requests the exit with about three minutes remaining.</li>
+    <li>Spots can be randomized at every entry — and varied again after deaths; floor locations and monster coordinates/levels are visible in the tab.</li>
+    <li>Optional <strong>entry schedule</strong>: enable it and set an hour from 0 to 23 (default 22) using the PC clock — the window runs from that hour until midnight, without forcing an exit at midnight.</li>
+    <li>Leaves the expedition team before entering (the game does not take team members to the Abyss).</li>
+  </ul>
+  <h2>Good to know</h2>
+  <ul>
+    <li>“Abyss: can enter now; AFK Farm hands over to the Abyss.” — activities hand over automatically.</li>
+    <li>Gathering inside the Abyss stops when the daily gathering limit is reached.</li>
+    <li>If flight energy doesn’t reach the threshold in time, the bot leaves the Abyss on its own.</li>
+  </ul>
+  <div class="quick"><b>Quick links:</b> <a href="#mining">⛏ Auto mining</a> · <a href="#speed-fov">⚡ Speed &amp; FOV</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ ROUTINES ============ -->
+<section class="page" id="routines">
+  <h1><span class="pic">🧰</span> Routines</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>Routines</strong> tab</li><li>“The enabled routines run on start and repeat at random intervals.”</li></ol>
+  <h2>General</h2>
+  <ul>
+    <li><strong>Monolith</strong>: auto level-up with feathers; “Amount to go to the Monolith; 0 = what is missing for the next level.”</li>
+    <li><strong>Market</strong>: at the routines time it interrupts the activity, opens the Market through the menu, redeems completed sales, announces tradable items and reposts unsold ones — with equipment colors and a lower/medium price; protected items are preserved.</li>
+    <li><strong>Warehouse</strong>: with a full backpack after the dismantle attempt it stores Special Transformation, Common/Rare crafting materials and Common/Rare food; the deposit can run outside the expedition.</li>
+    <li><strong>Survival</strong>: potion by life percentage, resurrection stone (preparing resurrection, resuming even if the confirmation doesn’t arrive in 60 s), nearby loot pickup, stuck-character recovery, and return by scroll after local attempts fail (outside instances). Keeps a minimum flight/glide energy, dodges attacks from registered bosses (leaves the attack area by the nearest side, dash facing the exit) and collects healing orbs during Autoquest. An <strong>Aion 1 mode</strong> plus character creation at the tutorial end with configured class and prefix are here too.</li>
+  </ul>
+  <h2>Rewards</h2>
+  <ul><li>Receives mail attachments and available presence, achievement and pass rewards.</li></ul>
+  <h2>Character</h2>
+  <ul>
+    <li>Expands the backpack up to a chosen total, counting expansions already made.</li>
+    <li>Equips titles and wings by rarity, fills empty slots, swaps weapons/equipment for compatible improvements.</li>
+    <li>Enhances equipment with color limits — white, green, blue, yellow, orange (runes are never enhanced).</li>
+    <li><strong>Automatic Daevanion</strong>: “learns the cheapest node in all unlocked tabs.”</li>
+    <li>Links Mana/Vital stones into empty slots, preserving existing stones.</li>
+    <li>Extracts eligible equipment of chosen colors (the “item cleanup” other tabs refer to).</li>
+    <li>Improves learned skills according to level and points; states are visible in the log.</li>
+  </ul>
+  <h2>Supplies</h2>
+  <ul>
+    <li>Leaves combat and returns to <strong>Kibelisk</strong> with the Linked Return Scroll to replenish low stock.</li>
+    <li>Configures minimum and final quantities of Life Potion, Life Elixir and Return Scroll — all linked.</li>
+    <li>Searches the Item Merchant and buys only what is missing to complete the defined stock.</li>
+  </ul>
+  <h2>Events</h2>
+  <ul>
+    <li><strong>Shugo Festa — Protecting the Merchants</strong>: the hourly event, saved to the bot’s routine schedule (comes turned off — enable it in Routines).</li>
+    <li><strong>Mysterious Track race</strong>: the bot runs the race, dodges orange pads, whirlwinds and gates, takes speed and life orbs and glides at the launch strip; its move-speed boost is configured on the <a href="#speed-fov">Speed/FOV</a> page.</li>
+    <li>At the end of an event the reward is collected and the account returns to what it was doing.</li>
+  </ul>
+  <div class="warnbox">⚠️ A detected captcha stops the routines (“routines stay stopped”) until the verification is confirmed solved.</div>
+  <div class="quick"><b>Quick links:</b> <a href="#humanization">🫥 Humanization</a> · <a href="#captcha">◎ Captcha</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ HUMANIZATION ============ -->
+<section class="page" id="humanization">
+  <h1><span class="pic">🫥</span> Humanization</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>Humanization</strong> tab</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>“Adds a random wait before clicks, dialogues, looting, inventory, rewards and login steps. It only adds time, never removes it: the bot gets a bit slower and less regular.”</li>
+    <li>“Adds a random margin of up to 30 s when the bot checks again whether it can continue after a wait, and up to 90 s on automatic restart.”</li>
+    <li><strong>Session pauses</strong>: set an active-work time; when it ends the bot stops the routines, tries to return to town with a return scroll and rests — with a variation of ±30% on the timings, resuming according to mode and map.</li>
+    <li>Performs occasional small camera rotations without using the physical mouse, respecting each activity’s restrictions.</li>
+    <li>The AFK Farm itself can take short human-like pauses — “1 to 8 min at the spot, reacting to aggression” (AFK Farm only, while hunting).</li>
+  </ul>
+  <div class="dangerbox">⚠️ Humanization lowers the regularity of the bot’s actions, but <strong>it does not guarantee protection against punishment</strong>. Use it at your own risk.</div>
+  <div class="quick"><b>Quick links:</b> <a href="#speed-fov">⚡ Speed &amp; FOV</a> · <a href="#faq">❓ FAQ</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ SPEED/FOV ============ -->
+<section class="page" id="speed-fov">
+  <h1><span class="pic">⚡</span> Speed &amp; FOV</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Configure window (per profile) → <strong>Speed/FOV</strong> tab</li></ol>
+  <h2>What it does</h2>
+  <ul>
+    <li>Adjusts <strong>movement speed</strong>, <strong>animation speed</strong>, <strong>attack/combat speed</strong>, <strong>field of view</strong> and <strong>maximum camera distance</strong> separately; values are saved even when disabled.</li>
+    <li>Enable/disable each adjustment and request a restoration; pausing and closing also restore the original values.</li>
+    <li><strong>In the expedition</strong>: turns on the page’s speed adjustment with the configured percentage and turns it off on exit (default 20).</li>
+    <li><strong>Mysterious Track race</strong>: raises the move speed only during the race and restores it at the end (default 20; 0 = off). In the race it avoids the orange pads, tornadoes, little critters and the purple gate, rides over the cyan pads and picks up speed and life orbs (life orbs first when life is low).</li>
+    <li>The combat-speed slider requires the character to have made the combat speed attribute available.</li>
+  </ul>
+  <div class="dangerbox">⚠️ Speed and FOV changes are visible modifications. They are optional, off by default, and used at your own risk.</div>
+  <div class="quick"><b>Quick links:</b> <a href="#humanization">🫥 Humanization</a> · <a href="#expedition">🗺 Expedition</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section class="page" id="settings">
+  <h1><span class="pic">⚙</span> Settings &amp; hotkeys</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Where to find it</h2>
+  <ol><li>Main window → Settings (“Language, game window, privacy, updates and data on this computer”)</li><li>In game: press <kbd>F10</kbd> or the tray icon next to the clock</li></ol>
+  <h2>What’s inside</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Section</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Appearance and language</td><td>Interface and skills language — 14 UI languages, including English, Russian, Portuguese, Spanish, German, Korean, Chinese, Turkish and more.</td></tr>
+      <tr><td>Game window</td><td>Window mode and size: 960 × 540, 1280 × 720, 1600 × 900 (windowed or fullscreen).</td></tr>
+      <tr><td>Privacy</td><td>Hide names, classes and levels on the Accounts screen.</td></tr>
+      <tr><td>Updates</td><td>Checks the signed channel; every six hours while the bot is stopped; “Check for updates” any time.</td></tr>
+      <tr><td>Logs</td><td>“History of activities, interruptions and updates” — per-account logs for problem reports.</td></tr>
+      <tr><td>Data on this computer</td><td>Export/import preferences and generate a diagnostics package for support.</td></tr>
+      <tr><td>Tray</td><td>Minimize to the system tray; show tray icon; the in-game helper opens with <kbd>F10</kbd> or the tray icon.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Hotkeys</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Hotkey</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Main hotkey</td><td>Primary in-game control.</td></tr>
+      <tr><td>Secondary hotkey</td><td>Secondary control.</td></tr>
+      <tr><td>Pause hotkey</td><td>Pauses/resumes the current activity.</td></tr>
+      <tr><td>Stigma burst hotkey</td><td>Triggers the configured burst.</td></tr>
+      <tr><td>Block hotkey</td><td>Blocks input handling while held.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="quick"><b>Quick links:</b> <a href="#troubleshoot">🩹 Troubleshooting</a> · <a href="#install">🚀 Updates</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ TROUBLESHOOTING ============ -->
+<section class="page" id="troubleshoot">
+  <h1><span class="pic">🩹</span> Troubleshooting</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h2>Symptom → fix</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Symptom</th><th>What to do</th></tr></thead>
+    <tbody>
+      <tr><td>Authorization rejected / “Invalid license response”</td><td>Update the app and the plugin on the signed channel; if the login link has been refreshed, the app shows “Enter with your key.”</td></tr>
+      <tr><td>Key bound to another PC</td><td>Sign in and confirm the transfer: EVA moves the key to this PC (the move takes 9 hours off the key’s time).</td></tr>
+      <tr><td>Game doesn’t start through the bot</td><td>The bot searches Steam libraries, the registry, the opened game and “NC\AION 2” folders; check the default Steam path <code>…\steamapps\common\AION2</code> and click Start again.</td></tr>
+      <tr><td>“AION2 did not stay open after three attempts”</td><td>Check the game or Steam; the bot reports how many launches failed and why.</td></tr>
+      <tr><td>Anti-cheat error <code>0xE0000015</code> / <code>0xE0000027</code></td><td>A game was opened before the multi-account tool. Close the extra games and VK, open VK again, then open only the accounts’ games.</td></tr>
+      <tr><td>Login stuck</td><td>The bot waits up to 10 minutes, then stops: resolve the window and click Start again. Steam opened as administrator keeps the login in it.</td></tr>
+      <tr><td>Proxy won’t start</td><td>Install/allow <code>proxy-engine host process</code> in the firewall (private + public); .NET Framework 4.7.2+ required; after the Windows Packet Filter driver installs, reboot if asked; if the proxy-engine folder is incomplete — reinstall the bot.</td></tr>
+      <tr><td>“Could not confirm the outbound IPv4 through SOCKS5 and HTTPS”</td><td>Check the proxy credentials (SOCKS5 user/password) and the per-step diagnostics; a test step over 8 s is flagged there.</td></tr>
+      <tr><td>IPv6 leak warning</td><td>The launch is cancelled on purpose — “so no connection leaves outside the proxy”. Fix the system’s IPv6 or use TUN mode.</td></tr>
+      <tr><td>Captcha not solved in time</td><td>The account’s game is closed and reopened through the normal login; a restrictive penalty pauses all activities of that account until it ends.</td></tr>
+      <tr><td>Character stands still</td><td>Open the game window and check for a dialog or verification; the window guard closes leftover windows on the next attempt.</td></tr>
+      <tr><td>Gathering doesn’t start</td><td>The server’s daily gathering limit may be reached — gathering is postponed until the reset.</td></tr>
+      <tr><td>Game crash reported</td><td>The bot reads the Windows Event Log entry (faulting application AION2.exe), reports it and restarts the account.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>For a support request</h2>
+  <ol>
+    <li>Open the account’s <strong>logs</strong> (Settings → Logs): “History of activities, interruptions and updates”.</li>
+    <li>Generate the <strong>diagnostics package</strong> (Settings → data on this computer).</li>
+    <li>Attach both to your ticket in the <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">community Discord</a>.</li>
+  </ol>
+  <div class="quick"><b>Quick links:</b> <a href="#faq">❓ FAQ</a> · <a href="#install">🚀 Install &amp; updates</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="page" id="faq">
+  <h1><span class="pic">❓</span> FAQ</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <h3>Is it a macro or a hack?</h3>
+  <p>It is an external automation and account-management suite: it drives the game through its own interface, with optional Speed/FOV adjustments that are clearly separated and off by default.</p>
+  <h3>Can I get banned?</h3>
+  <p>Any automation carries risk. The bot includes Humanization (random waits, session pauses, small camera movements), and the vendor states plainly that it <strong>does not guarantee protection against punishment</strong>.</p>
+  <h3>Does it support every class?</h3>
+  <p>All nine classes: Gladiator, Templar, Assassin, Ranger, Sorcerer, Spiritmaster, Cleric, Chanter and Brawler. The Spiritmaster chooses a permanent spirit (Water, Fire, Wind or Earth); ranged classes get their own dodge settings.</p>
+  <h3>Can I run several game windows at once?</h3>
+  <p>Yes — with the multi-account tool (VK) required by the BOT MULTI version. Each account gets its own Steam instance and a slot in the window grid (1 × 1 up to 6 × 6). The Single version does not support VK.</p>
+  <h3>What happens with a full inventory?</h3>
+  <p>The Routines cover it: the warehouse stores Special Transformation, crafting materials and food after the dismantle attempt, the Market frees space by posting items, and an “Also extract tradable items” option (added in 5.5.0) lets the item cleanup extract tradable equipment of the chosen colors — never upgrades, worn items or quest items.</p>
+  <h3>Does it handle the in-game captcha?</h3>
+  <p>Yes — automatically: the built-in EVA service solves it for every customer, no key needed (a YesCaptcha key is optional), up to three attempts; without a solution it re-enters cleanly and waits out any penalty.</p>
+  <h3>Which servers are supported?</h3>
+  <p>The server list is grouped by region — North America (East/West), Europe, South America and others — and is updated with the app (it ships as data, not hard-coded).</p>
+  <h3>Is it paid?</h3>
+  <p>The license is a card key valid for <strong>1 month</strong>; per the store’s policy there is <strong>no refund</strong>.</p>
+  <h3>How do I update?</h3>
+  <p>Automatically: the app checks the signed channel every six hours while stopped, waits until accounts stop, then closes, updates and reopens itself — the game stays open.</p>
+  <div class="quick"><b>Quick links:</b> <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Community &amp; support</a> ·
+  🛠 <strong>Problems? Contact unic.tools (U.Tools)</strong> · <a href="#troubleshoot">🩹 Troubleshooting</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ CHANGELOG ============ -->
+<section class="page" id="changelog">
+  <h1><span class="pic">📰</span> Latest updates</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <p>The app ships its release notes; the newest entries (English, as shown in the app):</p>
+  <div id="changelog-body"><!-- filled by script from CHANGELOG_DATA --></div>
+  <h2>Good to know</h2>
+  <ul>
+    <li>27 releases are recorded in the built-in notes, from 3.7.0 up to 5.14.0 — the update system installs them through the signed manifest.</li>
+    <li>Notes are localized: every entry exists in all 14 interface languages, including Russian.</li>
+  </ul>
+  <div class="quick"><b>Quick links:</b> <a href="#install">🚀 How updates work</a> · <a href="#specs">📐 Specifications</a> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+<!-- ============ SPECS ============ -->
+<section class="page" id="specs">
+  <h1><span class="pic">📐</span> Specifications</h1>
+  <a class="back tocopen" href="#home">← Table of contents</a>
+  <div class="tablewrap"><table>
+    <tbody>
+      <tr><td>Account types</td><td>Steam, Purple</td></tr>
+      <tr><td>Login methods (Purple)</td><td>NC, Google</td></tr>
+      <tr><td>Proxy support</td><td>SOCKS5 (exclusive per account), TUN exclusive, built-in IPv4 (experimental)</td></tr>
+      <tr><td>Game resolutions</td><td>960 × 540, 1280 × 720, 1600 × 900</td></tr>
+      <tr><td>Captcha service</td><td>YesCaptcha key / built-in solver, up to 3 attempts</td></tr>
+      <tr><td>Daily Kinah farm limit</td><td>1,000,000 (renews at 04:00)</td></tr>
+      <tr><td>Expedition Ode requirements</td><td>40 (Krall/Unu), 60 (Fire Temple)</td></tr>
+      <tr><td>Abyss entry requirements</td><td>Level 45, 1000 power points, 3+ minutes on floor, 90% flight energy</td></tr>
+      <tr><td>Autoquest level limit</td><td>Configurable; 0 = no limit</td></tr>
+      <tr><td>Death limits</td><td>10 for missions, 5 for expeditions (defaults)</td></tr>
+      <tr><td>Supported activities</td><td>Autoquest, Expedition, Sealed Dungeons, Auto mining, Abyss, AFK Farm</td></tr>
+      <tr><td>Languages</td><td>Interface and skills language configurable — 14 UI languages</td></tr>
+      <tr><td>Classes</td><td>Gladiator, Templar, Assassin, Ranger, Sorcerer, Spiritmaster, Cleric, Chanter, Brawler</td></tr>
+      <tr><td>Product duration</td><td>1 month</td></tr>
+      <tr><td>Refund policy</td><td>No refund</td></tr>
+      <tr><td>Recommended OS</td><td>Windows 10 / Windows 11 (64-bit)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="warnbox">⚠️ <strong>The BOT MULTI version requires the VK Multi-Account tool</strong> to open and function. If you don’t have it, choose the “1 ACCOUNT VERSION”. The “1 ACCOUNT VERSION” does not support operation with VK Multi-Account.</div>
+  <div class="quick"><b>Quick links:</b> <a class="buybtn" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 Buy EVA</a> · <a href="https://gofile.io/d/DtUcYKaT" target="_blank" rel="noopener">⬇️ Download EVA</a> · <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Community &amp; support</a> ·
+  🛠 <strong>Problems? Contact unic.tools (U.Tools)</strong> · <a href="#home">📚 Table of contents</a></div>
+</section>
+
+</main>
+</div>
+
+<script>
+/* changelog data (EN notes from the app's release-notes.json, versions 5.14.0-5.4.0) */
+const CHANGELOG=[
+ {v:"5.14.0",n:["Krall: in Conquest the bot now opens the reward chest after the final boss before leaving (it used to leave without the chest).","Autoquest and expeditions: the combat distance now respects the real range of your skills, so ranged classes no longer stand too far from the boss without hitting."]},
+ {v:"5.8.0",n:["Proxy released: turn on the switch in the Proxy tab, choose the account for each proxy and click Start. On the first account with a proxy the bot sets up the network driver and the engine by itself, with nothing for you to download. “(beta)” was removed from the name.","Purple accounts also open with a proxy: the game Purple opens only connects after it is bound to the account’s proxy, never through your real IP."]},
+ {v:"5.7.0",n:["Execution order: in the character switch, the padlock became the gear, like the other rows; the settings window is wider and shows the full descriptions."]},
+ {v:"5.6.0",n:["Execution order: the character switch padlock opens a settings window (create characters up to the total, and the total); nothing changes without Save."]},
+ {v:"5.5.0",n:["Warehouse: with the inventory full during the AFK Farm, the character finishes the current fight without pulling another and goes to store the items; if attacked before the teleport, it fights back and tries again. The Market does the same.","Inventory: new option “Also extract tradable items” right below the dismantle colors; with it, tradable equipment of the checked colors is extracted too (never upgrades, worn items or quest items).","Market: its own section in Routines, and items are listed by highest total value (price × quantity), keeping the chosen price rule.","Sealed Dungeons gets its own tab in Configure, with “Start only”. The daily Kinah limit of the AFK Farm moves to the AFK Farm tab: with “Start only” the Farm stops at the limit; in the Execution order it moves on to the next item.","Accounts: the “Character” field is now called “Slot”. Choosing the free slot (“Create Character”) makes EVA create the character with the same class, server and race; locked slots are never touched.","Execution order: new tab “When everything is done, switch character” — when the order is done, the account moves to the next character and repeats, in a loop; optionally it creates characters up to the chosen total.","Auto mining: the automatic Kibelisk teleport to far points (over 500 m) was removed; the character travels to the point along the way.","Interface: the Configure window is wider and shows the full name of every tab."]},
+ {v:"5.4.0",n:["Auto mining: gathers only inside the area of each route point; ores on the way between points are ignored. On arrival it gathers every ore in the area, nearest first.","Auto mining: with flight energy below your minimum, the Odyle is left for later and the character goes to a ground ore or the next point. If the point only has Odyle, it waits for the energy as before.","Auto mining: a point more than 500 m away is reached through the Kibelisk nearest to it (uses 1 Return Scroll), like the Autoquest; every new start begins at the point nearest the character.","Interface: the mouse wheel over a selection box or number field no longer changes the value (it scrolls the page); changing an option that rebuilds the page, such as the expedition type, no longer jumps to the top."]}
+];
+const el=document.getElementById("changelog-body");
+CHANGELOG.forEach(r=>{const d=document.createElement("div");d.className="card";d.style.margin="12px 0";
+ d.innerHTML=`<b>v${r.v}</b>`+r.n.map(x=>`<span style="display:block">• ${x}</span>`).join("");el.appendChild(d);});
+
+/* page router */
+const pages=[...document.querySelectorAll("section.page")];
+const toc=document.getElementById("toc");
+function show(){let k=location.hash.slice(1)||"home";
+ if(!document.getElementById(k))k="home";
+ pages.forEach(p=>p.classList.toggle("on",p.id===k));
+ document.querySelectorAll(".navitem").forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+k));
+ if(innerWidth<=900&&toc.dataset.user!=="keep")toc.open=false;
+ scrollTo(0,0);}
+function fit(){if(innerWidth>900){toc.open=true;}else if(!toc.dataset.user)toc.open=false;}
+addEventListener("resize",fit);addEventListener("hashchange",()=>{toc.dataset.user="";show();});
+toc.addEventListener("click",e=>{if(e.target.closest("a.navitem")&&innerWidth<=900){toc.open=false;}});
+document.querySelectorAll(".tocopen").forEach(a=>a.addEventListener("click",()=>{toc.dataset.user="keep";toc.open=true;}));
+document.getElementById("q").addEventListener("input",e=>{toc.open=true;const v=e.target.value.toLowerCase();
+ document.querySelectorAll(".navitem").forEach(a=>{a.style.display=!v||(a.dataset.search||"").toLowerCase().includes(v)||a.textContent.toLowerCase().includes(v)?"":"none";});});
+fit();show();
+</script>
+</body>
+</html>
