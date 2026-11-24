@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVA — wiki d’automatisation AION 2</title>
+<style>
+:root{
+  --bg-base:#050a12; --bg:#0a0f1a; --panel-deep:#0f1525; --panel:#141b30;
+  --panel-lift:#1a2240; --surface:#202952;
+  --ink:#e8eef9; --ink-dim:#b8c4e0; --ink-muted:#7d8db8; --ink-faint:#4a5a82;
+  --accent:#3dd9d0; --accent-bright:#5fffe8; --accent-dim:#2a8f8a;
+  --highlight:#f4a261; --danger:#b85fc7;
+  --border:#1f2f58; --border-lift:#2d4070;
+  --shadow-sm:0 2px 8px rgba(0,0,0,.3); --shadow-md:0 4px 16px rgba(0,0,0,.4);
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;
+  --r1:6px;--r2:10px;--r3:14px;--r4:20px;
+  --ease:cubic-bezier(.4,0,.2,1); --fast:150ms var(--ease); --normal:220ms var(--ease);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg-base);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:clamp(14px,.9vw,16px);line-height:1.7;-webkit-font-smoothing:antialiased}
+.layout{display:grid;grid-template-columns:310px minmax(0,1fr);min-height:100vh}
+aside{position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,var(--panel-deep),var(--bg));
+  border-right:1px solid var(--border);padding:var(--s4) var(--s3);scrollbar-width:thin;scrollbar-color:var(--accent-dim) transparent}
+aside::-webkit-scrollbar{width:6px}aside::-webkit-scrollbar-thumb{background:var(--accent-dim);border-radius:3px}
+.brand{display:flex;gap:var(--s3);align-items:center;padding:var(--s2) var(--s3) var(--s4);border-bottom:1px solid var(--border);margin-bottom:var(--s4)}
+.logo{width:40px;height:40px;border-radius:var(--r2);flex:none;display:grid;place-items:center;
+  background:linear-gradient(135deg,#123,#1a2240);border:1px solid var(--border-lift);font-size:20px}
+.brand b{font-size:clamp(15px,1vw,17px);display:block;letter-spacing:.02em}
+.brand small{color:var(--ink-muted);font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+.vbadge{margin-left:auto;font-size:10px;color:var(--accent);border:1px solid var(--accent-dim);border-radius:999px;padding:2px 8px;white-space:nowrap}
+#q{width:100%;padding:var(--s3) var(--s4);border-radius:var(--r2);border:1px solid var(--border);background:var(--panel);
+  color:var(--ink);font-size:14px;margin:var(--s3) 0 var(--s4);transition:border-color var(--fast),box-shadow var(--fast)}
+#q::placeholder{color:var(--ink-faint)}
+#q:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(61,217,208,.1)}
+#toc>summary{list-style:none;cursor:pointer;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--highlight);padding:var(--s3) var(--s4);border:1px solid var(--border-lift);border-radius:var(--r2);
+  background:linear-gradient(135deg,var(--panel),var(--panel-deep));margin:var(--s3) 0;user-select:none;transition:all var(--fast)}
+#toc>summary:hover{background:var(--panel-lift);border-color:var(--accent-dim)}
+#toc>summary::-webkit-details-marker{display:none}
+#toc>summary::before{content:"▸ ";margin-right:var(--s2)}
+#toc[open]>summary::before{content:"▾ "}
+.catlabel{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);
+  margin:var(--s5) var(--s2) var(--s2);padding-left:var(--s2);border-left:3px solid var(--accent-dim)}
+.navitem{display:flex;gap:var(--s3);align-items:center;padding:var(--s2) var(--s3);border-radius:var(--r1);color:var(--ink-dim);
+  text-decoration:none;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:all var(--fast);margin:2px 0}
+.navitem:hover{background:var(--panel-lift);color:var(--ink);transform:translateX(4px)}
+.navitem.active{background:linear-gradient(90deg,var(--accent-dim),var(--surface));color:var(--accent-bright);font-weight:600}
+.navitem .ic{width:20px;text-align:center;flex:none;font-size:15px}
+main{padding:var(--s6) clamp(24px,5vw,56px) var(--s7);max-width:920px;background:var(--bg)}
+.page{display:none}
+.page.on{display:block;animation:fadein var(--normal)}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:clamp(22px,2.5vw,28px);font-weight:700;letter-spacing:-.02em;line-height:1.3;margin:0 0 var(--s4)}
+h1 .pic{margin-right:var(--s2)}
+h2{font-size:clamp(18px,2vw,21px);font-weight:600;letter-spacing:-.01em;margin:var(--s6) 0 var(--s4);
+  padding-bottom:var(--s3);border-bottom:2px solid var(--border-lift)}
+h3{font-size:clamp(16px,1.5vw,18px);font-weight:600;margin:var(--s5) 0 var(--s3);color:var(--accent-bright)}
+p,li{overflow-wrap:break-word}
+p{margin:var(--s4) 0;line-height:1.75}
+a{color:var(--accent);text-decoration:none;transition:color var(--fast)}
+a:hover{color:var(--accent-bright);text-decoration:underline}
+.back{font-size:12px;color:var(--ink-muted);display:inline-block;margin-bottom:var(--s3)}
+.back:hover{color:var(--accent)}
+.hero{width:100%;height:auto;border-radius:var(--r4);box-shadow:var(--shadow-md);display:block;margin-bottom:var(--s5)}
+.chip{display:inline-block;margin:2px 4px 2px 0;padding:3px 10px;border:1px solid var(--border-lift);border-radius:999px;
+  font-size:12px;color:var(--ink-dim);background:var(--panel)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:var(--s4);margin:var(--s5) 0}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r3);padding:var(--s4);box-shadow:var(--shadow-sm)}
+.card b{display:block;margin-bottom:var(--s1)}
+.card span{color:var(--ink-muted);font-size:13px}
+.warnbox{border:2px solid var(--highlight);background:linear-gradient(135deg,var(--panel),var(--panel-deep));
+  border-radius:var(--r3);padding:var(--s4) var(--s5);margin:var(--s5) 0;font-size:14px}
+.dangerbox{border:2px solid var(--danger);background:linear-gradient(135deg,var(--panel),var(--panel-deep));
+  border-radius:var(--r3);padding:var(--s4) var(--s5);margin:var(--s5) 0;font-size:14px}
+.tablewrap{overflow-x:auto;margin:var(--s5) 0;border-radius:var(--r2)}
+table{border-collapse:collapse;width:100%;font-size:14px;border-radius:var(--r2);overflow:hidden}
+th,td{border:1px solid var(--border);padding:var(--s3) var(--s4);text-align:left;vertical-align:top}
+th{background:var(--surface);color:var(--accent-bright);font-weight:600;letter-spacing:.03em}
+tr:nth-child(even) td{background:var(--panel-deep)}
+tr:nth-child(odd) td{background:var(--panel)}
+tr:hover td{background:var(--panel-lift)}
+blockquote{border-left:4px solid var(--highlight);margin:var(--s5) 0;padding:var(--s4) var(--s5);
+  background:linear-gradient(90deg,var(--panel),transparent);border-radius:0 var(--r2) var(--r2) 0;color:var(--ink-dim)}
+kbd{background:var(--surface);border:1px solid var(--border-lift);border-bottom-width:3px;border-radius:var(--r1);
+  padding:2px var(--s2);font:12px "SF Mono",Consolas,monospace;color:var(--accent-bright)}
+code{background:var(--panel-lift);border-radius:var(--r1);padding:2px var(--s2);font-size:13px;font-family:"SF Mono",Consolas,monospace;color:var(--accent)}
+.quick{margin-top:var(--s7);padding:var(--s4) var(--s5);background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--r3);font-size:13px}
+ul,ol{padding-left:var(--s5)}
+li{margin:var(--s2) 0}
+.ver{color:var(--ink-faint);font-size:12px}
+@media (max-width:1024px){.layout{grid-template-columns:280px minmax(0,1fr)}main{padding:var(--s5) var(--s4) var(--s7)}}
+@media (max-width:900px){.layout{grid-template-columns:1fr}
+  aside{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  main{padding:var(--s4) var(--s3) var(--s6);max-width:none}}
+.buybtn{display:inline-block;padding:9px 22px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-dim));color:#04121a;font-weight:700;letter-spacing:.02em;border:none;box-shadow:0 4px 14px rgba(61,217,208,.35);transition:transform var(--fast),box-shadow var(--fast)}
+.buybtn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(61,217,208,.5);text-decoration:none}
+.langs{display:flex;gap:6px;padding:0 var(--s3) var(--s3);flex-wrap:wrap;align-items:center}
+.langs span{font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em;margin-right:2px}
+.langs a{font-size:11px;padding:3px 10px;border:1px solid var(--border-lift);border-radius:999px;color:var(--ink-muted)}
+.langs a:hover{color:var(--accent);border-color:var(--accent-dim);text-decoration:none}
+.langs a.on{background:var(--surface);color:var(--accent-bright);border-color:var(--accent-dim)}
+@media print{aside,.quick,.back{display:none}.page{display:block!important}.layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+  <div class="brand">
+    <div class="logo">🤖</div>
+    <div><b>EVA Wiki</b><small>AION 2 · Steam &amp; Purple</small></div>
+    <span class="vbadge">v5.14</span>
+  </div>
+  <div class="langs"><span>🌐</span><a href="index.html">EN</a><a href="index-ru.html">RU</a><a href="index-pt.html">PT</a><a href="index-de.html">DE</a><a class="on" href="index-fr.html">FR</a></div>
+  <details id="toc" open>
+    <summary>📚 Table des matières</summary>
+    <input id="q" placeholder="🔍 Rechercher des sections…">
+    <a class="navitem" href="#home" data-search="home start overview what is"><span class="ic">🏠</span>Accueil</a>
+    <div class="catlabel">🧭 Pour commencer</div>
+    <a class="navitem" href="#requirements" data-search="requirements system windows .net vk"><span class="ic">📋</span>Configuration requise</a>
+    <a class="navitem" href="#install" data-search="install setup first run updates firewall antivirus"><span class="ic">🚀</span>Installation & mises à jour</a>
+    <div class="catlabel">👤 Accounts &amp; network</div>
+    <a class="navitem" href="#accounts" data-search="accounts steam purple login nc google grid profiles"><span class="ic">👤</span>Comptes & connexion</a>
+    <a class="navitem" href="#proxy" data-search="proxy socks5 tun webshare ipv6 fixed ip dns"><span class="ic">🛡</span>Proxy (SOCKS5)</a>
+    <a class="navitem" href="#captcha" data-search="captcha yescaptcha verification guardian ai"><span class="ic">◎</span>Captcha · IA</a>
+    <div class="catlabel">🤖 Activités</div>
+    <a class="navitem" href="#run-order" data-search="run order execution sequence switch character deaths"><span class="ic">🧭</span>Ordre d’exécution</a>
+    <a class="navitem" href="#autoquest" data-search="autoquest quests main side green level"><span class="ic">📋</span>Autoquest</a>
+    <a class="navitem" href="#afk-farm" data-search="afk farm kinah spots combat spiritualist spirit"><span class="ic">⚔</span>Ferme AFK</a>
+    <a class="navitem" href="#mining" data-search="auto mining gathering routes resources quota level 45"><span class="ic">⛏</span>Minage auto</a>
+    <a class="navitem" href="#dungeons" data-search="sealed dungeons once per character 40 minutes"><span class="ic">🏰</span>Donjons scellés</a>
+    <a class="navitem" href="#expedition" data-search="expedition krall unu fire temple conquest ode team"><span class="ic">🗺</span>Expédition</a>
+    <a class="navitem" href="#abyss" data-search="abyss floors feathers flight energy schedule"><span class="ic">◆</span>Farm dans l’Abysse</a>
+    <div class="catlabel">🧰 Tools &amp; polish</div>
+    <a class="navitem" href="#routines" data-search="routines monolith market warehouse survival rewards character supplies"><span class="ic">🧰</span>Routines</a>
+    <a class="navitem" href="#humanization" data-search="humanization pauses camera random waits"><span class="ic">🫥</span>Humanisation</a>
+    <a class="navitem" href="#speed-fov" data-search="speed fov camera distance animation race mysterious track"><span class="ic">⚡</span>Vitesse & FOV</a>
+    <a class="navitem" href="#settings" data-search="settings hotkeys languages window resolution tray f10"><span class="ic">⚙</span>Paramètres & raccourcis</a>
+    <div class="catlabel">🩹 Aide</div>
+    <a class="navitem" href="#troubleshoot" data-search="troubleshooting problems errors firewall license crashes"><span class="ic">🩹</span>Dépannage</a>
+    <a class="navitem" href="#faq" data-search="faq questions ban safety support"><span class="ic">❓</span>FAQ</a>
+    <a class="navitem" href="#changelog" data-search="changelog updates versions release notes"><span class="ic">📰</span>Dernières mises à jour</a>
+    <a class="navitem" href="#specs" data-search="specifications technical summary"><span class="ic">📐</span>Caractéristiques</a>
+  </details>
+</aside>
+<main>
+
+<!-- ============ HOME ============ -->
+<section class="page" id="home">
+  <h1><span class="pic">🏠</span> EVA — présentation</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+
+  <h2>Points forts</h2>
+  <div class="grid2">
+    <div class="card"><b>🔑 Connexion entièrement automatisée</b><span>Steam séparé par compte, Purple via NC ou Google, accords et invitations du cloud gérés, fenêtres de jeu cachées.</span></div>
+    <div class="card"><b>🧭 Ordre de lancement avec boucle de personnage</b><span>Autoquest → Expédition → Donjons scellés → Minage auto → Ferme AFK → Abysse, puis le slot de personnage suivant — une fois par personnage et par jour de jeu (04:00).</span></div>
+    <div class="card"><b>🛡 Proxy exclusif par compte</b><span>SOCKS5 avec test HTTPS/latence, réservations d’IP fixe, blocage IPv6, mode TUN ou backend IPv4 intégré expérimental.</span></div>
+    <div class="card"><b>◎ Captcha par IA</b><span>Solveur intégré, sans clé (YesCaptcha en option), jusqu’à 3 tentatives, gestion des pénalités : les activités attendent la fin de la restriction et reprennent seules.</span></div>
+    <div class="card"><b>💰 1 000 000 Kinah/jour</b><span>Ferme AFK sous un plafond quotidien de Kinah (1 000 000) renouvelé à 04:00.</span></div>
+    <div class="card"><b>🧰 Routine d’entretien</b><span>Plumes du Monolithe, remise en vente sur le marché, entrepôt, résurrection, approvisionnements, amélioration d’équipement — à intervalles aléatoires.</span></div>
+  </div>
+
+  <h2>Démarrage rapide</h2>
+  <ol>
+    <li>Décompressez le dossier et lancez <code>SysOpsHelper.exe</code> — sans installation, le runtime .NET est embarqué (<a href="#install">détails</a>).</li>
+    <li>Saisissez la clé de carte reçue à l’achat ; l’application la valide en ligne (les mises à jour de l’app passent par un canal signé).</li>
+    <li>Ajoutez vos comptes de jeu et associez un <a href="#proxy">proxy</a> à chacun — Steam comme Purple.</li>
+    <li>Ouvrez <strong>Configurer</strong> pour un profil, cochez les activités dans l’<a href="#run-order">ordre de lancement (Run order)</a> et appuyez sur <strong>Start</strong>.</li>
+  </ol>
+
+  <h2>Configuration requise en bref</h2>
+  <ul>
+    <li>Windows 10 ou 11, 64 bits.</li>
+    <li>Le moteur proxy exige en plus .NET Framework 4.7.2+ et le pilote Windows Packet Filter.</li>
+    <li>La version multi-comptes exige l’outil VK Multi-Account ; la version single ne prend pas en charge VK.</li>
+  </ul>
+
+  <div class="quick"><b>Liens rapides:</b>
+  <a class="buybtn" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 Acheter EVA</a> ·
+  <a href="https://gofile.io/d/DtUcYKaT" target="_blank" rel="noopener">⬇️ Télécharger EVA</a> ·
+  <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Communauté &amp; assistance</a> ·
+  🛠 <strong>Un problème ? Contactez unic.tools (U.Tools)</strong> ·
+  <a href="#specs">📐 Caractéristiques</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ REQUIREMENTS ============ -->
+<section class="page" id="requirements">
+  <h2>Ce qu’il faut</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Composant</th><th>Exigence</th><th>Pourquoi</th></tr></thead>
+    <tbody>
+      <tr><td>Système d’exploitation</td><td>Windows 10 ou Windows 11, 64 bits</td><td>Le bot pilote le jeu via ses fenêtres et un moteur réseau.</td></tr>
+      <tr><td>Runtime de l’application</td><td>Rien à installer — .NET 10 est embarqué dans le dossier (<code>_runtime\</code>)</td><td>Portable : lancez <code>SysOpsHelper.exe</code>, il héberge son runtime lui-même.</td></tr>
+      <tr><td>Moteur proxy</td><td>.NET Framework 4.7.2 ou plus récent ; pilote Windows Packet Filter</td><td>Nécessaire uniquement si vous utilisez les proxies ; l’installation du pilote peut demander un redémarrage.</td></tr>
+      <tr><td>Clients de jeu</td><td>AION 2 via Steam et/ou Purple</td><td>Le bot trouve automatiquement les bibliothèques Steam, l’installation Purple et les dossiers « NC\AION 2 ».</td></tr>
+      <tr><td>Multi-comptes</td><td>Outil VK Multi-Account (version BOT MULTI uniquement)</td><td>Les jeux doivent être ouverts avec VK déjà lancé, sinon l’anticheat du jeu (NC Guard) les bloque (erreurs <code>0xE0000015</code> / <code>0xE0000027</code>).</td></tr>
+      <tr><td>Licence</td><td>Clé de carte de la boutique (1 mois)</td><td>Validée en ligne ; sans clé, pas de démarrage.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Bon à savoir</h2>
+  <ul>
+    <li>Gardez le dossier intact : <code>native\</code> et <code>proxy-engine\</code> sont vérifiés au démarrage ; si le paquet proxy-engine est incomplet, l’application demande de réinstaller le bot.</li>
+    <li>Résolutions que le bot peut appliquer au jeu : 960 × 540, 1280 × 720 (défaut) et 1600 × 900, fenêtré ou plein écran.</li>
+    <li>La langue des interfaces et des compétences est paramétrable — l’application embarque 14 langues dont l’anglais, le russe, le portugais, l’espagnol, l’allemand, le turc, le coréen, le chinois, etc.</li>
+  </ul>
+  <div class="quick"><b>Liens rapides:</b> <a href="#install">🚀 Installation &amp; mises à jour</a> · <a href="#accounts">👤 Comptes</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ INSTALL ============ -->
+<section class="page" id="install">
+  <h2>Premier lancement</h2>
+  <ol>
+    <li>Téléchargez la distribution (<a href="https://gofile.io/d/DtUcYKaT" target="_blank" rel="noopener">gofile.io/d/DtUcYKaT</a>) et décompressez-la <em>en un seul bloc</em> — l’application vérifie ses propres composants (complétude de <code>proxy-engine</code>, helpers natifs) au démarrage.</li>
+    <li>Lancez <code>SysOpsHelper.exe</code>. Pas d’installateur, pas de services ; tout reste dans le dossier.</li>
+    <li>Saisissez la clé de carte reçue après l’achat. La licence est vérifiée auprès du point de terminaison en ligne de la boutique (les mises à jour de l’app utilisent en plus un manifeste signé).</li>
+    <li>Autorisez le processus hôte du moteur proxy dans le Pare-feu Windows (réseaux privés et publics) lorsque Windows le demande — l’invite du pare-feu affiche son nom.</li>
+    <li>Définissez la taille de la fenêtre de jeu dans les paramètres de l’application avant d’installer les comptes — fenêtré et plein écran fonctionnent.</li>
+  </ol>
+  <h2>Fonctionnement des mises à jour</h2>
+  <ul>
+    <li>Les mises à jour arrivent par un <strong>canal en ligne signé</strong> : « chaque fichier est vérifié contre le manifeste signé » — un hachage ou une signature invalide interrompt la mise à jour.</li>
+    <li>Une nouvelle version est annoncée même pendant que des comptes tournent, avec une option « Arrêter les comptes et mettre à jour » — les sessions en cours ne sont jamais tuées en pleine activité par défaut.</li>
+    <li>L’application se ferme, se met à jour et se rouvre toute seule ; le jeu reste ouvert. Un <code>AION2 Update.exe</code> séparé gère les fichiers côté jeu.</li>
+    <li>Quand le bot est à l’arrêt, il vérifie les mises à jour toutes les six heures ; vous pouvez aussi appuyer sur <strong>Check for updates</strong> à tout moment.</li>
+  </ul>
+  <h2>Mode sans échec &amp; antivirus</h2>
+  <p>Les antivirus signalent parfois le processus hôte du moteur proxy. L’application propose alors un <strong>mode sans échec</strong> :
+  le moteur proxy reste éteint et les comptes s’ouvrent directement, sans proxy. Si vous voulez des proxies, ajoutez le processus et le dossier aux exclusions.</p>
+  <h2>Sécurité des données locales</h2>
+  <ul>
+    <li>Le fichier des comptes est entièrement chiffré pour l’utilisateur Windows en cours et le dossier de données utilise des permissions restreintes.</li>
+    <li>Les identifiants de session internes sont dérivés par machine, et le programme de mise à jour n’utilise plus de commandes encodées en mémoire — moins de fausses alertes antivirus pendant les mises à jour.</li>
+  </ul>
+  <h2>Bon à savoir</h2>
+  <ul>
+    <li>Le nom affiché dans les titres, la barre d’état et les textes peut être rebaptisé en modifiant <code>projeto.json</code> → <code>nome_mostrado</code> (c’est pourquoi certaines copies s’appellent « UNICOM »).</li>
+    <li>Supprimer ou modifier des fichiers dans <code>proxy-engine\</code> casse les fonctions de proxy — réinstallez plutôt que de patcher à la main.</li>
+    <li>Si l’autorisation est refusée après une mise à jour, mettez d’abord l’application à jour : « Réponse de licence invalide. Mettez à jour l’application et le plugin. »</li>
+  </ul>
+  <div class="quick"><b>Liens rapides:</b> <a href="#accounts">👤 Comptes</a> · <a href="#proxy">🛡 Proxy</a> · <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ ACCOUNTS ============ -->
+<section class="page" id="accounts">
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre principale → Comptes</li><li>« + Add Steam account » / « Add account for automatic login »</li><li>Ouvrir les réglages individuels du compte</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Crée, modifie et supprime des comptes <strong>Steam</strong> et <strong>Purple</strong> ; race, serveur et slot de personnage se règlent par compte (le champ « Slot » s’appelait « Character » avant la 5.5.0).</li>
+    <li>Connecte automatiquement : remplit le login Steam (accepte l’accord Steam, confirme « Play anyway » sur un cloud obsolète) et pilote Purple, y compris la connexion <strong>NC</strong> ou <strong>Google</strong>.</li>
+    <li>Ouvre une <strong>instance Steam séparée par compte</strong> pour connecter plusieurs comptes sur un même PC.</li>
+    <li>Reconnaît les jeux déjà ouverts ; démarre et arrête chaque compte ; annule une connexion bloquée.</li>
+    <li>Affiche classe, niveau, statut et journaux par compte, dans la limite de la licence single/multi.</li>
+    <li>Organise les fenêtres de jeu en grilles de 1 × 1 à 6 × 6 ; le jeu s’ouvre par défaut en 1280 × 720.</li>
+  </ul>
+  <h2>Mode d’emploi</h2>
+  <ol>
+    <li>Cliquez sur « + Add Steam account » (ou ajoutez un compte Purple) et saisissez les identifiants.</li>
+    <li>Choisissez race, serveur et slot. La liste des serveurs est groupée par région (Amérique du Nord Est/Ouest, Europe, Amérique du Sud, …).</li>
+    <li>Réglez le mode et la taille de la fenêtre de jeu dans les paramètres du compte, puis cliquez sur <strong>Start</strong>.</li>
+    <li>Si une connexion bloque plus de 10 minutes, elle est stoppée — réglez le problème dans la fenêtre de jeu et relancez Start.</li>
+  </ol>
+  <h2>Réglages expliqués</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Réglage</th><th>Effet</th></tr></thead>
+    <tbody>
+      <tr><td>Fenêtre de jeu</td><td>Mode fenêtré et taille : 960 × 540, 1280 × 720, 1600 × 900.</td></tr>
+      <tr><td>Grille de fenêtres</td><td>Organise immédiatement les fenêtres de jeu ouvertes selon la grille choisie (1 × 1 … 6 × 6) ; le bot ne les déplace plus ensuite de son propre chef.</td></tr>
+      <tr><td>Masquer noms / classes / niveaux</td><td>Confidentialité sur l’écran Comptes.</td></tr>
+      <tr><td>Profils (Export/Import)</td><td>Les profils du bot sont sauvegardés en <code>*.json</code> (« AION2 Profiles ») et transférables entre machines.</td></tr>
+      <tr><td>Multiplicateur de profils</td><td>x0.5 / x1 / x1.6 appliqués aux profils chargés.</td></tr>
+      <tr><td>Copier vers les comptes</td><td>Dans la fenêtre Configurer : copie les options cochées (Autoquest, AFK Farm, minage, Donjons, Rotines, Humanisation, Speed/FOV) vers les comptes cochés. Chaque compte garde sa classe et les expéditions déjà faites.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Bon à savoir</h2>
+  <ul>
+    <li>Purple demande d’accepter les conditions d’AION 2 une fois par compte — le bot poursuit ensuite tout seul.</li>
+    <li>« Un autre compte entre dans le jeu. Attendez la fin ou annulez cette connexion et appuyez à nouveau sur Start. »</li>
+    <li>Si « Start Game » de Purple reste désactivé longtemps, le jeu est probablement déjà ouvert ou une mise à jour/vérification est en cours — vérifiez Purple et relancez.</li>
+    <li>Les comptes Purple passent aussi par le proxy — depuis la 5.8.0, Purple ne se connecte qu’après être lié au proxy du compte, jamais via votre IP réelle.</li>
+    <li>Un nouveau compte démarre avec des réglages recommandés : Autoquest (quêtes vertes et principales), Expédition, Minage auto, Ferme AFK jusqu’au plafond de Kinah et Abysse sur les deux étages.</li>
+  </ul>
+  <div class="quick"><b>Liens rapides:</b> <a href="#proxy">🛡 Proxy</a> · <a href="#run-order">🧭 Ordre de lancement</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ PROXY ============ -->
+<section class="page" id="proxy">
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre principale → onglet Proxy</li><li>Réglages du compte → affectation du proxy</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Importe des proxies <strong>SOCKS5</strong> un par un ou en lot et lie à chaque compte un proxy <strong>exclusif</strong>.</li>
+    <li>Teste chaque proxy : « Actif signifie une connexion HTTPS testée », avec latence affichée et diagnostics par étape (une étape de plus de 8 secondes est signalée).</li>
+    <li>Conserve les <strong>réservations d’IP fixe</strong> par compte ; après une rotation d’IP chez le fournisseur, libérez l’ancienne réservation depuis le menu du proxy pour re-lier le compte.</li>
+    <li>Bloque l’<strong>IPv6</strong> du jeu dans Windows pour qu’aucun trafic ne fuie hors du tunnel ; si le blocage échoue, le lancement est annulé.</li>
+    <li>Propose deux moteurs : mode <strong>TUN</strong> exclusif ou backend <strong>IPv4 intégré</strong> expérimental (« DNS par Windows, pas d’isolation IPv6. Ses propres jeux se ferment avec la session »).</li>
+    <li>Prend en charge la distribution automatique : chaque compte reçoit un profil de proxy dédié avant le démarrage.</li>
+    <li>Dès le premier compte avec proxy, le bot installe <strong>lui-même</strong> le pilote réseau et le moteur — rien à télécharger (depuis la 5.8.0).</li>
+  </ul>
+  <h2>Mode d’emploi</h2>
+  <ol>
+    <li>Ajoutez des proxies (votre liste ou le lien intégré « Buy proxy on Webshare ») et laissez le test confirmer HTTPS + latence.</li>
+    <li>Affectez un proxy exclusif à chaque compte — le partage d’un profil entre réservations est refusé tant que ce n’est pas corrigé.</li>
+    <li>Activez le mode souhaité (TUN exclusif ou IPv4 expérimental intégré) et fermez les sessions de jeu en cours avant de changer.</li>
+    <li>Démarrez le compte ; le bot ouvre le jeu dans la session proxy (« Connexion du jeu de ce compte au proxy… »).</li>
+  </ol>
+  <h2>Réglages expliqués</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Réglage</th><th>Effet</th></tr></thead>
+    <tbody>
+      <tr><td>Add SOCKS5 proxy</td><td>Import unique ou en lot ; double-clic pour modifier une entrée.</td></tr>
+      <tr><td>Test</td><td>Connectivité HTTPS + latence ; une étape de test dépassant 8 s est signalée dans les diagnostics par étape.</td></tr>
+      <tr><td>Réservation d’IP fixe</td><td>« Choisissez un proxy libre pour figer une ancienne liaison. Les réservations d’IP fixe sont conservées. »</td></tr>
+      <tr><td>TUN exclusif</td><td>Tunnelisation complète pour le jeu du compte.</td></tr>
+      <tr><td>IPv4 intégré (expérimental)</td><td>DNS via Windows, pas d’isolation IPv6 par compte ; les jeux ouverts par le bot se ferment à la fin de la session.</td></tr>
+      <tr><td>Garde IPv6</td><td>Bloque l’IPv6 du jeu dans Windows ; le lancement est annulé si le blocage est impossible.</td></tr>
+      <tr><td>Sécurité / Mode sans échec</td><td>Si l’antivirus signale le processus hôte du moteur proxy, les comptes s’ouvrent directement sans proxies jusqu’à mise en liste blanche.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="warnbox">⚠️ <strong>Les comptes Purple passent aussi par le proxy.</strong> Depuis la 5.8.0, le jeu Purple ne se connecte qu’après être lié au proxy du compte — jamais via votre IP réelle. Le moteur exige en plus .NET Framework 4.7.2+ et peut demander un redémarrage après l’installation du pilote Windows Packet Filter.</div>
+  <div class="quick"><b>Liens rapides:</b> <a href="#accounts">👤 Comptes</a> · <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ CAPTCHA ============ -->
+<section class="page" id="captcha">
+  <h1><span class="pic">◎</span> Captchas (Captcha) · IA</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre principale → onglet Captchas</li><li>Fonctionne automatiquement pendant toute activité</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Quand le jeu affiche une vérification, le bot interrompt l’activité en cours, lit l’image directement depuis le jeu et la résout <strong>automatiquement</strong> grâce au service de captcha EVA intégré — sans clé ni solde nécessaire.</li>
+    <li>Une clé <strong>YesCaptcha</strong> optionnelle peut être configurée sur cet ordinateur (le champ peut être affiché ou masqué).</li>
+    <li>Jusqu’à <strong>trois tentatives</strong> ; l’activité ne reprend qu’une fois le personnage précédent confirmé et la vérification disparue.</li>
+    <li>Sans solution confirmée, le bot ferme <strong>uniquement le jeu de ce compte</strong> et le rouvre aussitôt via la connexion normale ; un jeu ouvert en dehors du bot est seulement fermé.</li>
+    <li>Il connaît la <strong>pénalité restrictive</strong> du jeu : « Toute activité de ce compte reste arrêtée et reprend d’elle-même à sa fin » (avec les minutes restantes affichées).</li>
+  </ul>
+  <h2>Mode d’emploi</h2>
+  <ol>
+    <li>Rien à configurer : le service EVA intégré résout les captchas pour chaque client — sans clé ni solde nécessaire. En option, une clé YesCaptcha peut être ajoutée dans l’onglet Captchas.</li>
+    <li>Laissez tout le reste au bot : détection → résolution → confirmation → reprise. Le journal d’activité enregistre chaque étape.</li>
+  </ol>
+  <h2>Bon à savoir</h2>
+  <ul>
+    <li>Si l’image est introuvable dans la mémoire du jeu, celui-ci a probablement été mis à jour — une mise à jour de l’application suit sur le canal signé.</li>
+    <li>« Captcha : pas de solution dans le délai imparti ; fermeture et réouverture du jeu de ce compte. »</li>
+    <li>Les fichiers de pénalité (<code>captcha-penalty.json</code>, <code>captcha-records.json</code>) conservent l’historique pour que les redémarrages ne perdent pas l’état.</li>
+  </ul>
+  <div class="quick"><b>Liens rapides:</b> <a href="#run-order">🧭 Ordre d’exécution</a> · <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ RUN ORDER ============ -->
+<section class="page" id="run-order">
+  <h1><span class="pic">🧭</span> Ordre d’exécution (Run order)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Ordre d’exécution</strong></li><li>« Copier vers les comptes » applique les options copiées aux comptes cochés</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <p>L’Ordre d’exécution est le plan quotidien du personnage — « L’ordre dans lequel Start effectue les objectifs, après les routines, de haut en bas. » Chaque activité peut être activée ou désactivée, réordonnée (↑/↓) et configurée (⚙) :</p>
+  <ol>
+    <li><strong>Autoquest</strong> — « D’abord les quêtes vertes, puis les principales, jusqu’au niveau défini dans l’onglet Autoquest ou jusqu’à ce qu’il n’y ait plus de quêtes. »</li>
+    <li><strong>Expedition</strong> — « Expéditions jusqu’au nombre indiqué à côté (le même que dans l’onglet Expedition). Le compteur se réinitialise tout seul à 04:00. »</li>
+    <li><strong>Sealed Dungeons</strong> — « Les donjons scellés activés dans l’onglet Sealed Dungeons, un par un, jusqu’à ce qu’il n’y en ait plus (une fois par personnage, à partir du niveau choisi). »</li>
+    <li><strong>Minage auto (Auto mining)</strong> — « Les routes de l’onglet Minage auto, jusqu’à la limite quotidienne de collecte du serveur. »</li>
+    <li><strong>Ferme AFK (AFK Farm)</strong> — « Le spot de l’onglet Ferme AFK, jusqu’à la limite quotidienne de Kinah (les minutes des spots ne s’appliquent pas). »</li>
+    <li><strong>Abyss</strong> — « Les étages cochés dans l’onglet Abyss, l’un après l’autre, jusqu’à épuisement du temps de chacun (niveau 45 et 1000 points de puissance). »</li>
+  </ol>
+  <h2>Règles sous la liste</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Règle</th><th>Ce qu’il fait</th></tr></thead>
+    <tbody>
+      <tr><td>Mourir X fois sur la même quête : passer à la suivante</td><td>Après X morts (10 par défaut) sur la même quête, celle-ci est mise de côté pendant 30 minutes et la suivante démarre. Les vertes passent toujours en premier.</td></tr>
+      <tr><td>Quand tout est terminé, changer de personnage</td><td>Le personnage revient à l’écran de sélection du même jeu et le slot suivant exécute le même ordre, en boucle. Il peut aussi créer de nouveaux personnages jusqu’à un total choisi (uniquement les slots libres — les slots verrouillés ne sont jamais touchés). Chaque personnage exécute l’ordre une fois par jour de jeu (04:00). L’engrenage ouvre ses réglages.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Bon à savoir</h2>
+  <ul>
+    <li>Les activités se passent le relais automatiquement : « Abyss : tu peux entrer maintenant ; la Ferme AFK passe le relais à l’Abyss », « Le minage auto peut revenir maintenant : la Ferme AFK passe le relais à la collecte ».</li>
+    <li>Les étapes devenues indisponibles sont reportées et reprises dès qu’elles redeviennent disponibles ; l’ordre entier redémarre à 04:00.</li>
+    <li>Tout ce qui est configuré ici est propre au profil — <strong>Copier vers les comptes</strong> copie les options cochées (Autoquest, Ferme AFK, minage, Donjons, Routines, Humanisation et Vitesse/FOV) vers les comptes cochés ; chacun conserve sa propre classe et les expéditions déjà effectuées.</li>
+  </ul>
+  <div class="quick"><b>Liens rapides:</b> <a href="#autoquest">📋 Autoquest</a> · <a href="#expedition">🗺 Expedition</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ AUTOQUEST ============ -->
+<section class="page" id="autoquest">
+  <h1><span class="pic">📋</span> Autoquest</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Autoquest</strong></li><li>Ordre d’exécution → point 1</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Accomplit les missions automatiquement, en privilégiant <strong>d’abord les quêtes secondaires vertes</strong>, puis les quêtes principales configurables ; s’arrête au niveau choisi (0 = sans limite).</li>
+    <li>Accepte les quêtes secondaires exigées par une étape d’une quête principale et suit les destinations des quêtes.</li>
+    <li>Riposte automatiquement contre les agresseurs et reprend la mission ; les classes à distance gardent leurs distances — « attaque et recule face au monstre qui approche, en conservant la portée ».</li>
+    <li>Depuis la 5.14, la distance de combat respecte la portée réelle de vos compétences : les classes à distance ne restent plus trop loin d’un boss sans le frapper.</li>
+    <li>Peut utiliser sa propre vitesse de déplacement pendant l’Autoquest (désactivée quand le bot s’arrête).</li>
+    <li>Gestion des blocages : délai sans progrès, nouvelle tentative pour une mission reportée, option pour ignorer les missions bloquées, déblocage via parchemin de retour.</li>
+  </ul>
+  <h2>Réglages expliqués</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Réglage</th><th>Ce qu’il fait</th></tr></thead>
+    <tbody>
+      <tr><td>Niveau de fin</td><td>L’Autoquest se termine à ce niveau (0 = illimité) et l’ordre passe à l’activité suivante.</td></tr>
+      <tr><td>Quêtes principales / priorité aux vertes</td><td>D’abord les quêtes secondaires vertes, puis les principales.</td></tr>
+      <tr><td>Délai sans progrès</td><td>Une mission sans progrès est reportée puis réessayée ; « ignorer les missions bloquées » la saute à la place.</td></tr>
+      <tr><td>Riposte automatique + esquive</td><td>Riposte ; les classes à distance attaquent tout en s’éloignant, avec une marge de portée et une variation de déplacement.</td></tr>
+      <tr><td>Vitesse de déplacement propre</td><td>Accélère les trajets entre les objectifs ; uniquement pendant l’activité.</td></tr>
+      <tr><td>Déblocage par parchemin de retour</td><td>Téléporte le personnage hors d’un blocage (configurable).</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Bon à savoir</h2>
+  <ul>
+    <li>La règle de mort vient de l’Ordre d’exécution : après X morts (10 par défaut) sur la même quête, il attend 30 minutes.</li>
+    <li>La progression et les problèmes sont journalisés par compte : une demande au support peut donc être traitée à partir des seuls journaux.</li>
+  </ul>
+  <div class="quick"><b>Liens rapides:</b> <a href="#run-order">🧭 Ordre d’exécution</a> · <a href="#afk-farm">⚔ Ferme AFK</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ AFK FARM ============ -->
+<section class="page" id="afk-farm">
+  <h1><span class="pic">⚔</span> Ferme AFK (AFK Farm)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Ferme AFK</strong></li><li>Ordre d’exécution → point 5</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Chasse avec les compétences de votre classe sur le spot choisi : parcourt la zone, sélectionne les cibles, attaque, ramasse le butin.</li>
+    <li><strong>Spots</strong> : ajoutez/supprimez/activez des lieux avec un rayon, une limite de temps en minutes (0 = sans limite) et des IDs de monstres ; une liste d’IDs vide accepte toutes les cibles éligibles de la zone.</li>
+    <li><strong>Points</strong> : lit le type de cible sélectionné, capture votre position actuelle comme point ou accepte des coordonnées manuelles — plusieurs points par spot sont possibles ; sans coordonnées, la position du personnage est utilisée.</li>
+    <li><strong>Combat</strong> : distance d’attaque et rayon de recherche ; la riposte automatique priorise les agresseurs ; face aux monstres qui approchent, il « attaque et recule… en conservant la portée ».</li>
+    <li><strong>Spiritmaster</strong> : choisit l’esprit permanent — Eau, Feu, Vent ou Terre.</li>
+    <li>Sous l’Ordre d’exécution, elle farme « jusqu’à la limite quotidienne de Kinah (les minutes des spots ne s’appliquent pas) ». La limite est de <strong>1 000 000 de Kinah par jour</strong> et se renouvelle à 04:00.</li>
+  </ul>
+  <h2>Résilience (intégrée)</h2>
+  <ul>
+    <li>Un spot qui tue le personnage à répétition, est inaccessible ou ne montre aucune attaque pendant un moment est <strong>mis en pause</strong> et le prochain spot activé prend le relais.</li>
+    <li>Après plusieurs morts d’affilée, la ferme continue en <strong>mode prudent</strong> — rayon réduit — avant de se mettre en pause.</li>
+    <li>« Limite quotidienne de Kinah atteinte ; la Ferme revient quand la limite se renouvelle (04:00). »</li>
+  </ul>
+  <h2>Bon à savoir</h2>
+  <ul>
+    <li>« AFK Farm on Start » lance la ferme immédiatement après la connexion, avant l’Ordre d’exécution.</li>
+    <li>Il existe aussi un mode purement AFK (« start only AFK Farm ») qui saute entièrement les quêtes.</li>
+    <li>Les spots sont propres au profil — copiez-les vers d’autres comptes depuis la fenêtre de configuration.</li>
+  </ul>
+  <div class="quick"><b>Liens rapides:</b> <a href="#mining">⛏ Minage auto</a> · <a href="#routines">🧰 Routines</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ MINING ============ -->
+<section class="page" id="mining">
+  <h1><span class="pic">⛏</span> Minage auto (Auto mining)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Minage auto</strong></li><li>Ordre d’exécution → point 4</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Collecte les ressources naturelles à partir du <strong>niveau 45</strong>, en respectant le <strong>quota quotidien de collecte du serveur</strong> — « Limite de coleta do servidor atingido; coleta adiada até… » (la limite du serveur a été atteinte ; collecte reportée jusqu’à la réinitialisation).</li>
+    <li><strong>Routes</strong> : ajoutez/supprimez, nommez, activez, réordonnez ; chaque route a un rayon et des IDs de ressources — une liste vide collecte toutes les ressources naturelles éligibles.</li>
+    <li>Lit la ressource actuellement sélectionnée et ajoute son ID ; accepte des coordonnées manuelles et plusieurs points par route ; tous les points d’une route doivent être sur la même carte.</li>
+    <li>Parcourt la route, collecte en chemin, reprend son trajet et répète les routes sur la carte actuelle ; un temps d’attente configurable sans ressources le fait passer au point suivant.</li>
+    <li>Seule la zone de chaque point de route est collectée — les gisements sur le chemin entre les points sont ignorés ; les points éloignés se rejoignent à pied en chemin (le téléport automatique via Kibelisk pour les points à plus de 500 m a été retiré en 5.5.0).</li>
+    <li>Riposte automatiquement contre les agresseurs et reprend la collecte ; peut passer le relais à la Ferme AFK quand les limites sont atteintes, et inversement.</li>
+    <li>Un changement de carte ou de session met fin à la collecte ; tout est journalisé par compte.</li>
+  </ul>
+  <h2>Réglages expliqués</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Réglage</th><th>Ce qu’il fait</th></tr></thead>
+    <tbody>
+      <tr><td>Ajouter une route</td><td>Crée une route nommée sur la carte actuelle, avec rayon + points.</td></tr>
+      <tr><td>IDs de ressources</td><td>Restreint ce qui est collecté ; vide = toutes les ressources naturelles éligibles ; « Toutes les ressources » réinitialise.</td></tr>
+      <tr><td>Délai d’attente sans ressources</td><td>Combien de temps attendre à un point avant d’avancer.</td></tr>
+      <tr><td>Riposte automatique</td><td>Riposte en cas d’attaque, puis reprend la route.</td></tr>
+      <tr><td>Limite quotidienne du serveur</td><td>La collecte attend la réinitialisation du quota du serveur.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="quick"><b>Liens rapides:</b> <a href="#afk-farm">⚔ Ferme AFK</a> · <a href="#abyss">◆ Abyss</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ SEALED DUNGEONS ============ -->
+<section class="page" id="dungeons">
+  <h1><span class="pic">🏰</span> Donjons scellés (Sealed Dungeons)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Donjons scellés</strong></li><li>Ordre d’exécution → point 3</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Lance les donjons activés dans l’onglet <strong>un par un</strong>, <strong>une fois par personnage</strong>, à partir du niveau de départ choisi (45 par défaut).</li>
+    <li>La liste des quêtes terminées du jeu lui indique quels donjons restent — ceux qui sont finis ne sont jamais retentés.</li>
+    <li>Voyage vers Kibelisk, confirme l’arrivée, puis interagit avec le portail d’entrée.</li>
+    <li>Garde-fous : « Mourir 10 fois dans le même donjon ou y passer plus de 40 minutes arrête les Donjons scellés jusqu’au prochain jour de jeu (04:00). »</li>
+    <li>Quand la limite quotidienne est atteinte, il quitte le donjon de lui-même.</li>
+  </ul>
+  <h2>Mode d’emploi</h2>
+  <ol>
+    <li>Cochez les donjons disponibles pour votre personnage et définissez le niveau de départ.</li>
+    <li>Laissez « Donjons scellés » activé dans l’Ordre d’exécution (ou lancez-le individuellement depuis l’onglet).</li>
+    <li>Le statut de chaque donjon est visible dans les journaux du compte.</li>
+  </ol>
+  <div class="quick"><b>Liens rapides:</b> <a href="#expedition">🗺 Expédition</a> · <a href="#run-order">🧭 Ordre d’exécution</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ EXPEDITION ============ -->
+<section class="page" id="expedition">
+  <h1><span class="pic">🗺</span> Expédition (Expedition)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Expédition</strong></li><li>Ordre d’exécution → point 2</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Lance l’Exploration de <strong>Krall</strong>, <strong>Unu</strong> ou du <strong>Temple de Feu</strong>, ou la <strong>Conquête de Krall</strong>, selon le nombre d’entrées choisi par jour (0 = aucune) — la même quantité que dans l’Ordre d’exécution.</li>
+    <li>Mode <strong>solo ou équipe</strong> : une équipe nécessite trois membres. Avec l’outil multi-comptes (VK) ouvert, le matchmaking est indisponible, donc le bot crée l’équipe directement ou attend une équipe que vous avez créée/acceptée dans le jeu.</li>
+    <li>Vérifie l’<strong>énergie Ode</strong> avant d’entrer — 40 pour Krall/Unu, 60 pour le Temple de Feu —, peut utiliser des objets de recharge et achète d’abord une Potion/Élixir ; avec « Exiger des potions » activé, il n’entre qu’avec un stock confirmé.</li>
+    <li>La limite de morts (5 par défaut) et un <strong>plafond de 1 000 000 de pièces d’or</strong> en Conquête protègent la course ; la riposte automatique et la vitesse propre sont configurables, la vitesse est restaurée à la sortie. Une option « Utiliser la pierre de résurrection » (activée par défaut) ressuscite sur place quand la pierre est dans le sac.</li>
+    <li>Dans la Conquête de Krall, les boss sont pris dans l’ordre — gauche, droite, gardien, final — et le pilier est défini comme point de contrôle.</li>
+    <li>Depuis la 5.14 : dans la Conquête de Krall, le bot ouvre le <strong>coffre de récompense après le boss final</strong> avant de partir.</li>
+    <li>Les compteurs se réinitialisent d’eux-mêmes à 04:00 ; l’équipe d’expédition est quittée automatiquement avant d’entrer dans l’Abysse.</li>
+  </ul>
+  <h2>Réglages expliqués</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Réglage</th><th>Ce qu’il fait</th></tr></thead>
+    <tbody>
+      <tr><td>Entrées par jour / succès par jour</td><td>Plafonds quotidiens pour l’expédition choisie (0 = aucune).</td></tr>
+      <tr><td>Solo / équipe</td><td>Le mode équipe nécessite 3 membres ; avec VK ouvert, l’équipe est créée directement.</td></tr>
+      <tr><td>Seuil d’Ode requis</td><td>40 (Krall/Unu) ou 60 (Temple de Feu) ; objets de recharge et achat de Potion/Élixir avant d’entrer.</td></tr>
+      <tr><td>Exiger des potions</td><td>N’entrer qu’après avoir confirmé le stock.</td></tr>
+      <tr><td>Limite de morts</td><td>Par défaut, 5 morts terminent la course pour la journée.</td></tr>
+      <tr><td>Plafond d’or en Conquête</td><td>1 000 000 par jour en Conquête de Krall.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="quick"><b>Liens rapides:</b> <a href="#abyss">◆ Abysse</a> · <a href="#dungeons">🏰 Donjons scellés</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ ABYSS ============ -->
+<section class="page" id="abyss">
+  <h1><span class="pic">◆</span> Farm de l’Abysse (Abyss)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Abysse</strong></li><li>Ordre d’exécution → point 6</li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Entre dans les <strong>étages de l’Abysse</strong> cochés, l’un après l’autre, et farme chacun jusqu’à la fin de son temps.</li>
+    <li>Prérequis : <strong>niveau 45</strong>, <strong>1000 points de puissance</strong>, et plus de trois minutes sur l’étage.</li>
+    <li>Attend <strong>90 % d’énergie de vol</strong>, vole vers l’endroit choisi et se recharge à 100 % à la position d’atterrissage la plus proche quand l’énergie vient à manquer en cours de route.</li>
+    <li>Chasse les monstres, prend en charge la <strong>collecte automatique de plumes</strong> et demande la sortie avec environ trois minutes restantes.</li>
+    <li>Les spots peuvent être randomisés à chaque entrée — et variés à nouveau après des morts ; les emplacements des étages et les coordonnées/niveaux des monstres sont visibles dans l’onglet.</li>
+    <li><strong>Plage horaire d’entrée</strong> optionnelle : activez-la et définissez une heure de 0 à 23 (22 par défaut) selon l’horloge du PC — la fenêtre court de cette heure jusqu’à minuit, sans forcer une sortie à minuit.</li>
+    <li>Quitte l’équipe d’expédition avant d’entrer (le jeu n’emmène pas les membres d’équipe dans l’Abysse).</li>
+  </ul>
+  <h2>Bon à savoir</h2>
+  <ul>
+    <li>« Abysse : entrée possible maintenant ; l’AFK Farm passe le relais à l’Abysse. » — les activités se relaient automatiquement.</li>
+    <li>La collecte dans l’Abysse s’arrête quand la limite quotidienne de collecte est atteinte.</li>
+    <li>Si l’énergie de vol n’atteint pas le seuil à temps, le bot quitte l’Abysse de lui-même.</li>
+  </ul>
+  <div class="quick"><b>Liens rapides:</b> <a href="#mining">⛏ Auto-minage</a> · <a href="#speed-fov">⚡ Vitesse &amp; FOV</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ ROUTINES ============ -->
+<section class="page" id="routines">
+  <h1><span class="pic">🧰</span> Routines</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Routines</strong></li><li>« Les routines activées s’exécutent au démarrage et se répètent à des intervalles aléatoires. »</li></ol>
+  <h2>Général</h2>
+  <ul>
+    <li><strong>Monolithe</strong> : montée de niveau automatique avec des plumes ; « Montant à envoyer au Monolithe ; 0 = ce qui manque pour le niveau suivant. »</li>
+    <li><strong>Marché</strong> : à l’heure des routines, il interrompt l’activité, ouvre le Marché via le menu, encaisse les ventes terminées, annonce les objets échangeables et republie ceux invendus — avec les couleurs d’équipement et un prix bas/moyen ; les objets protégés sont préservés.</li>
+    <li><strong>Entrepôt</strong> : avec un sac plein après la tentative de démantèlement, il stocke la Transformation spéciale, les matériaux d’artisanat Communs/Rares et la nourriture Commune/Rare ; le dépôt peut s’exécuter en dehors de l’expédition.</li>
+    <li><strong>Survie</strong> : potion selon le pourcentage de vie, pierre de résurrection (préparation de la résurrection, reprise même si la confirmation n’arrive pas en 60 s), ramassage du butin à proximité, récupération de personnage bloqué et retour par parchemin après l’échec des tentatives locales (hors instances). Conserve une énergie de vol/plané minimale, esquive les attaques des boss enregistrés (quitte la zone d’attaque par le côté le plus proche, dash face à la sortie) et collecte les orbes de soin pendant l’Autoquête. Un <strong>mode Aion 1</strong> plus la création de personnage à la fin du tutoriel avec classe et préfixe configurés sont également ici.</li>
+  </ul>
+  <h2>Récompenses</h2>
+  <ul><li>Reçoit les pièces jointes du courrier et les récompenses de présence, de succès et de pass disponibles.</li></ul>
+  <h2>Personnage</h2>
+  <ul>
+    <li>Agrandit le sac jusqu’à un total choisi, en comptant les extensions déjà effectuées.</li>
+    <li>Équipe les titres et les ailes selon la rareté, remplit les emplacements vides, remplace les armes/équipements par des améliorations compatibles.</li>
+    <li>Améliore l’équipement avec des limites de couleur — blanc, vert, bleu, jaune, orange (les runes ne sont jamais améliorées).</li>
+    <li><strong>Daevanion automatique</strong> : « apprend le nœud le moins cher dans tous les onglets déverrouillés. »</li>
+    <li>Insère les pierres de Mana/Vitalité dans les emplacements vides, en préservant les pierres existantes.</li>
+    <li>Extrait l’équipement éligible des couleurs choisies (le « nettoyage d’objets » auquel se réfèrent les autres onglets).</li>
+    <li>Améliore les compétences apprises selon le niveau et les points ; les états sont visibles dans le journal.</li>
+  </ul>
+  <h2>Approvisionnement</h2>
+  <ul>
+    <li>Quitte le combat et retourne à <strong>Kibelisk</strong> avec le Parchemin de retour lié pour réapprovisionner le stock bas.</li>
+    <li>Configure les quantités minimale et finale de Potion de vie, d’Élixir de vie et de Parchemin de retour — tous liés.</li>
+    <li>Cherche le Marchand d’objets et n’achète que ce qui manque pour compléter le stock défini.</li>
+  </ul>
+  <h2>Événements</h2>
+  <ul>
+    <li><strong>Shugo Festa — Protection des marchands</strong> : l’événement horaire, enregistré dans le planning de routines du bot (livré désactivé — activez-le dans Routines).</li>
+    <li>Course de la <strong>Piste mystérieuse</strong> : le bot court la course, esquive les plots orange, les tourbillons et les portiques, prend les orbes de vitesse et de vie et plane sur la piste de lancement ; son bonus de vitesse de déplacement est configuré sur la page <a href="#speed-fov">Vitesse/FOV</a>.</li>
+    <li>À la fin d’un événement, la récompense est récupérée et le compte reprend ce qu’il faisait.</li>
+  </ul>
+  <div class="warnbox">⚠️ Un captcha détecté arrête les routines (« les routines restent arrêtées ») jusqu’à ce que la vérification soit confirmée comme résolue.</div>
+  <div class="quick"><b>Liens rapides:</b> <a href="#humanization">🫥 Humanisation</a> · <a href="#captcha">◎ Captcha</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ HUMANIZATION ============ -->
+<section class="page" id="humanization">
+  <h1><span class="pic">🫥</span> Humanisation (Humanization)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Humanisation</strong></li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>“Ajoute une attente aléatoire avant les clics, les dialogues, le ramassage, l’inventaire, les récompenses et les étapes de connexion. Il ne fait qu’ajouter du temps, il n’en retire jamais : le bot devient un peu plus lent et moins régulier.”</li>
+    <li>“Ajoute une marge aléatoire allant jusqu’à 30 s lorsque le bot revérifie s’il peut continuer après une attente, et jusqu’à 90 s lors d’un redémarrage automatique.”</li>
+    <li><strong>Pauses de session</strong> : définissez une durée de travail actif ; à son terme, le bot arrête les routines, essaie de retourner en ville avec un parchemin de retour et se repose — avec une variation de ±30 % sur les minutages, et reprend selon le mode et la carte.</li>
+    <li>Effectue occasionnellement de petites rotations de caméra sans utiliser la souris physique, en respectant les restrictions de chaque activité.</li>
+    <li>L’AFK Farm elle-même peut prendre de courtes pauses d’allure humaine — “1 à 8 min sur place, en réagissant aux agressions” (AFK Farm uniquement, pendant la chasse).</li>
+  </ul>
+  <div class="dangerbox">⚠️ L’Humanisation réduit la régularité des actions du bot, mais <strong>elle ne garantit pas de protection contre les sanctions</strong>. Utilisez-la à vos propres risques.</div>
+  <div class="quick"><b>Liens rapides:</b> <a href="#speed-fov">⚡ Vitesse &amp; FOV</a> · <a href="#faq">❓ FAQ</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ SPEED/FOV ============ -->
+<section class="page" id="speed-fov">
+  <h1><span class="pic">⚡</span> Vitesse &amp; FOV (Speed/FOV)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Vitesse/FOV</strong></li></ol>
+  <h2>Ce qu’il fait</h2>
+  <ul>
+    <li>Ajuste séparément la <strong>vitesse de déplacement</strong>, la <strong>vitesse d’animation</strong>, la <strong>vitesse d’attaque/combat</strong>, le <strong>champ de vision</strong> et la <strong>distance maximale de la caméra</strong> ; les valeurs sont conservées même lorsque c’est désactivé.</li>
+    <li>Activez/désactivez chaque ajustement et demandez une restauration ; la mise en pause et la fermeture restaurent également les valeurs d’origine.</li>
+    <li><strong>En expédition</strong> : active le réglage de vitesse de la page avec le pourcentage configuré et le désactive à la sortie (20 par défaut).</li>
+    <li><strong>Course Mysterious Track</strong> : augmente la vitesse de déplacement uniquement pendant la course et la rétablit à la fin (20 par défaut ; 0 = désactivé). Pendant la course, le bot évite les plateformes orange, les tornades, les petites créatures et le portail violet, roule sur les plateformes cyan et ramasse les orbes de vitesse et de vie (orbes de vie en priorité quand la vie est basse).</li>
+    <li>Le curseur de vitesse de combat nécessite que le personnage ait rendu l’attribut de vitesse de combat disponible.</li>
+  </ul>
+  <div class="dangerbox">⚠️ Les modifications de vitesse et de FOV sont des modifications visibles. Elles sont optionnelles, désactivées par défaut et utilisées à vos propres risques.</div>
+  <div class="quick"><b>Liens rapides:</b> <a href="#humanization">🫥 Humanisation</a> · <a href="#expedition">🗺 Expédition</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section class="page" id="settings">
+  <h1><span class="pic">⚙</span> Paramètres (Settings) &amp; raccourcis clavier</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Où le trouver</h2>
+  <ol><li>Fenêtre principale → Paramètres (“Langue, fenêtre de jeu, confidentialité, mises à jour et données sur cet ordinateur”)</li><li>En jeu : appuyez sur <kbd>F10</kbd> ou utilisez l’icône de la zone de notification à côté de l’horloge</li></ol>
+  <h2>Ce qu’il contient</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Section</th><th>Ce qu’elle fait</th></tr></thead>
+    <tbody>
+      <tr><td>Apparence et langue</td><td>Langue de l’interface et des compétences — 14 langues d’interface, dont l’anglais, le russe, le portugais, l’espagnol, l’allemand, le coréen, le chinois, le turc et d’autres.</td></tr>
+      <tr><td>Fenêtre de jeu</td><td>Mode et taille de la fenêtre : 960 × 540, 1280 × 720, 1600 × 900 (fenêtré ou plein écran).</td></tr>
+      <tr><td>Confidentialité</td><td>Masquer les noms, les classes et les niveaux sur l’écran des comptes.</td></tr>
+      <tr><td>Mises à jour</td><td>Vérifie le canal signé ; toutes les six heures lorsque le bot est arrêté ; “Vérifier les mises à jour” à tout moment.</td></tr>
+      <tr><td>Journaux</td><td>“Historique des activités, interruptions et mises à jour” — journaux par compte pour les rapports de problème.</td></tr>
+      <tr><td>Données sur cet ordinateur</td><td>Exporter/importer les préférences et générer un paquet de diagnostic pour l’assistance.</td></tr>
+      <tr><td>Zone de notification</td><td>Réduire dans la zone de notification ; afficher l’icône de notification ; l’assistant en jeu s’ouvre avec <kbd>F10</kbd> ou via l’icône de notification.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Raccourcis clavier</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Raccourci</th><th>Fonction</th></tr></thead>
+    <tbody>
+      <tr><td>Raccourci principal</td><td>Contrôle principal en jeu.</td></tr>
+      <tr><td>Raccourci secondaire</td><td>Contrôle secondaire.</td></tr>
+      <tr><td>Raccourci de pause</td><td>Met en pause/reprend l’activité en cours.</td></tr>
+      <tr><td>Raccourci de burst de stigmas</td><td>Déclenche le burst configuré.</td></tr>
+      <tr><td>Raccourci de blocage</td><td>Bloque le traitement des entrées tant qu’il est maintenu.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="quick"><b>Liens rapides:</b> <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#install">🚀 Mises à jour</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ TROUBLESHOOTING ============ -->
+<section class="page" id="troubleshoot">
+  <h1><span class="pic">🩹</span> Dépannage (Troubleshooting)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h2>Symptôme → solution</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Symptôme</th><th>Que faire</th></tr></thead>
+    <tbody>
+      <tr><td>Autorisation refusée / “Réponse de licence invalide”</td><td>Mettez à jour l’application et le plugin sur le canal signé ; si le lien de connexion a été actualisé, l’application affiche “Connectez-vous avec votre clé.”</td></tr>
+      <tr><td>Clé liée à un autre PC</td><td>Connectez-vous et confirmez le transfert : EVA déplace la clé vers ce PC (le déplacement retire 9 heures au temps restant de la clé).</td></tr>
+      <tr><td>Le jeu ne démarre pas via le bot</td><td>Le bot recherche dans les bibliothèques Steam, le registre, le jeu ouvert et les dossiers “NC\AION 2” ; vérifiez le chemin Steam par défaut <code>…\steamapps\common\AION2</code> et cliquez à nouveau sur Démarrer.</td></tr>
+      <tr><td>“AION2 n’est pas resté ouvert après trois tentatives”</td><td>Vérifiez le jeu ou Steam ; le bot indique combien de lancements ont échoué et pourquoi.</td></tr>
+      <tr><td>Erreur anti-cheat <code>0xE0000015</code> / <code>0xE0000027</code></td><td>Un jeu a été ouvert avant l’outil multi-comptes. Fermez les jeux en trop ainsi que VK, rouvrez VK, puis n’ouvrez que les jeux des comptes.</td></tr>
+      <tr><td>Connexion bloquée</td><td>Le bot attend jusqu’à 10 minutes, puis s’arrête : traitez la fenêtre en question et cliquez à nouveau sur Démarrer. Steam lancé en tant qu’administrateur garde la connexion à l’intérieur.</td></tr>
+      <tr><td>Le proxy ne démarre pas</td><td>Installez/autorisez <code>proxy-engine host process</code> dans le pare-feu (privé + public) ; .NET Framework 4.7.2+ requis ; après l’installation du pilote Windows Packet Filter, redémarrez si demandé ; si le dossier proxy-engine est incomplet — réinstallez le bot.</td></tr>
+      <tr><td>“Impossible de confirmer l’IPv4 sortante via SOCKS5 et HTTPS”</td><td>Vérifiez les identifiants du proxy (utilisateur/mot de passe SOCKS5) et les diagnostics par étape ; une étape de test dépassant 8 s y est signalée.</td></tr>
+      <tr><td>Avertissement de fuite IPv6</td><td>Le lancement est annulé volontairement — “afin qu’aucune connexion ne sorte hors du proxy”. Corrigez l’IPv6 du système ou utilisez le mode TUN.</td></tr>
+      <tr><td>Captcha non résolu à temps</td><td>Le jeu du compte est fermé puis rouvert via la connexion normale ; une sanction restrictive met en pause toutes les activités de ce compte jusqu’à son terme.</td></tr>
+      <tr><td>Le personnage reste immobile</td><td>Ouvrez la fenêtre du jeu et vérifiez la présence d’un dialogue ou d’une vérification ; le gardien de fenêtres ferme les fenêtres résiduelles lors de la tentative suivante.</td></tr>
+      <tr><td>La collecte ne démarre pas</td><td>La limite quotidienne de collecte du serveur est peut-être atteinte — la collecte est reportée jusqu’au reset.</td></tr>
+      <tr><td>Crash du jeu signalé</td><td>Le bot lit l’entrée du Journal d’événements Windows (application défaillante AION2.exe), la signale et redémarre le compte.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Pour une demande au support</h2>
+  <ol>
+    <li>Ouvrez les <strong>journaux</strong> du compte (Paramètres → Journaux) : “Historique des activités, interruptions et mises à jour”.</li>
+    <li>Générez le <strong>paquet de diagnostic</strong> (Paramètres → données sur cet ordinateur).</li>
+    <li>Joignez les deux à votre ticket dans le <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">Discord de la communauté</a>.</li>
+  </ol>
+  <div class="quick"><b>Liens rapides:</b> <a href="#faq">❓ FAQ</a> · <a href="#install">🚀 Installation &amp; mises à jour</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="page" id="faq">
+  <h1><span class="pic">❓</span> FAQ</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h3>Est-ce une macro ou un hack ?</h3>
+  <p>C’est une suite externe d’automatisation et de gestion de comptes : elle pilote le jeu via sa propre interface, avec des ajustements optionnels de Vitesse/FOV clairement séparés et désactivés par défaut.</p>
+  <h3>Puis-je être banni ?</h3>
+  <p>Toute automatisation comporte un risque. Le bot inclut l’Humanisation (attentes aléatoires, pauses de session, petits mouvements de caméra), et le vendeur déclare clairement qu’il <strong>ne garantit pas de protection contre les sanctions</strong>.</p>
+  <h3>Toutes les classes sont-elles prises en charge ?</h3>
+  <p>Les neuf classes : Gladiator, Templar, Assassin, Ranger, Sorcerer, Spiritmaster, Cleric, Chanter et Brawler. Le Spiritmaster choisit un esprit permanent (Eau, Feu, Vent ou Terre) ; les classes à distance disposent de leurs propres réglages d’esquive.</p>
+  <h3>Puis-je lancer plusieurs fenêtres de jeu à la fois ?</h3>
+  <p>Oui — avec l’outil multi-comptes (VK) requis par la version BOT MULTI. Chaque compte dispose de sa propre instance Steam et d’un emplacement dans la grille de fenêtres (de 1 × 1 à 6 × 6). La version Single ne prend pas en charge VK.</p>
+  <h3>Que se passe-t-il quand l’inventaire est plein ?</h3>
+  <p>Les Routines s’en chargent : l’entrepôt stocke les Transformations spéciales, les matériaux d’artisanat et la nourriture après la tentative de démontage, le Marché libère de la place en mettant des objets en vente, et une option “Extraire aussi les objets échangeables” (ajoutée en 5.5.0) permet au nettoyage des objets d’extraire les équipements échangeables des couleurs choisies — jamais les améliorations, les objets équipés ni les objets de quête.</p>
+  <h3>Gère-t-il le captcha en jeu ?</h3>
+  <p>Oui — automatiquement : le service EVA intégré le résout pour chaque client, sans clé nécessaire (une clé YesCaptcha est optionnelle), jusqu’à trois tentatives ; sans solution, il rentre proprement et attend la fin d’une éventuelle sanction.</p>
+  <h3>Quels serveurs sont pris en charge ?</h3>
+  <p>La liste des serveurs est groupée par région — Amérique du Nord (Est/Ouest), Europe, Amérique du Sud et autres — et est mise à jour avec l’application (elle est livrée en tant que données, pas codée en dur).</p>
+  <h3>Est-ce payant ?</h3>
+  <p>La licence est une clé carte valable <strong>1 mois</strong> ; selon la politique de la boutique, il n’y a <strong>aucun remboursement</strong>.</p>
+  <h3>Comment mettre à jour ?</h3>
+  <p>Automatiquement : l’application vérifie le canal signé toutes les six heures lorsqu’elle est arrêtée, attend l’arrêt des comptes, puis se ferme, se met à jour et se rouvre elle-même — le jeu reste ouvert.</p>
+  <div class="quick"><b>Liens rapides:</b> <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Communauté &amp; assistance</a> ·
+  🛠 <strong>Un problème ? Contactez unic.tools (U.Tools)</strong> · <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ CHANGELOG ============ -->
+<section class="page" id="changelog">
+  <h1><span class="pic">📰</span> Dernières mises à jour</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <p>L’application embarque ses notes de version ; les entrées les plus récentes (en anglais, telles qu’affichées dans l’application) :</p>
+  <div id="changelog-body"><!-- filled by script from CHANGELOG_DATA --></div>
+  <h2>Bon à savoir</h2>
+  <ul>
+    <li>27 versions sont enregistrées dans les notes intégrées, de la 3.7.0 à la 5.14.0 — le système de mise à jour les installe via le manifeste signé.</li>
+    <li>Les notes sont localisées : chaque entrée existe dans les 14 langues d’interface, dont le russe.</li>
+  </ul>
+  <div class="quick"><b>Liens rapides:</b> <a href="#install">🚀 Fonctionnement des mises à jour</a> · <a href="#specs">📐 Caractéristiques</a> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+<!-- ============ SPECS ============ -->
+<section class="page" id="specs">
+  <h1><span class="pic">📐</span> Caractéristiques (Specifications)</h1>
+  <a class="back tocopen" href="#home">← Table des matières</a>
+  <div class="tablewrap"><table>
+    <tbody>
+      <tr><td>Types de comptes</td><td>Steam, Purple</td></tr>
+      <tr><td>Méthodes de connexion (Purple)</td><td>NC, Google</td></tr>
+      <tr><td>Prise en charge du proxy</td><td>SOCKS5 (exclusif par compte), TUN exclusif, IPv4 intégrée (expérimentale)</td></tr>
+      <tr><td>Résolutions de jeu</td><td>960 × 540, 1280 × 720, 1600 × 900</td></tr>
+      <tr><td>Service de captcha</td><td>Clé YesCaptcha / solveur intégré, jusqu’à 3 tentatives</td></tr>
+      <tr><td>Limite quotidienne de farm de Kinah</td><td>1 000 000 (renouvelée à 04:00)</td></tr>
+      <tr><td>Prérequis en Ode d’expédition</td><td>40 (Krall/Unu), 60 (Temple de Feu)</td></tr>
+      <tr><td>Conditions d’entrée dans l’Abysse</td><td>Niveau 45, 1000 points de puissance, 3 minutes et plus au sol, 90 % d’énergie de vol</td></tr>
+      <tr><td>Limite de niveau des autoquêtes</td><td>Configurable ; 0 = aucune limite</td></tr>
+      <tr><td>Limites de mort</td><td>10 pour les missions, 5 pour les expéditions (valeurs par défaut)</td></tr>
+      <tr><td>Activités prises en charge</td><td>Autoquête, Expédition, Donjons scellés, Minage automatique, Abysse, AFK Farm</td></tr>
+      <tr><td>Langues</td><td>Langue de l’interface et des compétences configurable — 14 langues d’interface</td></tr>
+      <tr><td>Classes</td><td>Gladiator, Templar, Assassin, Ranger, Sorcerer, Spiritmaster, Cleric, Chanter, Brawler</td></tr>
+      <tr><td>Durée du produit</td><td>1 mois</td></tr>
+      <tr><td>Politique de remboursement</td><td>Aucun remboursement</td></tr>
+      <tr><td>OS recommandé</td><td>Windows 10 / Windows 11 (64 bits)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="warnbox">⚠️ <strong>La version BOT MULTI requiert l’outil VK Multi-Account</strong> pour s’ouvrir et fonctionner. Si vous ne l’avez pas, choisissez la “1 ACCOUNT VERSION”. La “1 ACCOUNT VERSION” ne prend pas en charge le fonctionnement avec VK Multi-Account.</div>
+  <div class="quick"><b>Liens rapides:</b> <a class="buybtn" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 Acheter EVA</a> · <a href="https://gofile.io/d/DtUcYKaT" target="_blank" rel="noopener">⬇️ Télécharger EVA</a> · <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Communauté &amp; assistance</a> ·
+  🛠 <strong>Un problème ? Contactez unic.tools (U.Tools)</strong> · <a href="#home">📚 Table des matières</a></div>
+</section>
+
+</main>
+</div>
+
+<script>
+/* changelog data (EN notes from the app's release-notes.json, versions 5.14.0-5.4.0) */
+const CHANGELOG=[
+ {v:"5.14.0",n:["Krall: in Conquest the bot now opens the reward chest after the final boss before leaving (it used to leave without the chest).","Autoquest and expeditions: the combat distance now respects the real range of your skills, so ranged classes no longer stand too far from the boss without hitting."]},
+ {v:"5.8.0",n:["Proxy released: turn on the switch in the Proxy tab, choose the account for each proxy and click Start. On the first account with a proxy the bot sets up the network driver and the engine by itself, with nothing for you to download. “(beta)” was removed from the name.","Purple accounts also open with a proxy: the game Purple opens only connects after it is bound to the account’s proxy, never through your real IP."]},
+ {v:"5.7.0",n:["Execution order: in the character switch, the padlock became the gear, like the other rows; the settings window is wider and shows the full descriptions."]},
+ {v:"5.6.0",n:["Execution order: the character switch padlock opens a settings window (create characters up to the total, and the total); nothing changes without Save."]},
+ {v:"5.5.0",n:["Warehouse: with the inventory full during the AFK Farm, the character finishes the current fight without pulling another and goes to store the items; if attacked before the teleport, it fights back and tries again. The Market does the same.","Inventory: new option “Also extract tradable items” right below the dismantle colors; with it, tradable equipment of the checked colors is extracted too (never upgrades, worn items or quest items).","Market: its own section in Routines, and items are listed by highest total value (price × quantity), keeping the chosen price rule.","Sealed Dungeons gets its own tab in Configure, with “Start only”. The daily Kinah limit of the AFK Farm moves to the AFK Farm tab: with “Start only” the Farm stops at the limit; in the Execution order it moves on to the next item.","Accounts: the “Character” field is now called “Slot”. Choosing the free slot (“Create Character”) makes EVA create the character with the same class, server and race; locked slots are never touched.","Execution order: new tab “When everything is done, switch character” — when the order is done, the account moves to the next character and repeats, in a loop; optionally it creates characters up to the chosen total.","Auto mining: the automatic Kibelisk teleport to far points (over 500 m) was removed; the character travels to the point along the way.","Interface: the Configure window is wider and shows the full name of every tab."]},
+ {v:"5.4.0",n:["Auto mining: gathers only inside the area of each route point; ores on the way between points are ignored. On arrival it gathers every ore in the area, nearest first.","Auto mining: with flight energy below your minimum, the Odyle is left for later and the character goes to a ground ore or the next point. If the point only has Odyle, it waits for the energy as before.","Auto mining: a point more than 500 m away is reached through the Kibelisk nearest to it (uses 1 Return Scroll), like the Autoquest; every new start begins at the point nearest the character.","Interface: the mouse wheel over a selection box or number field no longer changes the value (it scrolls the page); changing an option that rebuilds the page, such as the expedition type, no longer jumps to the top."]}
+];
+const el=document.getElementById("changelog-body");
+CHANGELOG.forEach(r=>{const d=document.createElement("div");d.className="card";d.style.margin="12px 0";
+ d.innerHTML=`<b>v${r.v}</b>`+r.n.map(x=>`<span style="display:block">• ${x}</span>`).join("");el.appendChild(d);});
+
+/* page router */
+const pages=[...document.querySelectorAll("section.page")];
+const toc=document.getElementById("toc");
+function show(){let k=location.hash.slice(1)||"home";
+ if(!document.getElementById(k))k="home";
+ pages.forEach(p=>p.classList.toggle("on",p.id===k));
+ document.querySelectorAll(".navitem").forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+k));
+ if(innerWidth<=900&&toc.dataset.user!=="keep")toc.open=false;
+ scrollTo(0,0);}
+function fit(){if(innerWidth>900){toc.open=true;}else if(!toc.dataset.user)toc.open=false;}
+addEventListener("resize",fit);addEventListener("hashchange",()=>{toc.dataset.user="";show();});
+toc.addEventListener("click",e=>{if(e.target.closest("a.navitem")&&innerWidth<=900){toc.open=false;}});
+document.querySelectorAll(".tocopen").forEach(a=>a.addEventListener("click",()=>{toc.dataset.user="keep";toc.open=true;}));
+document.getElementById("q").addEventListener("input",e=>{toc.open=true;const v=e.target.value.toLowerCase();
+ document.querySelectorAll(".navitem").forEach(a=>{a.style.display=!v||(a.dataset.search||"").toLowerCase().includes(v)||a.textContent.toLowerCase().includes(v)?"":"none";});});
+fit();show();
+</script>
+</body>
+</html>
