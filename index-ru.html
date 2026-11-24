@@ -104,6 +104,14 @@ li{margin:var(--s2) 0}
 .langs a{font-size:11px;padding:3px 10px;border:1px solid var(--border-lift);border-radius:999px;color:var(--ink-muted)}
 .langs a:hover{color:var(--accent);border-color:var(--accent-dim);text-decoration:none}
 .langs a.on{background:var(--surface);color:var(--accent-bright);border-color:var(--accent-dim)}
+.actionbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 var(--s5);padding:14px 16px;background:linear-gradient(135deg,var(--panel),var(--panel-deep));border:1px solid var(--border-lift);border-radius:var(--r3);box-shadow:var(--shadow-sm)}
+.actionbar .bigdl{padding:14px 30px;font-size:17px;border-radius:12px;background:linear-gradient(135deg,var(--accent-bright),var(--accent));color:#04121a;font-weight:800;letter-spacing:.02em;box-shadow:0 6px 20px rgba(61,217,208,.45);transition:transform var(--fast),box-shadow var(--fast)}
+.actionbar .bigdl:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(61,217,208,.55);text-decoration:none}
+.actionbar .act{padding:9px 16px;border:1px solid var(--border-lift);border-radius:999px;color:var(--ink-dim);font-size:13px;background:var(--panel-lift);transition:color var(--fast),border-color var(--fast)}
+.actionbar .act:hover{color:var(--accent-bright);border-color:var(--accent-dim);text-decoration:none}
+.actionbar .act.buy{border-color:var(--accent-dim);color:var(--accent)}
+.corner-gif{position:fixed;bottom:14px;right:14px;width:190px;z-index:60;pointer-events:none;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.55);opacity:.94}
+@media (max-width:900px){.corner-gif{width:120px;opacity:.85}}
 @media print{aside,.quick,.back{display:none}.page{display:block!important}.layout{grid-template-columns:1fr}}
 </style>
 </head>
@@ -148,6 +156,7 @@ li{margin:var(--s2) 0}
   </details>
 </aside>
 <main>
+<div class="actionbar"><a class="bigdl" href="https://gofile.io/d/DtUcYKaT" target="_blank" rel="noopener">⬇️ Скачать EVA</a><a class="act buy" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 Купить EVA</a><a class="act" href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Сообщество и поддержка</a><a class="act" href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">✉️ Написать @Unic.tools в Discord DM</a></div>
 
 <!-- ============ HOME ============ -->
 <section class="page" id="home">
@@ -833,5 +842,6 @@ document.getElementById("q").addEventListener("input",e=>{toc.open=true;const v=
  document.querySelectorAll(".navitem").forEach(a=>{a.style.display=!v||(a.dataset.search||"").toLowerCase().includes(v)||a.textContent.toLowerCase().includes(v)?"":"none";});});
 fit();show();
 </script>
+<img class="corner-gif" src="fpq6jxrms3tf1.gif" alt="EVA" loading="lazy" decoding="async">
 </body>
 </html>
