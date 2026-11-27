@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EVA — wiki d’automatisation AION 2</title>
+<title>EVA — AION 2 Automatisierungs-Wiki</title>
 <style>
 :root{
   --bg-base:#050a12; --bg:#0a0f1a; --panel-deep:#0f1525; --panel:#141b30;
@@ -116,12 +116,19 @@ li{margin:var(--s2) 0}
 .devbox b{color:var(--ink)}
 .devbox>div{margin-top:8px}
 .devbox a{color:var(--accent);font-weight:600}
-.vidbox{position:relative;display:block;border-radius:var(--r3);overflow:hidden;box-shadow:var(--shadow-md);margin:var(--s5) 0 0;background:#000;text-decoration:none}
-.vidbox img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
-.vidbox .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(61,217,208,.92);display:grid;place-items:center;font-size:22px;color:#04121a;box-shadow:0 6px 20px rgba(0,0,0,.5);transition:transform var(--fast)}
-.vidbox:hover .play{transform:translate(-50%,-50%) scale(1.12)}
-.vidbox b{position:absolute;left:16px;bottom:14px;color:#fff;font-size:16px;text-shadow:0 2px 8px rgba(0,0,0,.75)}
-.vidbox iframe{width:100%;aspect-ratio:16/9;display:block;border:0}
+.vidwrap{position:relative;width:100%;aspect-ratio:16/9;margin:0 0 var(--s5);border-radius:var(--r3);overflow:hidden;box-shadow:var(--shadow-md);background:#000}
+.vidwrap .vidwrap{position:relative;width:100%;aspect-ratio:16/9;margin:0 0 var(--s5);border-radius:var(--r3);overflow:hidden;box-shadow:var(--shadow-md);background:#000}
+.vidwrap .vidbox{position:absolute;inset:0;display:block;text-decoration:none}
+.vidwrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vidwrap .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:rgba(61,217,208,.92);display:grid;place-items:center;font-size:24px;color:#04121a;box-shadow:0 6px 22px rgba(0,0,0,.55);transition:transform var(--fast)}
+.vidwrap .vidbox:hover .play{transform:translate(-50%,-50%) scale(1.12)}
+.vidwrap .cap{position:absolute;left:16px;bottom:14px;color:#fff;font-size:16px;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.75)}
+.vidwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vidwrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vidwrap .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:rgba(61,217,208,.92);display:grid;place-items:center;font-size:24px;color:#04121a;box-shadow:0 6px 22px rgba(0,0,0,.55);transition:transform var(--fast)}
+.vidwrap .vidbox:hover .play{transform:translate(-50%,-50%) scale(1.12)}
+.vidwrap .cap{position:absolute;left:16px;bottom:14px;color:#fff;font-size:16px;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.75)}
+.vidwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 @media print{aside,.quick,.back{display:none}.page{display:block!important}.layout{grid-template-columns:1fr}}
 </style>
 </head>
@@ -133,682 +140,709 @@ li{margin:var(--s2) 0}
     <div><b>EVA Wiki</b><small>AION 2 · Steam &amp; Purple</small></div>
     <span class="vbadge">v5.14</span>
   </div>
-  <div class="langs"><span>🌐</span><a href="index.html">EN</a><a href="index-ru.html">RU</a><a href="index-pt.html">PT</a><a href="index-de.html">DE</a><a class="on" href="index-fr.html">FR</a></div>
+  <div class="langs"><span>🌐</span><a href="index.html">EN</a><a href="index-ru.html">RU</a><a href="index-pt.html">PT</a><a class="on" href="index-de.html">DE</a><a href="index-fr.html">FR</a></div>
   <details id="toc" open>
-    <summary>📚 Table des matières</summary>
-    <input id="q" placeholder="🔍 Rechercher des sections…">
-    <a class="navitem" href="#home" data-search="home start overview what is"><span class="ic">🏠</span>Accueil</a>
-    <div class="catlabel">🧭 Pour commencer</div>
-    <a class="navitem" href="#requirements" data-search="requirements system windows .net vk"><span class="ic">📋</span>Configuration requise</a>
-    <a class="navitem" href="#install" data-search="install setup first run updates firewall antivirus"><span class="ic">🚀</span>Installation & mises à jour</a>
-    <div class="catlabel">👤 Accounts &amp; network</div>
-    <a class="navitem" href="#accounts" data-search="accounts steam purple login nc google grid profiles"><span class="ic">👤</span>Comptes & connexion</a>
+    <summary>📚 Inhaltsverzeichnis</summary>
+    <input id="q" placeholder="🔍 Bereiche durchsuchen…">
+    <a class="navitem" href="#home" data-search="home start overview what is"><span class="ic">🏠</span>Startseite</a>
+    <div class="catlabel">🧭 Erste Schritte</div>
+    <a class="navitem" href="#requirements" data-search="requirements system windows .net vk"><span class="ic">📋</span>Anforderungen</a>
+    <a class="navitem" href="#install" data-search="install setup first run updates firewall antivirus"><span class="ic">🚀</span>Installation &amp; Updates</a>
+    <div class="catlabel">👤 Konten &amp; Netzwerk</div>
+    <a class="navitem" href="#accounts" data-search="accounts steam purple login nc google grid profiles"><span class="ic">👤</span>Konten &amp; Anmeldung</a>
     <a class="navitem" href="#proxy" data-search="proxy socks5 tun webshare ipv6 fixed ip dns"><span class="ic">🛡</span>Proxy (SOCKS5)</a>
-    <a class="navitem" href="#captcha" data-search="captcha yescaptcha verification guardian ai"><span class="ic">◎</span>Captcha · IA</a>
-    <div class="catlabel">🤖 Activités</div>
-    <a class="navitem" href="#run-order" data-search="run order execution sequence switch character deaths"><span class="ic">🧭</span>Ordre d’exécution</a>
+    <a class="navitem" href="#captcha" data-search="captcha yescaptcha verification guardian ai"><span class="ic">◎</span>Captcha · KI</a>
+    <div class="catlabel">🤖 Aktivitäten</div>
+    <a class="navitem" href="#run-order" data-search="run order execution sequence switch character deaths"><span class="ic">🧭</span>Reihenfolge</a>
     <a class="navitem" href="#autoquest" data-search="autoquest quests main side green level"><span class="ic">📋</span>Autoquest</a>
-    <a class="navitem" href="#afk-farm" data-search="afk farm kinah spots combat spiritualist spirit"><span class="ic">⚔</span>Ferme AFK</a>
-    <a class="navitem" href="#mining" data-search="auto mining gathering routes resources quota level 45"><span class="ic">⛏</span>Minage auto</a>
-    <a class="navitem" href="#dungeons" data-search="sealed dungeons once per character 40 minutes"><span class="ic">🏰</span>Donjons scellés</a>
-    <a class="navitem" href="#expedition" data-search="expedition krall unu fire temple conquest ode team"><span class="ic">🗺</span>Expédition</a>
-    <a class="navitem" href="#abyss" data-search="abyss floors feathers flight energy schedule"><span class="ic">◆</span>Farm dans l’Abysse</a>
-    <div class="catlabel">🧰 Tools &amp; polish</div>
-    <a class="navitem" href="#routines" data-search="routines monolith market warehouse survival rewards character supplies"><span class="ic">🧰</span>Routines</a>
-    <a class="navitem" href="#humanization" data-search="humanization pauses camera random waits"><span class="ic">🫥</span>Humanisation</a>
-    <a class="navitem" href="#speed-fov" data-search="speed fov camera distance animation race mysterious track"><span class="ic">⚡</span>Vitesse & FOV</a>
-    <a class="navitem" href="#settings" data-search="settings hotkeys languages window resolution tray f10"><span class="ic">⚙</span>Paramètres & raccourcis</a>
-    <div class="catlabel">🩹 Aide</div>
-    <a class="navitem" href="#troubleshoot" data-search="troubleshooting problems errors firewall license crashes"><span class="ic">🩹</span>Dépannage</a>
+    <a class="navitem" href="#afk-farm" data-search="afk farm kinah spots combat spiritualist spirit"><span class="ic">⚔</span>AFK-Farmen</a>
+    <a class="navitem" href="#mining" data-search="auto mining gathering routes resources quota level 45"><span class="ic">⛏</span>Auto-Bergbau</a>
+    <a class="navitem" href="#dungeons" data-search="sealed dungeons once per character 40 minutes"><span class="ic">🏰</span>Versiegelte Verliese</a>
+    <a class="navitem" href="#expedition" data-search="expedition krall unu fire temple conquest ode team"><span class="ic">🗺</span>Expedition</a>
+    <a class="navitem" href="#abyss" data-search="abyss floors feathers flight energy schedule"><span class="ic">◆</span>Abyss</a>
+    <div class="catlabel">🧰 Werkzeuge &amp; Feinschliff</div>
+    <a class="navitem" href="#routines" data-search="routines monolith market warehouse survival rewards character supplies"><span class="ic">🧰</span>Abläufe</a>
+    <a class="navitem" href="#humanization" data-search="humanization pauses camera random waits"><span class="ic">🫥</span>Humanisierung</a>
+    <a class="navitem" href="#speed-fov" data-search="speed fov camera distance animation race mysterious track"><span class="ic">⚡</span>Speed &amp; FOV</a>
+    <a class="navitem" href="#settings" data-search="settings hotkeys languages window resolution tray f10"><span class="ic">⚙</span>Einstellungen &amp; Hotkeys</a>
+    <div class="catlabel">🩹 Hilfe</div>
+    <a class="navitem" href="#troubleshoot" data-search="troubleshooting problems errors firewall license crashes"><span class="ic">🩹</span>Fehlerbehebung</a>
     <a class="navitem" href="#faq" data-search="faq questions ban safety support"><span class="ic">❓</span>FAQ</a>
-    <a class="navitem" href="#changelog" data-search="changelog updates versions release notes"><span class="ic">📰</span>Dernières mises à jour</a>
-    <a class="navitem" href="#specs" data-search="specifications technical summary"><span class="ic">📐</span>Caractéristiques</a>
+    <a class="navitem" href="#changelog" data-search="changelog updates versions release notes"><span class="ic">📰</span>Neueste Updates</a>
+    <a class="navitem" href="#specs" data-search="specifications technical summary"><span class="ic">📐</span>Technische Daten</a>
   </details>
 </aside>
 <main>
-<div class="actionbar"><a class="bigdl" href="https://gofile.io/d/CoXeoihC" target="_blank" rel="noopener">⬇️ Télécharger EVA</a>
-  <a class="act" href="https://mega.nz/file/83gnHBxZ#1LDcohUBpjDLMivcN0MkXXlF837O5gwOuWS9rDLVrCk" target="_blank" rel="noopener">⬇️ Téléchargement alternatif (MEGA)</a><a class="act buy" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 Acheter EVA</a><a class="act" href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Communauté &amp; assistance</a><a class="act" href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">✉️ Contactez @Unic.tools en DM Discord</a></div>
+<div class="actionbar"><a class="bigdl" href="https://gofile.io/d/CoXeoihC" target="_blank" rel="noopener">⬇️ EVA herunterladen</a>
+  <a class="act" href="https://mega.nz/file/83gnHBxZ#1LDcohUBpjDLMivcN0MkXXlF837O5gwOuWS9rDLVrCk" target="_blank" rel="noopener">⬇️ Alternativer Download (MEGA)</a><a class="act buy" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 EVA kaufen</a><a class="act" href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Community &amp; Support</a><a class="act" href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">✉️ @Unic.tools per Discord-DM kontaktieren</a></div>
 <div class="devbox">
-  <b>🛠 EVA est en développement actif — elle s’améliore à chaque mise à jour.</b>
-  <div>🐛 <b>Rapports de bugs</b> → DM <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">@Unic.tools</a> sur Discord. Joignez : une description détaillée de ce qui s’est passé, des <b>captures d’écran</b> (ou le journal du compte via Paramètres → Logs) et les étapes pour reproduire. Plus il y a de détails, plus le correctif est rapide.</div>
-  <div>💡 <b>Suggestions</b> → DM <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">@Unic.tools</a> sur Discord. Décrivez votre idée et — surtout — <b>pourquoi elle compte</b> : une explication logique et claire, avec un cas d’usage concret, a bien plus de chances d’être implémentée.</div>
+  <b>🛠 EVA befindet sich in aktiver Entwicklung — mit jedem Update wird sie besser.</b>
+  <div>🐛 <b>Fehlerberichte</b> → DM an <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">@Unic.tools</a> auf Discord. Bitte beifügen: eine detaillierte Beschreibung des Problems, <b>Screenshots</b> (oder das Konto-Log unter Einstellungen → Logs) und die Schritte zur Reproduktion. Je mehr Details, desto schneller der Fix.</div>
+  <div>💡 <b>Vorschläge</b> → DM an <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">@Unic.tools</a> auf Discord. Beschreibe deine Idee und — vor allem — <b>warum sie wichtig ist</b>: eine logische, verständliche Begründung mit echtem Anwendungsfall wird deutlich eher umgesetzt.</div>
 </div>
 
 <!-- ============ HOME ============ -->
 <section class="page" id="home">
-  <h1><span class="pic">🏠</span> EVA — présentation</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
+  <svg class="hero" viewBox="0 0 920 190" role="img" aria-label="EVA banner">
+    <defs>
+      <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#0f1525"/><stop offset="1" stop-color="#1a2240"/>
+      </linearGradient>
+    </defs>
+    <rect width="920" height="190" rx="20" fill="url(#hg)" stroke="#2d4070"/>
+    <text x="40" y="78" font-family="Segoe UI,Arial" font-size="34" font-weight="700" fill="#e8eef9">EVA</text>
+    <text x="40" y="112" font-family="Segoe UI,Arial" font-size="16" fill="#7d8db8">Automatisierung &amp; Multi-Konto-Verwaltung für AION 2 — Steam und Purple</text>
+    <g font-family="Segoe UI,Arial" font-size="13">
+      <rect x="40" y="132" width="70" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="57" y="151" fill="#3dd9d0">Steam</text>
+      <rect x="118" y="132" width="80" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="132" y="151" fill="#3dd9d0">Purple</text>
+      <rect x="206" y="132" width="92" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="216" y="151" fill="#3dd9d0">SOCKS5</text>
+      <rect x="306" y="132" width="110" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="316" y="151" fill="#3dd9d0">YesCaptcha</text>
+      <rect x="424" y="132" width="160" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="434" y="151" fill="#3dd9d0">1.000.000 Kinah/Tag</text>
+      <rect x="592" y="132" width="130" height="28" rx="14" fill="#141b30" stroke="#2d4070"/><text x="602" y="151" fill="#3dd9d0">14 Sprachen</text>
+    </g>
+    <text x="880" y="40" text-anchor="end" font-family="Segoe UI,Arial" font-size="12" fill="#4a5a82">wiki · v5.14</text>
+  </svg>
 
-  <h2>Points forts</h2>
+  <h1><span class="pic">🏠</span> EVA — was es ist</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+
+  <h2>Highlights</h2>
   <div class="grid2">
-    <div class="card"><b>🔑 Connexion entièrement automatisée</b><span>Steam séparé par compte, Purple via NC ou Google, accords et invitations du cloud gérés, fenêtres de jeu cachées.</span></div>
-    <div class="card"><b>🧭 Ordre de lancement avec boucle de personnage</b><span>Autoquest → Expédition → Donjons scellés → Minage auto → Ferme AFK → Abysse, puis le slot de personnage suivant — une fois par personnage et par jour de jeu (04:00).</span></div>
-    <div class="card"><b>🛡 Proxy exclusif par compte</b><span>SOCKS5 avec test HTTPS/latence, réservations d’IP fixe, blocage IPv6, mode TUN ou backend IPv4 intégré expérimental.</span></div>
-    <div class="card"><b>◎ Captcha par IA</b><span>Solveur intégré, sans clé (YesCaptcha en option), jusqu’à 3 tentatives, gestion des pénalités : les activités attendent la fin de la restriction et reprennent seules.</span></div>
-    <div class="card"><b>💰 1 000 000 Kinah/jour</b><span>Ferme AFK sous un plafond quotidien de Kinah (1 000 000) renouvelé à 04:00.</span></div>
-    <div class="card"><b>🧰 Routine d’entretien</b><span>Plumes du Monolithe, remise en vente sur le marché, entrepôt, résurrection, approvisionnements, amélioration d’équipement — à intervalles aléatoires.</span></div>
+    <div class="card"><b>🔑 Vollautomatische Anmeldung</b><span>Separates Steam pro Konto, Purple über NC oder Google, AGB- und Cloud-Abfragen erledigt, versteckte Spielfenster.</span></div>
+    <div class="card"><b>🧭 Reihenfolge mit Charakter-Schleife</b><span>Autoquest → Expedition → Versiegelte Verliese → Auto-Bergbau → AFK-Farmen → Abyss, danach der nächste Charakterplatz — einmal pro Charakter und Spieltag (04:00).</span></div>
+    <div class="card"><b>🛡 Exklusiver Proxy pro Konto</b><span>SOCKS5 mit HTTPS-/Latenztest, feste IP-Reservierungen, IPv6-Sperre, TUN-Modus oder das experimentelle eingebaute IPv4-Backend.</span></div>
+    <div class="card"><b>◎ KI-Captcha</b><span>Eingebauter Löser, kein Schlüssel nötig (YesCaptcha optional), bis zu 3 Versuche, strafbewusst: Aktivitäten warten die Sperre ab und setzen von selbst fort.</span></div>
+    <div class="card"><b>💰 1.000.000 Kinah/Tag</b><span>AFK-Farmen mit täglichem Kinah-Limit (1.000.000), das sich um 04:00 erneuert.</span></div>
+    <div class="card"><b>🧰 Verwaltungs-Abläufe</b><span>Monolith-Federn, Markt-Neueinstellung, Lagerhaus, Wiederbelebung, Vorräte, Belohnungen, Ausrüstungs-Aufwertung — in zufälligen Abständen.</span></div>
   </div>
 
-  <h2>Démarrage rapide</h2>
+  <h2>Schnellstart</h2>
   <ol>
-    <li>Décompressez le dossier et lancez <code>SysOpsHelper.exe</code> — sans installation, le runtime .NET est embarqué (<a href="#install">détails</a>).</li>
-    <li>Saisissez la clé de carte reçue à l’achat ; l’application la valide en ligne (les mises à jour de l’app passent par un canal signé).</li>
-    <li>Ajoutez vos comptes de jeu et associez un <a href="#proxy">proxy</a> à chacun — Steam comme Purple.</li>
-    <li>Ouvrez <strong>Configurer</strong> pour un profil, cochez les activités dans l’<a href="#run-order">ordre de lancement (Run order)</a> et appuyez sur <strong>Start</strong>.</li>
+    <li>Entpacke den Ordner und starte <code>SysOpsHelper.exe</code> — kein Installer, die .NET-Runtime liegt bei (<a href="#install">Details</a>).</li>
+    <li>Gib deinen Karten-Schlüssel aus dem Shop ein; die App prüft ihn online (App-Updates laufen über einen signierten Kanal).</li>
+    <li>Füge deine Spielkonten hinzu und verknüpfe jedes mit einem <a href="#proxy">Proxy</a> — bei Steam wie bei Purple.</li>
+    <li>Öffne für ein Profil <strong>Konfigurieren</strong>, hake die Aktivitäten in der <a href="#run-order">Reihenfolge</a> an und drücke <strong>Starten</strong>.</li>
   </ol>
 
-  <h2>Configuration requise en bref</h2>
+  <h2>Anforderungen auf einen Blick</h2>
   <ul>
-    <li>Windows 10 ou 11, 64 bits.</li>
-    <li>Le moteur proxy exige en plus .NET Framework 4.7.2+ et le pilote Windows Packet Filter.</li>
-    <li>La version multi-comptes exige l’outil VK Multi-Account ; la version single ne prend pas en charge VK.</li>
+    <li>Windows 10 oder 11, 64-Bit.</li>
+    <li>Die Proxy-Engine benötigt zusätzlich .NET Framework 4.7.2+ und den Windows-Paketfilter-Treiber.</li>
+    <li>Die Multi-Konto-Version setzt das VK-Multi-Account-Tool voraus; die Einzelversion unterstützt VK nicht.</li>
   </ul>
 
-  <a class="vidbox" href="https://youtu.be/1HZz8YenJMY" data-emb="https://www.youtube.com/embed/1HZz8YenJMY" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/1HZz8YenJMY/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/1HZz8YenJMY/hqdefault';" alt="First launch" loading="lazy"><span class="play">▶</span><b>First launch</b></a>
-  <div class="quick"><b>Liens rapides:</b>
-  <a class="buybtn" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 Acheter EVA</a> ·
-  <a href="https://gofile.io/d/CoXeoihC" target="_blank" rel="noopener">⬇️ Télécharger EVA</a> · <a class="act" href="https://mega.nz/file/83gnHBxZ#1LDcohUBpjDLMivcN0MkXXlF837O5gwOuWS9rDLVrCk" target="_blank" rel="noopener">⬇️ Téléchargement alternatif (MEGA)</a> ·
-  <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Communauté &amp; assistance</a> ·
-  🛠 <strong>Un problème ? Contactez unic.tools (U.Tools)</strong> ·
-  <a href="#specs">📐 Caractéristiques</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b>
+  <a class="buybtn" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 EVA kaufen</a> ·
+  <a href="https://gofile.io/d/CoXeoihC" target="_blank" rel="noopener">⬇️ EVA herunterladen</a> · <a class="act" href="https://mega.nz/file/83gnHBxZ#1LDcohUBpjDLMivcN0MkXXlF837O5gwOuWS9rDLVrCk" target="_blank" rel="noopener">⬇️ Alternativer Download (MEGA)</a> ·
+  <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Community &amp; Support</a> ·
+  🛠 <strong>Probleme? Wende dich an unic.tools (U.Tools)</strong> ·
+  <a href="#specs">📐 Technische Daten</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ REQUIREMENTS ============ -->
 <section class="page" id="requirements">
-  <h2>Ce qu’il faut</h2>
+  <h1><span class="pic">📋</span> Anforderungen</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Was es benötigt</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Composant</th><th>Exigence</th><th>Pourquoi</th></tr></thead>
+    <thead><tr><th>Komponente</th><th>Anforderung</th><th>Warum</th></tr></thead>
     <tbody>
-      <tr><td>Système d’exploitation</td><td>Windows 10 ou Windows 11, 64 bits</td><td>Le bot pilote le jeu via ses fenêtres et un moteur réseau.</td></tr>
-      <tr><td>Runtime de l’application</td><td>Rien à installer — .NET 10 est embarqué dans le dossier (<code>_runtime\</code>)</td><td>Portable : lancez <code>SysOpsHelper.exe</code>, il héberge son runtime lui-même.</td></tr>
-      <tr><td>Moteur proxy</td><td>.NET Framework 4.7.2 ou plus récent ; pilote Windows Packet Filter</td><td>Nécessaire uniquement si vous utilisez les proxies ; l’installation du pilote peut demander un redémarrage.</td></tr>
-      <tr><td>Clients de jeu</td><td>AION 2 via Steam et/ou Purple</td><td>Le bot trouve automatiquement les bibliothèques Steam, l’installation Purple et les dossiers « NC\AION 2 ».</td></tr>
-      <tr><td>Multi-comptes</td><td>Outil VK Multi-Account (version BOT MULTI uniquement)</td><td>Les jeux doivent être ouverts avec VK déjà lancé, sinon l’anticheat du jeu (NC Guard) les bloque (erreurs <code>0xE0000015</code> / <code>0xE0000027</code>).</td></tr>
-      <tr><td>Licence</td><td>Clé de carte de la boutique (1 mois)</td><td>Validée en ligne ; sans clé, pas de démarrage.</td></tr>
+      <tr><td>Betriebssystem</td><td>Windows 10 oder Windows 11, 64-Bit</td><td>Der Bot steuert das Spiel über dessen Fenster und eine Netzwerk-Engine.</td></tr>
+      <tr><td>App-Laufzeit</td><td>Nichts zu installieren — .NET 10 liegt im Ordner bei (<code>_runtime\</code>)</td><td>Portabel: <code>SysOpsHelper.exe</code> starten, und sie stellt ihre Laufzeit selbst bereit.</td></tr>
+      <tr><td>Proxy-Engine</td><td>.NET Framework 4.7.2 oder neuer; Windows-Paketfilter-Treiber</td><td>Nur nötig, wenn du die Proxy-Funktionen nutzt; die Treiberinstallation kann einen Neustart verlangen.</td></tr>
+      <tr><td>Spiel-Clients</td><td>AION 2 über Steam und/oder Purple</td><td>Der Bot findet Steam-Bibliotheken, die Purple-Installation und „NC\AION 2“-Ordner automatisch.</td></tr>
+      <tr><td>Multi-Konto</td><td>VK-Multi-Account-Tool (nur BOT-MULTI-Version)</td><td>Spiele müssen geöffnet werden, während VK bereits läuft, sonst blockiert der Anti-Cheat des Spiels (NC Guard) sie (Fehler <code>0xE0000015</code> / <code>0xE0000027</code>).</td></tr>
+      <tr><td>Lizenz</td><td>Karten-Schlüssel aus dem Shop (1 Monat)</td><td>Online gegen den signierten Kanal geprüft; kein Schlüssel, kein Start.</td></tr>
     </tbody>
   </table></div>
-  <h2>Bon à savoir</h2>
+  <h2>Gut zu wissen</h2>
   <ul>
-    <li>Gardez le dossier intact : <code>native\</code> et <code>proxy-engine\</code> sont vérifiés au démarrage ; si le paquet proxy-engine est incomplet, l’application demande de réinstaller le bot.</li>
-    <li>Résolutions que le bot peut appliquer au jeu : 960 × 540, 1280 × 720 (défaut) et 1600 × 900, fenêtré ou plein écran.</li>
-    <li>La langue des interfaces et des compétences est paramétrable — l’application embarque 14 langues dont l’anglais, le russe, le portugais, l’espagnol, l’allemand, le turc, le coréen, le chinois, etc.</li>
+    <li>Halte den Ordner vollständig: <code>native\</code> und <code>proxy-engine\</code> werden beim Start geprüft; ist das Proxy-Engine-Paket unvollständig, bittet die App, den Bot neu zu installieren.</li>
+    <li>Auflösungen, auf die der Bot das Spiel setzen kann: 960 × 540, 1280 × 720 (Standard) und 1600 × 900, fenstergebunden oder Vollbild.</li>
+    <li>Die Sprache von Oberfläche und Fähigkeiten ist einstellbar — die App bringt 14 UI-Sprachen mit, darunter Englisch, Russisch, Portugiesisch, Spanisch, Deutsch, Türkisch, Koreanisch, Chinesisch und mehr.</li>
   </ul>
-  <div class="quick"><b>Liens rapides:</b> <a href="#install">🚀 Installation &amp; mises à jour</a> · <a href="#accounts">👤 Comptes</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#install">🚀 Installation &amp; Updates</a> · <a href="#accounts">👤 Konten</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ INSTALL ============ -->
 <section class="page" id="install">
-  <h2>Premier lancement</h2>
+  <h1><span class="pic">🚀</span> Installation &amp; Updates</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Erster Start</h2>
   <ol>
-    <li>Téléchargez la distribution (<a href="https://gofile.io/d/CoXeoihC" target="_blank" rel="noopener">gofile.io/d/CoXeoihC</a>) et décompressez-la <em>en un seul bloc</em> — l’application vérifie ses propres composants (complétude de <code>proxy-engine</code>, helpers natifs) au démarrage.</li>
-    <li>Lancez <code>SysOpsHelper.exe</code>. Pas d’installateur, pas de services ; tout reste dans le dossier.</li>
-    <li>Saisissez la clé de carte reçue après l’achat. La licence est vérifiée auprès du point de terminaison en ligne de la boutique (les mises à jour de l’app utilisent en plus un manifeste signé).</li>
-    <li>Autorisez le processus hôte du moteur proxy dans le Pare-feu Windows (réseaux privés et publics) lorsque Windows le demande — l’invite du pare-feu affiche son nom.</li>
-    <li>Définissez la taille de la fenêtre de jeu dans les paramètres de l’application avant d’installer les comptes — fenêtré et plein écran fonctionnent.</li>
+    <li>Lade die Distribution herunter (<a href="https://gofile.io/d/CoXeoihC" target="_blank" rel="noopener">gofile.io/d/CoXeoihC</a>) und entpacke sie <em>als Ganzes</em> — die App prüft ihre eigenen Komponenten (Vollständigkeit von <code>proxy-engine</code>, native Helfer) beim Start.</li>
+    <li>Starte <code>SysOpsHelper.exe</code>. Kein Installer, keine Dienste; alles bleibt im Ordner.</li>
+    <li>Gib den Karten-Schlüssel ein, den du nach dem Kauf erhalten hast. Die Lizenz wird gegen den Online-Endpunkt des Shops geprüft (App-Updates nutzen zusätzlich ein signiertes Manifest).</li>
+    <li>Erlaube der Windows-Firewall auf Nachfrage <code>proxy-engine host process</code> in privaten und öffentlichen Netzwerken.</li>
+    <li>Lege die Spielfenstergröße in den App-Einstellungen fest, bevor du Konten anlegst — Fenstermodus und Vollbild funktionieren beide.</li>
   </ol>
-  <h2>Fonctionnement des mises à jour</h2>
+  <h2>So funktionieren Updates</h2>
   <ul>
-    <li>Les mises à jour arrivent par un <strong>canal en ligne signé</strong> : « chaque fichier est vérifié contre le manifeste signé » — un hachage ou une signature invalide interrompt la mise à jour.</li>
-    <li>Une nouvelle version est annoncée même pendant que des comptes tournent, avec une option « Arrêter les comptes et mettre à jour » — les sessions en cours ne sont jamais tuées en pleine activité par défaut.</li>
-    <li>L’application se ferme, se met à jour et se rouvre toute seule ; le jeu reste ouvert. Un <code>AION2 Update.exe</code> séparé gère les fichiers côté jeu.</li>
-    <li>Quand le bot est à l’arrêt, il vérifie les mises à jour toutes les six heures ; vous pouvez aussi appuyer sur <strong>Check for updates</strong> à tout moment.</li>
+    <li>Updates kommen über einen <strong>signierten Online-Kanal</strong>: „Jede Datei wird gegen das signierte Manifest geprüft“ — ungültiger Hash oder ungültige Signatur bricht das Update ab.</li>
+    <li>Eine neue Version wird auch angekündigt, während Konten laufen, mit der Option „Konten stoppen und aktualisieren“ — laufende Sitzungen werden standardmäßig nie mitten in einer Aktivität beendet.</li>
+    <li>„Die App schließt sich, aktualisiert sich und öffnet sich von selbst; das Spiel bleibt offen.“ Eine separate <code>AION2 Update.exe</code> kümmert sich um die Spieldateien.</li>
+    <li>Ist der Bot gestoppt, prüft er alle sechs Stunden auf Updates; du kannst jederzeit <strong>Nach Updates suchen</strong> drücken.</li>
   </ul>
-  <h2>Mode sans échec &amp; antivirus</h2>
-  <p>Les antivirus signalent parfois le processus hôte du moteur proxy. L’application propose alors un <strong>mode sans échec</strong> :
-  le moteur proxy reste éteint et les comptes s’ouvrent directement, sans proxy. Si vous voulez des proxies, ajoutez le processus et le dossier aux exclusions.</p>
-  <h2>Sécurité des données locales</h2>
+  <h2>Sicherheitsmodus &amp; Antivirus</h2>
+  <p>Antivirus-Produkte markieren die Proxy-Engine manchmal (<code>proxy-engine host process</code>). Die App bietet dafür einen <strong>abgesicherten Modus</strong> an:
+  die Proxy-Engine bleibt aus, und Konten öffnen sich direkt, ohne Proxys. Wenn du Proxys willst, setze die Exe-Datei und den Ordner auf die Whitelist.</p>
+  <h2>Sicherheit lokaler Daten</h2>
   <ul>
-    <li>Le fichier des comptes est entièrement chiffré pour l’utilisateur Windows en cours et le dossier de données utilise des permissions restreintes.</li>
-    <li>Les identifiants de session internes sont dérivés par machine, et le programme de mise à jour n’utilise plus de commandes encodées en mémoire — moins de fausses alertes antivirus pendant les mises à jour.</li>
+    <li>Die Kontendatei ist vollständig für den aktuellen Windows-Benutzer verschlüsselt, und der Datenordner nutzt eingeschränkte Berechtigungen.</li>
+    <li>Interne Sitzungskennungen werden pro Rechner abgeleitet, und der Updater nutzt keine kodierten In-Memory-Befehle mehr — weniger falsche Antivirus-Warnungen bei Updates.</li>
   </ul>
-  <h2>Bon à savoir</h2>
+  <h2>Gut zu wissen</h2>
   <ul>
-    <li>Le nom affiché dans les titres, la barre d’état et les textes peut être rebaptisé en modifiant <code>projeto.json</code> → <code>nome_mostrado</code> (c’est pourquoi certaines copies s’appellent « UNICOM »).</li>
-    <li>Supprimer ou modifier des fichiers dans <code>proxy-engine\</code> casse les fonctions de proxy — réinstallez plutôt que de patcher à la main.</li>
-    <li>Si l’autorisation est refusée après une mise à jour, mettez d’abord l’application à jour : « Réponse de licence invalide. Mettez à jour l’application et le plugin. »</li>
+    <li>Der in Titeln, Tray und Texten gezeigte Fenstername lässt sich umbranden, indem man <code>projeto.json</code> → <code>nome_mostrado</code> bearbeitet (deshalb heißen manche Kopien „UNICOM“).</li>
+    <li>Dateien in <code>proxy-engine\</code> zu löschen oder zu bearbeiten zerstört die Proxy-Funktionen — installiere neu, statt von Hand zu patchen.</li>
+    <li>Wird die Autorisierung nach einem Update abgelehnt, aktualisiere zuerst die App: „Ungültige Lizenzantwort. Aktualisiere die App und das Plugin.“</li>
   </ul>
-  <div class="quick"><b>Liens rapides:</b> <a href="#accounts">👤 Comptes</a> · <a href="#proxy">🛡 Proxy</a> · <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#accounts">👤 Konten</a> · <a href="#proxy">🛡 Proxy</a> · <a href="#troubleshoot">🩹 Fehlerbehebung</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ ACCOUNTS ============ -->
 <section class="page" id="accounts">
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre principale → Comptes</li><li>« + Add Steam account » / « Add account for automatic login »</li><li>Ouvrir les réglages individuels du compte</li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">👤</span> Konten &amp; Anmeldung</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Hauptfenster → Konten</li><li>„+ Steam-Konto hinzufügen“ / „Konto für automatische Anmeldung hinzufügen“</li><li>Die individuellen Einstellungen eines Kontos öffnen</li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Crée, modifie et supprime des comptes <strong>Steam</strong> et <strong>Purple</strong> ; race, serveur et slot de personnage se règlent par compte (le champ « Slot » s’appelait « Character » avant la 5.5.0).</li>
-    <li>Connecte automatiquement : remplit le login Steam (accepte l’accord Steam, confirme « Play anyway » sur un cloud obsolète) et pilote Purple, y compris la connexion <strong>NC</strong> ou <strong>Google</strong>.</li>
-    <li>Ouvre une <strong>instance Steam séparée par compte</strong> pour connecter plusieurs comptes sur un même PC.</li>
-    <li>Reconnaît les jeux déjà ouverts ; démarre et arrête chaque compte ; annule une connexion bloquée.</li>
-    <li>Affiche classe, niveau, statut et journaux par compte, dans la limite de la licence single/multi.</li>
-    <li>Organise les fenêtres de jeu en grilles de 1 × 1 à 6 × 6 ; le jeu s’ouvre par défaut en 1280 × 720.</li>
+    <li>Registriert, bearbeitet und löscht <strong>Steam</strong>- und <strong>Purple</strong>-Konten; Volk, Server und Charakterplatz werden pro Konto eingestellt (das Platzfeld hieß vor 5.5.0 „Charakter“).</li>
+    <li>Meldet automatisch an: füllt das Steam-Login aus (akzeptiert die Steam-Vereinbarung, bestätigt „Trotzdem spielen“ bei veraltetem Cloud-Stand) und steuert Purple, inklusive <strong>NC</strong>- oder <strong>Google</strong>-Anmeldung.</li>
+    <li>Öffnet eine <strong>separate Steam-Instanz pro Konto</strong>, damit sich viele Konten an einem PC anmelden können.</li>
+    <li>Erkennt bereits offene Spiele; startet und stoppt jedes Konto; bricht eine hängende Anmeldung ab.</li>
+    <li>Zeigt Klasse, Stufe, Status und Logs pro Konto und beachtet die Einzel-/Multi-Lizenz.</li>
+    <li>Ordnet Spielfenster in Rastern von 1 × 1 bis 6 × 6 an; das Spiel öffnet standardmäßig mit 1280 × 720.</li>
   </ul>
-  <h2>Mode d’emploi</h2>
+  <h2>So verwendest du es</h2>
   <ol>
-    <li>Cliquez sur « + Add Steam account » (ou ajoutez un compte Purple) et saisissez les identifiants.</li>
-    <li>Choisissez race, serveur et slot. La liste des serveurs est groupée par région (Amérique du Nord Est/Ouest, Europe, Amérique du Sud, …).</li>
-    <li>Réglez le mode et la taille de la fenêtre de jeu dans les paramètres du compte, puis cliquez sur <strong>Start</strong>.</li>
-    <li>Si une connexion bloque plus de 10 minutes, elle est stoppée — réglez le problème dans la fenêtre de jeu et relancez Start.</li>
+    <li>Klicke auf „+ Steam-Konto hinzufügen“ (oder füge ein Purple-Konto hinzu) und gib die Zugangsdaten ein.</li>
+    <li>Wähle Volk, Server und Platz. Die Serverliste ist nach Region gruppiert (Nordamerika Ost/West, Europa, Südamerika, …).</li>
+    <li>Stelle Fenstermodus und -größe des Spiels in den Kontoeinstellungen ein und klicke dann auf <strong>Starten</strong>.</li>
+    <li>Hängt eine Anmeldung länger als 10 Minuten, wird sie gestoppt — kläre es im Spielfenster und drücke erneut auf Starten.</li>
   </ol>
-  <h2>Réglages expliqués</h2>
+  <h2>Einstellungen erklärt</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Réglage</th><th>Effet</th></tr></thead>
+    <thead><tr><th>Einstellung</th><th>Funktion</th></tr></thead>
     <tbody>
-      <tr><td>Fenêtre de jeu</td><td>Mode fenêtré et taille : 960 × 540, 1280 × 720, 1600 × 900.</td></tr>
-      <tr><td>Grille de fenêtres</td><td>Organise immédiatement les fenêtres de jeu ouvertes selon la grille choisie (1 × 1 … 6 × 6) ; le bot ne les déplace plus ensuite de son propre chef.</td></tr>
-      <tr><td>Masquer noms / classes / niveaux</td><td>Confidentialité sur l’écran Comptes.</td></tr>
-      <tr><td>Profils (Export/Import)</td><td>Les profils du bot sont sauvegardés en <code>*.json</code> (« AION2 Profiles ») et transférables entre machines.</td></tr>
-      <tr><td>Multiplicateur de profils</td><td>x0.5 / x1 / x1.6 appliqués aux profils chargés.</td></tr>
-      <tr><td>Copier vers les comptes</td><td>Dans la fenêtre Configurer : copie les options cochées (Autoquest, AFK Farm, minage, Donjons, Rotines, Humanisation, Speed/FOV) vers les comptes cochés. Chaque compte garde sa classe et les expéditions déjà faites.</td></tr>
+      <tr><td>Spielfenster</td><td>Fenstermodus und -größe: 960 × 540, 1280 × 720, 1600 × 900.</td></tr>
+      <tr><td>Fensterraster</td><td>Ordnet offene Spielfenster jetzt im gewählten Raster an (1 × 1 … 6 × 6); der Bot verschiebt Fenster später nie von selbst.</td></tr>
+      <tr><td>Namen / Klassen / Stufen verbergen</td><td>Datenschutz auf dem Konten-Bildschirm.</td></tr>
+      <tr><td>Profile (Export/Import)</td><td>Bot-Profile werden als <code>*.json</code> gespeichert („AION2 Profiles“) und lassen sich zwischen Rechnern mitnehmen.</td></tr>
+      <tr><td>Profil-Multiplikator</td><td>Multiplikatoren x0,5 / x1 / x1,6 über die geladenen Profile.</td></tr>
+      <tr><td>Auf Konten kopieren</td><td>Im Konfigurieren-Fenster: kopiert die angehakten Optionen (Autoquest, AFK-Farmen, Bergbau, Dungeons, Abläufe, Humanisierung, Speed/FOV) auf die angehakten Konten. Jedes Konto behält seine eigene Klasse und die Expeditionen, die es bereits absolviert hat.</td></tr>
     </tbody>
   </table></div>
-  <h2>Bon à savoir</h2>
+  <h2>Gut zu wissen</h2>
   <ul>
-    <li>Purple demande d’accepter les conditions d’AION 2 une fois par compte — le bot poursuit ensuite tout seul.</li>
-    <li>« Un autre compte entre dans le jeu. Attendez la fin ou annulez cette connexion et appuyez à nouveau sur Start. »</li>
-    <li>Si « Start Game » de Purple reste désactivé longtemps, le jeu est probablement déjà ouvert ou une mise à jour/vérification est en cours — vérifiez Purple et relancez.</li>
-    <li>Les comptes Purple passent aussi par le proxy — depuis la 5.8.0, Purple ne se connecte qu’après être lié au proxy du compte, jamais via votre IP réelle.</li>
-    <li>Un nouveau compte démarre avec des réglages recommandés : Autoquest (quêtes vertes et principales), Expédition, Minage auto, Ferme AFK jusqu’au plafond de Kinah et Abysse sur les deux étages.</li>
+    <li>Purple bittet einmal pro Konto, den AION-2-Bedingungen zuzustimmen — danach macht der Bot von selbst weiter.</li>
+    <li>„Ein anderes Konto betritt gerade das Spiel. Warte, bis es fertig ist, oder brich diese Anmeldung ab und klicke erneut auf Starten.“</li>
+    <li>Bleibt Purples „Start Game“ lange deaktiviert, ist das Spiel wahrscheinlich schon offen oder ein Update bzw. eine Überprüfung läuft — prüfe Purple und starte erneut.</li>
+    <li>Auch Purple-Konten laufen über den Proxy — seit 5.8.0 verbindet sich Purple erst nach der Bindung an den Proxy des Kontos, nie über deine echte IP.</li>
+    <li>Ein neues Konto startet mit empfohlenen Einstellungen: Autoquest (Haupt- und Nebenquests), Expedition, Auto-Bergbau, AFK-Farmen bis zum Kinah-Limit und der Abyss auf beiden Stockwerken.</li>
   </ul>
-  <div class="quick"><b>Liens rapides:</b> <a href="#proxy">🛡 Proxy</a> · <a href="#run-order">🧭 Ordre de lancement</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#proxy">🛡 Proxy</a> · <a href="#run-order">🧭 Reihenfolge</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ PROXY ============ -->
 <section class="page" id="proxy">
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre principale → onglet Proxy</li><li>Réglages du compte → affectation du proxy</li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">🛡</span> Proxy (SOCKS5)</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Hauptfenster → Tab Proxy</li><li>Kontoeinstellungen → Proxy-Zuweisung</li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Importe des proxies <strong>SOCKS5</strong> un par un ou en lot et lie à chaque compte un proxy <strong>exclusif</strong>.</li>
-    <li>Teste chaque proxy : « Actif signifie une connexion HTTPS testée », avec latence affichée et diagnostics par étape (une étape de plus de 8 secondes est signalée).</li>
-    <li>Conserve les <strong>réservations d’IP fixe</strong> par compte ; après une rotation d’IP chez le fournisseur, libérez l’ancienne réservation depuis le menu du proxy pour re-lier le compte.</li>
-    <li>Bloque l’<strong>IPv6</strong> du jeu dans Windows pour qu’aucun trafic ne fuie hors du tunnel ; si le blocage échoue, le lancement est annulé.</li>
-    <li>Propose deux moteurs : mode <strong>TUN</strong> exclusif ou backend <strong>IPv4 intégré</strong> expérimental (« DNS par Windows, pas d’isolation IPv6. Ses propres jeux se ferment avec la session »).</li>
-    <li>Prend en charge la distribution automatique : chaque compte reçoit un profil de proxy dédié avant le démarrage.</li>
-    <li>Dès le premier compte avec proxy, le bot installe <strong>lui-même</strong> le pilote réseau et le moteur — rien à télécharger (depuis la 5.8.0).</li>
+    <li>Importiert <strong>SOCKS5</strong>-Proxys einzeln oder gesammelt und verknüpft jedes Konto mit seinem eigenen <strong>exklusiven</strong> Proxy.</li>
+    <li>Testet jeden Proxy: „Aktiv bedeutet eine getestete HTTPS-Verbindung“, mit angezeigter Latenz und Diagnose pro Schritt (ein Schritt über 8 Sekunden wird gemeldet).</li>
+    <li>Hält <strong>feste IP-Reservierungen</strong> pro Konto; nach der IP-Rotation beim Anbieter gib die alte Reservierung im Menü des Proxys frei, damit das Konto neu gebunden werden kann.</li>
+    <li>Blockiert das <strong>IPv6</strong> des Spiels in Windows, damit kein Verkehr am Proxy vorbeileckt; schlägt die Blockierung fehl, wird der Start abgebrochen.</li>
+    <li>Bietet zwei Engines: exklusiver <strong>TUN</strong>-Modus oder das experimentelle <strong>eingebaute IPv4</strong>-Backend („Windows-DNS, keine IPv6-Isolation. Eigene Spiele enden mit der Sitzung“).</li>
+    <li>Unterstützt automatische Verteilung: Jedes Konto erhält vor dem Start ein eigenes Proxy-Profil.</li>
+    <li>Beim ersten Konto mit Proxy richtet der Bot Netzwerktreiber und Engine <strong>von selbst</strong> ein — nichts herunterzuladen (seit 5.8.0).</li>
   </ul>
-  <h2>Mode d’emploi</h2>
+  <h2>So verwendest du es</h2>
   <ol>
-    <li>Ajoutez des proxies (votre liste ou le lien intégré « Buy proxy on Webshare ») et laissez le test confirmer HTTPS + latence.</li>
-    <li>Affectez un proxy exclusif à chaque compte — le partage d’un profil entre réservations est refusé tant que ce n’est pas corrigé.</li>
-    <li>Activez le mode souhaité (TUN exclusif ou IPv4 expérimental intégré) et fermez les sessions de jeu en cours avant de changer.</li>
-    <li>Démarrez le compte ; le bot ouvre le jeu dans la session proxy (« Connexion du jeu de ce compte au proxy… »).</li>
+    <li>Füge Proxys hinzu (eigene Liste oder über den eingebauten Link „Proxy bei Webshare kaufen“) und lass den Test HTTPS + Latenz bestätigen.</li>
+    <li>Weise jedem Konto einen exklusiven Proxy zu — die gemeinsame Nutzung eines Profils zwischen Reservierungen wird abgelehnt, bis das behoben ist.</li>
+    <li>Aktiviere den gewünschten Proxy-Modus (TUN exklusiv oder Proxy-Engine experimentelles IPv4) und schließe laufende Spielsitzungen, bevor du ihn wechselst.</li>
+    <li>Starte das Konto; der Bot öffnet das Spiel innerhalb der Proxy-Sitzung („Spiel dieses Kontos wird mit dem Proxy verbunden …“).</li>
   </ol>
-  <h2>Réglages expliqués</h2>
+  <h2>Einstellungen erklärt</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Réglage</th><th>Effet</th></tr></thead>
+    <thead><tr><th>Einstellung</th><th>Funktion</th></tr></thead>
     <tbody>
-      <tr><td>Add SOCKS5 proxy</td><td>Import unique ou en lot ; double-clic pour modifier une entrée.</td></tr>
-      <tr><td>Test</td><td>Connectivité HTTPS + latence ; une étape de test dépassant 8 s est signalée dans les diagnostics par étape.</td></tr>
-      <tr><td>Réservation d’IP fixe</td><td>« Choisissez un proxy libre pour figer une ancienne liaison. Les réservations d’IP fixe sont conservées. »</td></tr>
-      <tr><td>TUN exclusif</td><td>Tunnelisation complète pour le jeu du compte.</td></tr>
-      <tr><td>IPv4 intégré (expérimental)</td><td>DNS via Windows, pas d’isolation IPv6 par compte ; les jeux ouverts par le bot se ferment à la fin de la session.</td></tr>
-      <tr><td>Garde IPv6</td><td>Bloque l’IPv6 du jeu dans Windows ; le lancement est annulé si le blocage est impossible.</td></tr>
-      <tr><td>Sécurité / Mode sans échec</td><td>Si l’antivirus signale le processus hôte du moteur proxy, les comptes s’ouvrent directement sans proxies jusqu’à mise en liste blanche.</td></tr>
+      <tr><td>SOCKS5-Proxy hinzufügen</td><td>Einzel- oder Sammelimport; Doppelklick bearbeitet einen Eintrag.</td></tr>
+      <tr><td>Test</td><td>HTTPS-Erreichbarkeit + Latenz; ein Testschritt über 8 s wird in der Diagnose pro Schritt markiert.</td></tr>
+      <tr><td>Feste IP-Reservierung</td><td>„Wähle einen freien Proxy, um eine alte Bindung festzulegen. Feste IP-Reservierungen bleiben erhalten.“</td></tr>
+      <tr><td>TUN exklusiv</td><td>Vollständiges Tunneling für das Spiel des Kontos.</td></tr>
+      <tr><td>eingebautes IPv4 (experimentell)</td><td>DNS über Windows, keine IPv6-Isolation pro Konto; vom Bot geöffnete Spiele werden geschlossen, wenn die Sitzung endet.</td></tr>
+      <tr><td>IPv6-Schutz</td><td>Blockiert das IPv6 des Spiels in Windows; der Start wird abgebrochen, wenn es nicht blockiert werden kann.</td></tr>
+      <tr><td>Sicherheit / Abgesicherter Modus</td><td>Wenn Antivirus <code>proxy-engine host process</code> blockiert, öffnen sich Konten direkt ohne Proxys, bis du die Engine auf die Whitelist setzt.</td></tr>
     </tbody>
   </table></div>
-  <div class="warnbox">⚠️ <strong>Les comptes Purple passent aussi par le proxy.</strong> Depuis la 5.8.0, le jeu Purple ne se connecte qu’après être lié au proxy du compte — jamais via votre IP réelle. Le moteur exige en plus .NET Framework 4.7.2+ et peut demander un redémarrage après l’installation du pilote Windows Packet Filter.</div>
-  <div class="quick"><b>Liens rapides:</b> <a href="#accounts">👤 Comptes</a> · <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="warnbox">⚠️ <strong>Auch Purple-Konten laufen über den Proxy.</strong> Seit 5.8.0 verbindet sich das Spiel Purple erst, nachdem es an den Proxy des Kontos gebunden wurde — nie über deine echte IP. Die Engine benötigt außerdem .NET Framework 4.7.2+ und braucht nach der Installation des Windows-Paketfilter-Treibers möglicherweise einen Neustart.</div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#accounts">👤 Konten</a> · <a href="#troubleshoot">🩹 Fehlerbehebung</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ CAPTCHA ============ -->
 <section class="page" id="captcha">
-  <h1><span class="pic">◎</span> Captchas (Captcha) · IA</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre principale → onglet Captchas</li><li>Fonctionne automatiquement pendant toute activité</li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">◎</span> Captcha · KI</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Hauptfenster → Tab Captcha</li><li>Funktioniert automatisch bei jeder Aktivität</li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Quand le jeu affiche une vérification, le bot interrompt l’activité en cours, lit l’image directement depuis le jeu et la résout <strong>automatiquement</strong> grâce au service de captcha EVA intégré — sans clé ni solde nécessaire.</li>
-    <li>Une clé <strong>YesCaptcha</strong> optionnelle peut être configurée sur cet ordinateur (le champ peut être affiché ou masqué).</li>
-    <li>Jusqu’à <strong>trois tentatives</strong> ; l’activité ne reprend qu’une fois le personnage précédent confirmé et la vérification disparue.</li>
-    <li>Sans solution confirmée, le bot ferme <strong>uniquement le jeu de ce compte</strong> et le rouvre aussitôt via la connexion normale ; un jeu ouvert en dehors du bot est seulement fermé.</li>
-    <li>Il connaît la <strong>pénalité restrictive</strong> du jeu : « Toute activité de ce compte reste arrêtée et reprend d’elle-même à sa fin » (avec les minutes restantes affichées).</li>
+    <li>Zeigt das Spiel eine Überprüfung, stoppt der Bot die aktuelle Aktivität, liest das Bild direkt aus dem Spiel und löst sie <strong>automatisch</strong> mit dem eingebauten EVA-Captcha-Dienst — kein Schlüssel oder Guthaben nötig.</li>
+    <li>Ein optionaler <strong>YesCaptcha</strong>-Schlüssel kann auf diesem Rechner hinterlegt werden (das Feld kann ein- oder ausgeblendet werden).</li>
+    <li>Versucht es bis zu <strong>drei Mal</strong>; die Aktivität setzt erst fort, wenn der vorherige Charakter bestätigt ist und die Überprüfung weg ist.</li>
+    <li>Ohne bestätigte Lösung schließt der Bot <strong>nur das Spiel dieses Kontos</strong> und öffnet es sofort über die normale Anmeldung wieder; ein außerhalb des Bots geöffnetes Spiel wird nur geschlossen.</li>
+    <li>Kennt die <strong>restriktive Strafe</strong> des Spiels: „Jede Aktivität dieses Kontos bleibt gestoppt und setzt von selbst fort, wenn sie endet“ (mit Anzeige der verbleibenden Minuten).</li>
   </ul>
-  <h2>Mode d’emploi</h2>
+  <h2>So verwendest du es</h2>
   <ol>
-    <li>Rien à configurer : le service EVA intégré résout les captchas pour chaque client — sans clé ni solde nécessaire. En option, une clé YesCaptcha peut être ajoutée dans l’onglet Captchas.</li>
-    <li>Laissez tout le reste au bot : détection → résolution → confirmation → reprise. Le journal d’activité enregistre chaque étape.</li>
+    <li>Nichts zu konfigurieren: Der eingebaute EVA-Dienst löst Captchas für jeden Kunden — kein Schlüssel oder Guthaben nötig. Optional kann im Tab Captcha ein YesCaptcha-Schlüssel hinterlegt werden.</li>
+    <li>Den Rest überlass dem Bot: Erkennung → lösen → bestätigen → fortsetzen. Das Aktivitätsprotokoll hält jeden Schritt fest.</li>
   </ol>
-  <h2>Bon à savoir</h2>
+  <h2>Gut zu wissen</h2>
   <ul>
-    <li>Si l’image est introuvable dans la mémoire du jeu, celui-ci a probablement été mis à jour — une mise à jour de l’application suit sur le canal signé.</li>
-    <li>« Captcha : pas de solution dans le délai imparti ; fermeture et réouverture du jeu de ce compte. »</li>
-    <li>Les fichiers de pénalité (<code>captcha-penalty.json</code>, <code>captcha-records.json</code>) conservent l’historique pour que les redémarrages ne perdent pas l’état.</li>
+    <li>Wird das Bild im Speicher des Spiels nicht gefunden, wurde das Spiel wahrscheinlich aktualisiert — ein App-Update folgt über den signierten Kanal.</li>
+    <li>„Captcha: keine Lösung innerhalb der Frist; das Spiel dieses Kontos wird geschlossen und neu geöffnet.“</li>
+    <li>Straf-Dateien (<code>captcha-penalty.json</code>, <code>captcha-records.json</code>) speichern, was geschah, damit Neustarts keinen Zustand verlieren.</li>
   </ul>
-  <div class="quick"><b>Liens rapides:</b> <a href="#run-order">🧭 Ordre d’exécution</a> · <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#run-order">🧭 Reihenfolge</a> · <a href="#troubleshoot">🩹 Fehlerbehebung</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ RUN ORDER ============ -->
 <section class="page" id="run-order">
-  <h1><span class="pic">🧭</span> Ordre d’exécution (Run order)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Ordre d’exécution</strong></li><li>« Copier vers les comptes » applique les options copiées aux comptes cochés</li></ol>
-  <h2>Ce qu’il fait</h2>
-  <p>L’Ordre d’exécution est le plan quotidien du personnage — « L’ordre dans lequel Start effectue les objectifs, après les routines, de haut en bas. » Chaque activité peut être activée ou désactivée, réordonnée (↑/↓) et configurée (⚙) :</p>
+  <h1><span class="pic">🧭</span> Reihenfolge</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>Reihenfolge</strong></li><li>„Auf Konten kopieren“ überträgt die kopierten Optionen auf die angehakten Konten</li></ol>
+  <h2>Was es macht</h2>
+  <p>Die Reihenfolge ist der Tagesplan des Charakters — „Die Reihenfolge, in der Starten die Ziele nach den Abläufen von oben nach unten ausführt.“ Jede Aktivität lässt sich ein- und ausschalten, umordnen (↑/↓) und konfigurieren (⚙):</p>
   <ol>
-    <li><strong>Autoquest</strong> — « D’abord les quêtes vertes, puis les principales, jusqu’au niveau défini dans l’onglet Autoquest ou jusqu’à ce qu’il n’y ait plus de quêtes. »</li>
-    <li><strong>Expedition</strong> — « Expéditions jusqu’au nombre indiqué à côté (le même que dans l’onglet Expedition). Le compteur se réinitialise tout seul à 04:00. »</li>
-    <li><strong>Sealed Dungeons</strong> — « Les donjons scellés activés dans l’onglet Sealed Dungeons, un par un, jusqu’à ce qu’il n’y en ait plus (une fois par personnage, à partir du niveau choisi). »</li>
-    <li><strong>Minage auto (Auto mining)</strong> — « Les routes de l’onglet Minage auto, jusqu’à la limite quotidienne de collecte du serveur. »</li>
-    <li><strong>Ferme AFK (AFK Farm)</strong> — « Le spot de l’onglet Ferme AFK, jusqu’à la limite quotidienne de Kinah (les minutes des spots ne s’appliquent pas). »</li>
-    <li><strong>Abyss</strong> — « Les étages cochés dans l’onglet Abyss, l’un après l’autre, jusqu’à épuisement du temps de chacun (niveau 45 et 1000 points de puissance). »</li>
+    <li><strong>Autoquest</strong> — „Zuerst grüne Quests, dann die Hauptquests, bis zur Stufe aus dem Tab Autoquest oder bis keine Quests mehr da sind.“</li>
+    <li><strong>Expedition</strong> — „Expeditionen bis zur Anzahl daneben (dieselbe wie im Tab Expedition). Der Zähler wird um 04:00 von selbst zurückgesetzt.“</li>
+    <li><strong>Versiegelte Verliese</strong> — „Die im Tab Versiegelte Verliese eingeschalteten Verliese, eins nach dem anderen, bis keins mehr übrig ist (einmal pro Charakter, ab der gewählten Stufe).“</li>
+    <li><strong>Auto-Bergbau</strong> — „Routen aus dem Tab Auto-Bergbau bis zum täglichen Sammellimit des Servers.“</li>
+    <li><strong>AFK-Farmen</strong> — „Platz aus dem Tab AFK-Farmen bis zum täglichen Kinah-Limit (die Minuten der Plätze gelten nicht).“</li>
+    <li><strong>Abyss</strong> — „Auf dem Tab Abyss markierte Stockwerke, eins nach dem anderen, bis die Zeit jedes einzelnen abläuft (Stufe 45 und 1000 Kraftpunkte).“</li>
   </ol>
-  <h2>Règles sous la liste</h2>
+  <h2>Regeln unterhalb der Liste</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Règle</th><th>Ce qu’il fait</th></tr></thead>
+    <thead><tr><th>Regel</th><th>Funktion</th></tr></thead>
     <tbody>
-      <tr><td>Mourir X fois sur la même quête : passer à la suivante</td><td>Après X morts (10 par défaut) sur la même quête, celle-ci est mise de côté pendant 30 minutes et la suivante démarre. Les vertes passent toujours en premier.</td></tr>
-      <tr><td>Quand tout est terminé, changer de personnage</td><td>Le personnage revient à l’écran de sélection du même jeu et le slot suivant exécute le même ordre, en boucle. Il peut aussi créer de nouveaux personnages jusqu’à un total choisi (uniquement les slots libres — les slots verrouillés ne sont jamais touchés). Chaque personnage exécute l’ordre une fois par jour de jeu (04:00). L’engrenage ouvre ses réglages.</td></tr>
+      <tr><td>„X Mal in derselben Quest sterben: weiter zur nächsten“</td><td>Nach X Toden (Standard 10) in derselben Quest wird sie 30 min beiseitegelegt und die nächste der Reihenfolge beginnt. Die grünen kommen weiterhin zuerst.</td></tr>
+      <tr><td>„Wenn alles erledigt ist, Charakter wechseln“</td><td>Der Charakter kehrt zum Auswahlbildschirm desselben Spiels zurück, und der nächste Platz läuft dieselbe Reihenfolge — in einer Schleife. Er kann auch neue Charaktere bis zu einer gewählten Gesamtzahl erstellen (nur freie Plätze — gesperrte Plätze werden nie angetastet). Jeder Charakter macht die Reihenfolge einmal pro Spieltag (04:00). Das Zahnrad öffnet seine Einstellungen.</td></tr>
     </tbody>
   </table></div>
-  <h2>Bon à savoir</h2>
+  <h2>Gut zu wissen</h2>
   <ul>
-    <li>Les activités se passent le relais automatiquement : « Abyss : tu peux entrer maintenant ; la Ferme AFK passe le relais à l’Abyss », « Le minage auto peut revenir maintenant : la Ferme AFK passe le relais à la collecte ».</li>
-    <li>Les étapes devenues indisponibles sont reportées et reprises dès qu’elles redeviennent disponibles ; l’ordre entier redémarre à 04:00.</li>
-    <li>Tout ce qui est configuré ici est propre au profil — <strong>Copier vers les comptes</strong> copie les options cochées (Autoquest, Ferme AFK, minage, Donjons, Routines, Humanisation et Vitesse/FOV) vers les comptes cochés ; chacun conserve sa propre classe et les expéditions déjà effectuées.</li>
+    <li>Aktivitäten geben automatisch aneinander über: „Abyss: kann jetzt eintreten; AFK-Farmen übergeben an den Abyss“, „Auto-Bergbau kann jetzt zurückkommen: AFK-Farmen übergeben an das Sammeln“.</li>
+    <li>Schritte, die nicht verfügbar werden, werden verschoben und fortgesetzt, sobald sie wieder verfügbar sind; die ganze Reihenfolge startet um 04:00 neu.</li>
+    <li>Alles, was hier eingestellt ist, gilt pro Profil — <strong>Auf Konten kopieren</strong>: Die markierten Konten erhalten die Optionen des Bots (Autoquest, AFK-Farmen, Bergbau, Dungeons, Abläufe, Humanisierung und Speed/FOV). Die Klasse des Charakters und die bereits absolvierten Expeditionen bleiben die jedes Kontos.</li>
   </ul>
-  <div class="quick"><b>Liens rapides:</b> <a href="#autoquest">📋 Autoquest</a> · <a href="#expedition">🗺 Expedition</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#autoquest">📋 Autoquest</a> · <a href="#expedition">🗺 Expedition</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ AUTOQUEST ============ -->
 <section class="page" id="autoquest">
   <h1><span class="pic">📋</span> Autoquest</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Autoquest</strong></li><li>Ordre d’exécution → point 1</li></ol>
-  <h2>Ce qu’il fait</h2>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>Autoquest</strong></li><li>Reihenfolge → Punkt 1</li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Accomplit les missions automatiquement, en privilégiant <strong>d’abord les quêtes secondaires vertes</strong>, puis les quêtes principales configurables ; s’arrête au niveau choisi (0 = sans limite).</li>
-    <li>Accepte les quêtes secondaires exigées par une étape d’une quête principale et suit les destinations des quêtes.</li>
-    <li>Riposte automatiquement contre les agresseurs et reprend la mission ; les classes à distance gardent leurs distances — « attaque et recule face au monstre qui approche, en conservant la portée ».</li>
-    <li>Depuis la 5.14, la distance de combat respecte la portée réelle de vos compétences : les classes à distance ne restent plus trop loin d’un boss sans le frapper.</li>
-    <li>Peut utiliser sa propre vitesse de déplacement pendant l’Autoquest (désactivée quand le bot s’arrête).</li>
-    <li>Gestion des blocages : délai sans progrès, nouvelle tentative pour une mission reportée, option pour ignorer les missions bloquées, déblocage via parchemin de retour.</li>
+    <li>Erledigt Missionen automatisch und bevorzugt <strong>zuerst grüne Nebenquests</strong>, dann die konfigurierbaren Hauptquests; stoppt bei der gewählten Stufe (0 = kein Limit).</li>
+    <li>Nimmt Nebenquests an, die ein Schritt einer Hauptquest verlangt, und folgt den Quest-Zielen.</li>
+    <li>Wehrt sich automatisch gegen Angreifer und setzt die Mission fort; Fernkampfklassen halten Abstand — „greift an und weicht dem herankommenden Monster zurück, wobei die Reichweite gewahrt bleibt“.</li>
+    <li>Seit 5.14 beachtet der Kampfabstand die echte Reichweite deiner Fähigkeiten, sodass Fernkampfklassen nicht mehr zu weit von einem Boss stehen, ohne zu treffen.</li>
+    <li>Kann während der Autoquest seine eigene Bewegungsgeschwindigkeit nutzen (deaktiviert, wenn der Bot stoppt).</li>
+    <li>Umgang mit Festhängen: Timeout ohne Fortschritt, neuer Versuch für eine verschobene Mission, Option zum Ignorieren festergehangener Missionen, Lösen per Rückkehrrolle.</li>
   </ul>
-  <h2>Réglages expliqués</h2>
+  <h2>Einstellungen erklärt</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Réglage</th><th>Ce qu’il fait</th></tr></thead>
+    <thead><tr><th>Einstellung</th><th>Funktion</th></tr></thead>
     <tbody>
-      <tr><td>Niveau de fin</td><td>L’Autoquest se termine à ce niveau (0 = illimité) et l’ordre passe à l’activité suivante.</td></tr>
-      <tr><td>Quêtes principales / priorité aux vertes</td><td>D’abord les quêtes secondaires vertes, puis les principales.</td></tr>
-      <tr><td>Délai sans progrès</td><td>Une mission sans progrès est reportée puis réessayée ; « ignorer les missions bloquées » la saute à la place.</td></tr>
-      <tr><td>Riposte automatique + esquive</td><td>Riposte ; les classes à distance attaquent tout en s’éloignant, avec une marge de portée et une variation de déplacement.</td></tr>
-      <tr><td>Vitesse de déplacement propre</td><td>Accélère les trajets entre les objectifs ; uniquement pendant l’activité.</td></tr>
-      <tr><td>Déblocage par parchemin de retour</td><td>Téléporte le personnage hors d’un blocage (configurable).</td></tr>
+      <tr><td>Endstufe</td><td>Die Autoquest endet bei dieser Stufe (0 = unbegrenzt), und die Reihenfolge geht zur nächsten Aktivität über.</td></tr>
+      <tr><td>Hauptquests / grüne Priorität</td><td>Zuerst grüne Nebenquests, dann die Hauptquests.</td></tr>
+      <tr><td>Timeout ohne Fortschritt</td><td>Eine Mission ohne Fortschritt wird verschoben und erneut versucht; „festegehangene Missionen ignorieren“ überspringt sie stattdessen.</td></tr>
+      <tr><td>Auto-Gegenwehr + Ausweichen</td><td>Schlägt zurück; Fernkampfklassen greifen an, während sie sich entfernen — mit Reichweiten-Puffer und Bewegungsvariation.</td></tr>
+      <tr><td>Eigene Bewegungsgeschwindigkeit</td><td>Beschleunigt das Reisen zwischen Zielen; nur während die Aktivität läuft.</td></tr>
+      <tr><td>Rückkehrrolle zum Lösen</td><td>Teleportiert hinaus, wenn der Charakter festegehangen ist (konfigurierbar).</td></tr>
     </tbody>
   </table></div>
-  <h2>Bon à savoir</h2>
+  <h2>Gut zu wissen</h2>
   <ul>
-    <li>La règle de mort vient de l’Ordre d’exécution : après X morts (10 par défaut) sur la même quête, il attend 30 minutes.</li>
-    <li>La progression et les problèmes sont journalisés par compte : une demande au support peut donc être traitée à partir des seuls journaux.</li>
+    <li>Die Todesregel kommt aus der Reihenfolge: Nach X Toden (Standard 10) in derselben Quest wartet sie 30 Minuten.</li>
+    <li>Fortschritt und Probleme werden pro Konto protokolliert, sodass sich eine Support-Anfrage allein aus den Logs beantworten lässt.</li>
   </ul>
-  <div class="quick"><b>Liens rapides:</b> <a href="#run-order">🧭 Ordre d’exécution</a> · <a href="#afk-farm">⚔ Ferme AFK</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#run-order">🧭 Reihenfolge</a> · <a href="#afk-farm">⚔ AFK-Farmen</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ AFK FARM ============ -->
 <section class="page" id="afk-farm">
-  <h1><span class="pic">⚔</span> Ferme AFK (AFK Farm)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Ferme AFK</strong></li><li>Ordre d’exécution → point 5</li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">⚔</span> AFK-Farmen</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>AFK-Farmen</strong></li><li>Reihenfolge → Punkt 5</li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Chasse avec les compétences de votre classe sur le spot choisi : parcourt la zone, sélectionne les cibles, attaque, ramasse le butin.</li>
-    <li><strong>Spots</strong> : ajoutez/supprimez/activez des lieux avec un rayon, une limite de temps en minutes (0 = sans limite) et des IDs de monstres ; une liste d’IDs vide accepte toutes les cibles éligibles de la zone.</li>
-    <li><strong>Points</strong> : lit le type de cible sélectionné, capture votre position actuelle comme point ou accepte des coordonnées manuelles — plusieurs points par spot sont possibles ; sans coordonnées, la position du personnage est utilisée.</li>
-    <li><strong>Combat</strong> : distance d’attaque et rayon de recherche ; la riposte automatique priorise les agresseurs ; face aux monstres qui approchent, il « attaque et recule… en conservant la portée ».</li>
-    <li><strong>Spiritmaster</strong> : choisit l’esprit permanent — Eau, Feu, Vent ou Terre.</li>
-    <li>Sous l’Ordre d’exécution, elle farme « jusqu’à la limite quotidienne de Kinah (les minutes des spots ne s’appliquent pas) ». La limite est de <strong>1 000 000 de Kinah par jour</strong> et se renouvelle à 04:00.</li>
+    <li>Jagt mit den Fähigkeiten deiner Klasse an einem gewählten Platz: durchläuft das Gebiet, wählt Ziele aus, greift an, sammelt Beute.</li>
+    <li><strong>Plätze</strong>: Orte mit Radius, Zeitlimit in Minuten (0 = kein Limit) und Monster-IDs hinzufügen/entfernen/aktivieren; eine leere ID-Liste akzeptiert alle passenden Ziele im Gebiet.</li>
+    <li><strong>Punkte</strong>: liest den gewählten Zieltyp, erfasst die aktuelle Position als Punkt oder nimmt manuelle Koordinaten — mehrere Punkte pro Platz sind erlaubt; ohne Koordinaten wird die Position des Charakters verwendet.</li>
+    <li><strong>Kampf</strong>: Angriffsdistanz und Suchradius; die Auto-Gegenwehr priorisiert Angreifer; gegenüber herankommenden Monstern „greift sie an und weicht zurück … wobei die Reichweite gewahrt bleibt“.</li>
+    <li><strong>Beschwörer</strong>: wählt den permanenten Geist — Wasser, Feuer, Wind oder Erde.</li>
+    <li>Unter der Reihenfolge farmt sie „bis zum täglichen Kinah-Limit (die Minuten der Plätze gelten nicht)“. Das Limit beträgt <strong>1.000.000 Kinah pro Tag</strong> und erneuert sich um 04:00.</li>
   </ul>
-  <h2>Résilience (intégrée)</h2>
+  <h2>Robustheit (eingebaut)</h2>
   <ul>
-    <li>Un spot qui tue le personnage à répétition, est inaccessible ou ne montre aucune attaque pendant un moment est <strong>mis en pause</strong> et le prochain spot activé prend le relais.</li>
-    <li>Après plusieurs morts d’affilée, la ferme continue en <strong>mode prudent</strong> — rayon réduit — avant de se mettre en pause.</li>
-    <li>« Limite quotidienne de Kinah atteinte ; la Ferme revient quand la limite se renouvelle (04:00). »</li>
+    <li>Ein Platz, der den Charakter wiederholt tötet, nicht erreichbar ist oder eine Weile keinen Angriff zeigt, wird <strong>pausiert</strong>, und der nächste aktivierte Platz übernimmt.</li>
+    <li>Nach vielen Toden in Folge läuft das Farmen im <strong>vorsichtigen Modus</strong> weiter — mit kleinerem Radius —, bevor es pausiert.</li>
+    <li>„AFK-Farmen: Tägliches Kinah-Limit erreicht; Farmen geht weiter, wenn das Limit erneuert wird (04:00).“</li>
   </ul>
-  <h2>Bon à savoir</h2>
+  <h2>Gut zu wissen</h2>
   <ul>
-    <li>« AFK Farm on Start » lance la ferme immédiatement après la connexion, avant l’Ordre d’exécution.</li>
-    <li>Il existe aussi un mode purement AFK (« start only AFK Farm ») qui saute entièrement les quêtes.</li>
-    <li>Les spots sont propres au profil — copiez-les vers d’autres comptes depuis la fenêtre de configuration.</li>
+    <li>„AFK-Farmen beim Start“ lässt das Farmen direkt nach der Anmeldung laufen, vor der Reihenfolge.</li>
+    <li>Es gibt auch einen reinen AFK-Modus („nur AFK-Farmen starten“), der Quests komplett überspringt.</li>
+    <li>Plätze gelten pro Profil — kopiere sie aus dem Konfigurieren-Fenster auf andere Konten.</li>
   </ul>
-  <div class="quick"><b>Liens rapides:</b> <a href="#mining">⛏ Minage auto</a> · <a href="#routines">🧰 Routines</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#mining">⛏ Auto-Bergbau</a> · <a href="#routines">🧰 Abläufe</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ MINING ============ -->
 <section class="page" id="mining">
-  <h1><span class="pic">⛏</span> Minage auto (Auto mining)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Minage auto</strong></li><li>Ordre d’exécution → point 4</li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">⛏</span> Auto-Bergbau</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>Auto-Bergbau</strong></li><li>Reihenfolge → Punkt 4</li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Collecte les ressources naturelles à partir du <strong>niveau 45</strong>, en respectant le <strong>quota quotidien de collecte du serveur</strong> — « Limite de coleta do servidor atingido; coleta adiada até… » (la limite du serveur a été atteinte ; collecte reportée jusqu’à la réinitialisation).</li>
-    <li><strong>Routes</strong> : ajoutez/supprimez, nommez, activez, réordonnez ; chaque route a un rayon et des IDs de ressources — une liste vide collecte toutes les ressources naturelles éligibles.</li>
-    <li>Lit la ressource actuellement sélectionnée et ajoute son ID ; accepte des coordonnées manuelles et plusieurs points par route ; tous les points d’une route doivent être sur la même carte.</li>
-    <li>Parcourt la route, collecte en chemin, reprend son trajet et répète les routes sur la carte actuelle ; un temps d’attente configurable sans ressources le fait passer au point suivant.</li>
-    <li>Seule la zone de chaque point de route est collectée — les gisements sur le chemin entre les points sont ignorés ; les points éloignés se rejoignent à pied en chemin (le téléport automatique via Kibelisk pour les points à plus de 500 m a été retiré en 5.5.0).</li>
-    <li>Riposte automatiquement contre les agresseurs et reprend la collecte ; peut passer le relais à la Ferme AFK quand les limites sont atteintes, et inversement.</li>
-    <li>Un changement de carte ou de session met fin à la collecte ; tout est journalisé par compte.</li>
+    <li>Sammelt natürliche Ressourcen ab <strong>Stufe 45</strong> und beachtet das <strong>tägliche Sammellimit des Servers</strong> — „Limite de coleta do servidor atingido; coleta adiada até…“ (das Serverlimit wurde erreicht; das Sammeln wird bis zum Zurücksetzen verschoben).</li>
+    <li><strong>Routen</strong>: hinzufügen/entfernen, benennen, aktivieren, umordnen; jede Route hat einen Radius und Ressourcen-IDs — eine leere Liste sammelt jede passende natürliche Ressource.</li>
+    <li>Liest die aktuell gewählte Ressource und fügt ihre ID hinzu; akzeptiert manuelle Koordinaten, mehrere Punkte pro Route; alle Punkte einer Route müssen auf derselben Karte liegen.</li>
+    <li>Läuft die Route ab, sammelt unterwegs, setzt den Weg fort und wiederholt die Routen auf der aktuellen Karte; eine konfigurierbare Wartezeit ohne Ressourcen bringt ihn zum nächsten Punkt.</li>
+    <li>Gesammelt wird nur im Gebiet jedes Routenpunkts — Erze unterwegs zwischen den Punkten werden ignoriert; ferne Punkte werden zu Fuß entlang des Wegs erreicht (der automatische Kibelisk-Teleport für Punkte über 500 m wurde in 5.5.0 entfernt).</li>
+    <li>Wehrt sich automatisch gegen Angreifer und setzt das Sammeln fort; kann bei erreichten Limits an die AFK-Farmen übergeben und umgekehrt.</li>
+    <li>Ein Karten- oder Sitzungswechsel beendet das Sammeln; alles wird pro Konto protokolliert.</li>
   </ul>
-  <h2>Réglages expliqués</h2>
+  <h2>Einstellungen erklärt</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Réglage</th><th>Ce qu’il fait</th></tr></thead>
+    <thead><tr><th>Einstellung</th><th>Funktion</th></tr></thead>
     <tbody>
-      <tr><td>Ajouter une route</td><td>Crée une route nommée sur la carte actuelle, avec rayon + points.</td></tr>
-      <tr><td>IDs de ressources</td><td>Restreint ce qui est collecté ; vide = toutes les ressources naturelles éligibles ; « Toutes les ressources » réinitialise.</td></tr>
-      <tr><td>Délai d’attente sans ressources</td><td>Combien de temps attendre à un point avant d’avancer.</td></tr>
-      <tr><td>Riposte automatique</td><td>Riposte en cas d’attaque, puis reprend la route.</td></tr>
-      <tr><td>Limite quotidienne du serveur</td><td>La collecte attend la réinitialisation du quota du serveur.</td></tr>
+      <tr><td>Route hinzufügen</td><td>Erstellt eine benannte Route auf der aktuellen Karte mit Radius + Punkten.</td></tr>
+      <tr><td>Ressourcen-IDs</td><td>Schränkt ein, was gesammelt wird; leer = alle passenden natürlichen Ressourcen; „Alle Ressourcen“ setzt zurück.</td></tr>
+      <tr><td>Wartezeit ohne Ressourcen</td><td>Wie lange an einem Punkt gewartet wird, bevor es weitergeht.</td></tr>
+      <tr><td>Auto-Gegenwehr</td><td>Wehrt sich bei Angriffen und setzt danach die Route fort.</td></tr>
+      <tr><td>Tägliches Serverlimit</td><td>Das Sammeln wartet, bis das Serverkontingent zurückgesetzt wird.</td></tr>
     </tbody>
   </table></div>
-  <div class="quick"><b>Liens rapides:</b> <a href="#afk-farm">⚔ Ferme AFK</a> · <a href="#abyss">◆ Abyss</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#afk-farm">⚔ AFK-Farmen</a> · <a href="#abyss">◆ Abyss</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ SEALED DUNGEONS ============ -->
 <section class="page" id="dungeons">
-  <h1><span class="pic">🏰</span> Donjons scellés (Sealed Dungeons)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Donjons scellés</strong></li><li>Ordre d’exécution → point 3</li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">🏰</span> Versiegelte Verliese</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>Versiegelte Verliese</strong></li><li>Reihenfolge → Punkt 3</li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Lance les donjons activés dans l’onglet <strong>un par un</strong>, <strong>une fois par personnage</strong>, à partir du niveau de départ choisi (45 par défaut).</li>
-    <li>La liste des quêtes terminées du jeu lui indique quels donjons restent — ceux qui sont finis ne sont jamais retentés.</li>
-    <li>Voyage vers Kibelisk, confirme l’arrivée, puis interagit avec le portail d’entrée.</li>
-    <li>Garde-fous : « Mourir 10 fois dans le même donjon ou y passer plus de 40 minutes arrête les Donjons scellés jusqu’au prochain jour de jeu (04:00). »</li>
-    <li>Quand la limite quotidienne est atteinte, il quitte le donjon de lui-même.</li>
+    <li>Läuft die im Tab eingeschalteten Verliese <strong>eins nach dem anderen</strong>, <strong>einmal pro Charakter</strong>, ab der gewählten Startstufe (Standard 45).</li>
+    <li>Die Liste der abgeschlossenen Quests im Spiel sagt ihm, welche Verliese übrig sind — abgeschlossene werden nie wieder versucht.</li>
+    <li>Reist zum Kibelisk, bestätigt die Ankunft und interagiert dann mit dem Eingangsportal.</li>
+    <li>Sicherheitsgrenzen: „10 Tode im selben Dungeon oder mehr als 40 Minuten in einem stoppen die Versiegelten Dungeons bis zum nächsten Spieltag (04:00).“</li>
+    <li>Ist das Tageslimit erreicht, verlässt es das Verlies von selbst.</li>
   </ul>
-  <h2>Mode d’emploi</h2>
+  <h2>So verwendest du es</h2>
   <ol>
-    <li>Cochez les donjons disponibles pour votre personnage et définissez le niveau de départ.</li>
-    <li>Laissez « Donjons scellés » activé dans l’Ordre d’exécution (ou lancez-le individuellement depuis l’onglet).</li>
-    <li>Le statut de chaque donjon est visible dans les journaux du compte.</li>
+    <li>Hake die Verliese an, die deinem Charakter zur Verfügung stehen, und lege die Startstufe fest.</li>
+    <li>Lasse „Versiegelte Verliese“ in der Reihenfolge aktiviert (oder starte sie einzeln aus dem Tab).</li>
+    <li>Der Status jedes Verlieses ist in den Konten-Logs sichtbar.</li>
   </ol>
-  <div class="quick"><b>Liens rapides:</b> <a href="#expedition">🗺 Expédition</a> · <a href="#run-order">🧭 Ordre d’exécution</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#expedition">🗺 Expedition</a> · <a href="#run-order">🧭 Reihenfolge</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ EXPEDITION ============ -->
 <section class="page" id="expedition">
-  <h1><span class="pic">🗺</span> Expédition (Expedition)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Expédition</strong></li><li>Ordre d’exécution → point 2</li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">🗺</span> Expedition</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>Expedition</strong></li><li>Reihenfolge → Punkt 2</li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Lance l’Exploration de <strong>Krall</strong>, <strong>Unu</strong> ou du <strong>Temple de Feu</strong>, ou la <strong>Conquête de Krall</strong>, selon le nombre d’entrées choisi par jour (0 = aucune) — la même quantité que dans l’Ordre d’exécution.</li>
-    <li>Mode <strong>solo ou équipe</strong> : une équipe nécessite trois membres. Avec l’outil multi-comptes (VK) ouvert, le matchmaking est indisponible, donc le bot crée l’équipe directement ou attend une équipe que vous avez créée/acceptée dans le jeu.</li>
-    <li>Vérifie l’<strong>énergie Ode</strong> avant d’entrer — 40 pour Krall/Unu, 60 pour le Temple de Feu —, peut utiliser des objets de recharge et achète d’abord une Potion/Élixir ; avec « Exiger des potions » activé, il n’entre qu’avec un stock confirmé.</li>
-    <li>La limite de morts (5 par défaut) et un <strong>plafond de 1 000 000 de pièces d’or</strong> en Conquête protègent la course ; la riposte automatique et la vitesse propre sont configurables, la vitesse est restaurée à la sortie. Une option « Utiliser la pierre de résurrection » (activée par défaut) ressuscite sur place quand la pierre est dans le sac.</li>
-    <li>Dans la Conquête de Krall, les boss sont pris dans l’ordre — gauche, droite, gardien, final — et le pilier est défini comme point de contrôle.</li>
-    <li>Depuis la 5.14 : dans la Conquête de Krall, le bot ouvre le <strong>coffre de récompense après le boss final</strong> avant de partir.</li>
-    <li>Les compteurs se réinitialisent d’eux-mêmes à 04:00 ; l’équipe d’expédition est quittée automatiquement avant d’entrer dans l’Abysse.</li>
+    <li>Läuft <strong>Krall</strong>-, <strong>Unu</strong>- oder <strong>Feuertempel</strong>-Erkundung oder <strong>Krall-Eroberung</strong>, mit der gewählten Anzahl von Eintritten pro Tag (0 = keine) — dieselbe Menge wie in der Reihenfolge.</li>
+    <li><strong>Solo- oder Teammodus</strong>: Ein Team braucht drei Mitglieder. Bei geöffnetem Multi-Account-Tool (VK) ist Matchmaking nicht verfügbar, daher erstellt der Bot das Team direkt oder wartet auf ein Team, das du im Spiel erstellt/akzeptiert hast.</li>
+    <li>Prüft die <strong>Ode-Energie</strong> vor dem Eintreten — 40 für Krall/Unu, 60 für den Feuertempel —, kann Auflade-Items nutzen und kauft zuerst einen Trank/Elixier; mit „Tränke erforderlich“ tritt er nur mit bestätigtem Bestand ein.</li>
+    <li>Todeslimit (Standard 5) und eine <strong>Gold-Obergrenze von 1.000.000</strong> in der Eroberung schützen den Lauf; Auto-Gegenwehr und eigene Geschwindigkeit sind konfigurierbar, die Geschwindigkeit wird beim Verlassen zurückgesetzt. Eine Option „Wiederbelebungsstein verwenden“ (standardmäßig an) belebt auf der Stelle, wenn der Stein im Beutel ist.</li>
+    <li>In der Krall-Eroberung werden die Bosse der Reihe nach genommen — links, rechts, Wächter, Schluss — und die Säule wird als Kontrollpunkt gesetzt.</li>
+    <li>Seit 5.14: In der Krall-Eroberung öffnet der Bot die <strong>Belohnungstruhe nach dem Schlussboss</strong>, bevor er verlässt.</li>
+    <li>Die Zähler werden um 04:00 von selbst zurückgesetzt; das Expeditionsteam wird vor dem Betreten des Abyss automatisch verlassen.</li>
   </ul>
-  <h2>Réglages expliqués</h2>
+  <h2>Einstellungen erklärt</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Réglage</th><th>Ce qu’il fait</th></tr></thead>
+    <thead><tr><th>Einstellung</th><th>Funktion</th></tr></thead>
     <tbody>
-      <tr><td>Entrées par jour / succès par jour</td><td>Plafonds quotidiens pour l’expédition choisie (0 = aucune).</td></tr>
-      <tr><td>Solo / équipe</td><td>Le mode équipe nécessite 3 membres ; avec VK ouvert, l’équipe est créée directement.</td></tr>
-      <tr><td>Seuil d’Ode requis</td><td>40 (Krall/Unu) ou 60 (Temple de Feu) ; objets de recharge et achat de Potion/Élixir avant d’entrer.</td></tr>
-      <tr><td>Exiger des potions</td><td>N’entrer qu’après avoir confirmé le stock.</td></tr>
-      <tr><td>Limite de morts</td><td>Par défaut, 5 morts terminent la course pour la journée.</td></tr>
-      <tr><td>Plafond d’or en Conquête</td><td>1 000 000 par jour en Conquête de Krall.</td></tr>
+      <tr><td>Eintritte pro Tag / Erfolge pro Tag</td><td>Tägliche Obergrenzen für die gewählte Expedition (0 = keine).</td></tr>
+      <tr><td>Solo / Team</td><td>Der Teammodus braucht 3 Mitglieder; bei geöffnetem VK wird das Team direkt erstellt.</td></tr>
+      <tr><td>Ode-Anforderung</td><td>40 (Krall/Unu) oder 60 (Feuertempel); Auflade-Items und Trank-/Elixierkauf vor dem Eintreten.</td></tr>
+      <tr><td>Tränke erforderlich</td><td>Eintreten erst nach Bestätigung des Bestands.</td></tr>
+      <tr><td>Todeslimit</td><td>Standardmäßig beenden 5 Tode den Lauf für den Tag.</td></tr>
+      <tr><td>Gold-Obergrenze der Eroberung</td><td>1.000.000 pro Tag in der Krall-Eroberung.</td></tr>
     </tbody>
   </table></div>
-  <div class="quick"><b>Liens rapides:</b> <a href="#abyss">◆ Abysse</a> · <a href="#dungeons">🏰 Donjons scellés</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#abyss">◆ Abyss</a> · <a href="#dungeons">🏰 Versiegelte Verliese</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ ABYSS ============ -->
 <section class="page" id="abyss">
-  <h1><span class="pic">◆</span> Farm de l’Abysse (Abyss)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Abysse</strong></li><li>Ordre d’exécution → point 6</li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">◆</span> Abyss</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>Abyss</strong></li><li>Reihenfolge → Punkt 6</li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Entre dans les <strong>étages de l’Abysse</strong> cochés, l’un après l’autre, et farme chacun jusqu’à la fin de son temps.</li>
-    <li>Prérequis : <strong>niveau 45</strong>, <strong>1000 points de puissance</strong>, et plus de trois minutes sur l’étage.</li>
-    <li>Attend <strong>90 % d’énergie de vol</strong>, vole vers l’endroit choisi et se recharge à 100 % à la position d’atterrissage la plus proche quand l’énergie vient à manquer en cours de route.</li>
-    <li>Chasse les monstres, prend en charge la <strong>collecte automatique de plumes</strong> et demande la sortie avec environ trois minutes restantes.</li>
-    <li>Les spots peuvent être randomisés à chaque entrée — et variés à nouveau après des morts ; les emplacements des étages et les coordonnées/niveaux des monstres sont visibles dans l’onglet.</li>
-    <li><strong>Plage horaire d’entrée</strong> optionnelle : activez-la et définissez une heure de 0 à 23 (22 par défaut) selon l’horloge du PC — la fenêtre court de cette heure jusqu’à minuit, sans forcer une sortie à minuit.</li>
-    <li>Quitte l’équipe d’expédition avant d’entrer (le jeu n’emmène pas les membres d’équipe dans l’Abysse).</li>
+    <li>Betritt die angehakten <strong>Abyss-Stockwerke</strong> eins nach dem anderen und farmt jedes, bis seine Zeit abläuft.</li>
+    <li>Voraussetzungen: <strong>Stufe 45</strong>, <strong>1000 Kraftpunkte</strong> und mehr als drei Minuten auf dem Stockwerk.</li>
+    <li>Wartet auf <strong>90 % Flugenergie</strong>, fliegt zum gewählten Platz und lädt an der nächsten Landeposition auf 100 % auf, wenn die Energie unterwegs zur Neige geht.</li>
+    <li>Jagt Monster, unterstützt das automatische <strong>Federnsammeln</strong> und fordert den Ausgang bei etwa drei Minuten Restzeit an.</li>
+    <li>Plätze können bei jedem Eintritt zufällig gewählt — und nach Toden erneut variiert werden; Stockwerk-Orte und Monster-Koordinaten/-Stufen sind im Tab sichtbar.</li>
+    <li>Optionaler <strong>Eintritts-Zeitplan</strong>: aktiviere ihn und stelle eine Stunde von 0 bis 23 ein (Standard 22), nach der PC-Uhr — das Fenster läuft von dieser Stunde bis Mitternacht, ohne einen Ausgang um Mitternacht zu erzwingen.</li>
+    <li>Verlässt das Expeditionsteam vor dem Eintreten (das Spiel nimmt keine Teammitglieder mit in den Abyss).</li>
   </ul>
-  <h2>Bon à savoir</h2>
+  <h2>Gut zu wissen</h2>
   <ul>
-    <li>« Abysse : entrée possible maintenant ; l’AFK Farm passe le relais à l’Abysse. » — les activités se relaient automatiquement.</li>
-    <li>La collecte dans l’Abysse s’arrête quand la limite quotidienne de collecte est atteinte.</li>
-    <li>Si l’énergie de vol n’atteint pas le seuil à temps, le bot quitte l’Abysse de lui-même.</li>
+    <li>„Abyss: kann jetzt eintreten; AFK-Farmen übergeben an den Abyss.“ — Aktivitäten geben automatisch über.</li>
+    <li>Das Sammeln im Abyss stoppt, wenn das tägliche Sammellimit erreicht ist.</li>
+    <li>Erreicht die Flugenergie die Schwelle nicht rechtzeitig, verlässt der Bot den Abyss von selbst.</li>
   </ul>
-  <div class="quick"><b>Liens rapides:</b> <a href="#mining">⛏ Auto-minage</a> · <a href="#speed-fov">⚡ Vitesse &amp; FOV</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#mining">⛏ Auto-Bergbau</a> · <a href="#speed-fov">⚡ Speed &amp; FOV</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ ROUTINES ============ -->
 <section class="page" id="routines">
-  <h1><span class="pic">🧰</span> Routines</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Routines</strong></li><li>« Les routines activées s’exécutent au démarrage et se répètent à des intervalles aléatoires. »</li></ol>
-  <h2>Général</h2>
+  <h1><span class="pic">🧰</span> Abläufe</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>Abläufe</strong></li><li>„Die aktivierten Abläufe laufen beim Start und wiederholen sich in zufälligen Abständen.“</li></ol>
+  <h2>Allgemein</h2>
   <ul>
-    <li><strong>Monolithe</strong> : montée de niveau automatique avec des plumes ; « Montant à envoyer au Monolithe ; 0 = ce qui manque pour le niveau suivant. »</li>
-    <li><strong>Marché</strong> : à l’heure des routines, il interrompt l’activité, ouvre le Marché via le menu, encaisse les ventes terminées, annonce les objets échangeables et republie ceux invendus — avec les couleurs d’équipement et un prix bas/moyen ; les objets protégés sont préservés.</li>
-    <li><strong>Entrepôt</strong> : avec un sac plein après la tentative de démantèlement, il stocke la Transformation spéciale, les matériaux d’artisanat Communs/Rares et la nourriture Commune/Rare ; le dépôt peut s’exécuter en dehors de l’expédition.</li>
-    <li><strong>Survie</strong> : potion selon le pourcentage de vie, pierre de résurrection (préparation de la résurrection, reprise même si la confirmation n’arrive pas en 60 s), ramassage du butin à proximité, récupération de personnage bloqué et retour par parchemin après l’échec des tentatives locales (hors instances). Conserve une énergie de vol/plané minimale, esquive les attaques des boss enregistrés (quitte la zone d’attaque par le côté le plus proche, dash face à la sortie) et collecte les orbes de soin pendant l’Autoquête. Un <strong>mode Aion 1</strong> plus la création de personnage à la fin du tutoriel avec classe et préfixe configurés sont également ici.</li>
+    <li><strong>Monolith</strong>: automatisches Leveln mit Federn; „Menge, ab der zum Monolith gegangen wird; 0 = was bis zur nächsten Stufe fehlt.“</li>
+    <li><strong>Markt</strong>: zur Zeit der Abläufe unterbricht er die Aktivität, öffnet den Markt über das Menü, löst abgeschlossene Verkäufe ein, bietet handelbare Gegenstände an und stellt unverkaufte wieder ein — mit Ausrüstungsfarben und einem niedrigeren/mittleren Preis; geschützte Gegenstände bleiben erhalten.</li>
+    <li><strong>Lagerhaus</strong>: bei vollem Rucksack lagert es nach dem Zerlegungsversuch Besondere Verwandlung, gewöhnliche/seltene Handwerksmaterialien und gewöhnliche/seltene Speisen ein; die Einlagerung kann außerhalb der Expedition laufen.</li>
+    <li><strong>Überleben</strong>: Trank nach Lebensprozent, Wiederbelebungsstein (Wiederbelebung vorbereiten, weitermachen, auch wenn die Bestätigung nicht in 60 s kommt), Aufheben von Beute in der Nähe, Rettung festergehangener Charaktere und Rückkehr per Rolle, wenn lokale Versuche scheitern (außerhalb von Instanzen). Hält eine Mindest-Flug-/Gleitenergie, weicht Angriffen registrierter Bosse aus (verlässt das Angriffsgebiet über die nächste Seite, Sprint mit Blick zum Ausgang) und sammelt während der Autoquest Heilungskugeln. Ein <strong>Aion-1-Modus</strong> plus Charaktererstellung am Ende des Tutorials mit konfigurierter Klasse und Präfix sind hier ebenfalls zu Hause.</li>
   </ul>
-  <h2>Récompenses</h2>
-  <ul><li>Reçoit les pièces jointes du courrier et les récompenses de présence, de succès et de pass disponibles.</li></ul>
-  <h2>Personnage</h2>
+  <h2>Belohnungen</h2>
+  <ul><li>Nimmt Postanlagen sowie verfügbare Anwesenheits-, Erfolgs- und Pass-Belohnungen entgegen.</li></ul>
+  <h2>Charakter</h2>
   <ul>
-    <li>Agrandit le sac jusqu’à un total choisi, en comptant les extensions déjà effectuées.</li>
-    <li>Équipe les titres et les ailes selon la rareté, remplit les emplacements vides, remplace les armes/équipements par des améliorations compatibles.</li>
-    <li>Améliore l’équipement avec des limites de couleur — blanc, vert, bleu, jaune, orange (les runes ne sont jamais améliorées).</li>
-    <li><strong>Daevanion automatique</strong> : « apprend le nœud le moins cher dans tous les onglets déverrouillés. »</li>
-    <li>Insère les pierres de Mana/Vitalité dans les emplacements vides, en préservant les pierres existantes.</li>
-    <li>Extrait l’équipement éligible des couleurs choisies (le « nettoyage d’objets » auquel se réfèrent les autres onglets).</li>
-    <li>Améliore les compétences apprises selon le niveau et les points ; les états sont visibles dans le journal.</li>
+    <li>Erweitert den Rucksack bis zu einer gewählten Gesamtzahl und zählt bereits gemachte Erweiterungen mit.</li>
+    <li>Rüstet Titel und Flügel nach Seltenheit aus, füllt leere Plätze und tauscht Waffen/Ausrüstung gegen kompatible Verbesserungen.</li>
+    <li>Wertet Ausrüstung mit Farbgrenzen auf — weiß, grün, blau, gelb, orange (Runen werden nie aufgewertet).</li>
+    <li><strong>Automatisches Daevanion</strong>: „lernt den günstigsten Knoten in allen freigeschalteten Tabs.“</li>
+    <li>Fügt Mana-/Vital-Steine in leere Plätze ein und bewahrt vorhandene Steine.</li>
+    <li>Zerlegt passende Ausrüstung der gewählten Farben (das „Item-Aufräumen“, auf das andere Tabs verweisen).</li>
+    <li>Verbessert gelernte Fähigkeiten entsprechend Stufe und Punkten; Zustände sind im Log sichtbar.</li>
   </ul>
-  <h2>Approvisionnement</h2>
+  <h2>Vorräte</h2>
   <ul>
-    <li>Quitte le combat et retourne à <strong>Kibelisk</strong> avec le Parchemin de retour lié pour réapprovisionner le stock bas.</li>
-    <li>Configure les quantités minimale et finale de Potion de vie, d’Élixir de vie et de Parchemin de retour — tous liés.</li>
-    <li>Cherche le Marchand d’objets et n’achète que ce qui manque pour compléter le stock défini.</li>
+    <li>Verlässt den Kampf und kehrt zum <strong>Kibelisk</strong> zurück, mit der Verknüpften Rückkehrrolle, um niedrigen Bestand aufzufüllen.</li>
+    <li>Stellt Mindest- und Endmengen von Lebenstrank, Lebenselixier und Rückkehrrolle ein — alle verknüpft.</li>
+    <li>Durchsucht den Item-Händler und kauft nur, was fehlt, um den festgelegten Bestand zu vervollständigen.</li>
   </ul>
-  <h2>Événements</h2>
+  <h2>Ereignisse</h2>
   <ul>
-    <li><strong>Shugo Festa — Protection des marchands</strong> : l’événement horaire, enregistré dans le planning de routines du bot (livré désactivé — activez-le dans Routines).</li>
-    <li>Course de la <strong>Piste mystérieuse</strong> : le bot court la course, esquive les plots orange, les tourbillons et les portiques, prend les orbes de vitesse et de vie et plane sur la piste de lancement ; son bonus de vitesse de déplacement est configuré sur la page <a href="#speed-fov">Vitesse/FOV</a>.</li>
-    <li>À la fin d’un événement, la récompense est récupérée et le compte reprend ce qu’il faisait.</li>
+    <li><strong>Shugo Festa — Beschützung der Händler</strong>: das stündliche Ereignis, im Ablaufplan des Bots gespeichert (kommt ausgeschaltet — aktiviere es in den Abläufen).</li>
+    <li><strong>Mysterious Track-Rennen</strong>: Der Bot fährt das Rennen, weicht orangen Feldern, Wirbeln und Toren aus, nimmt Tempo- und Lebenskugeln auf und gleitet an der Startrampe; sein Bewegungs-Speed-Boost wird auf der <a href="#speed-fov">Speed/FOV</a>-Seite konfiguriert.</li>
+    <li>Am Ende eines Ereignisses wird die Belohnung eingesammelt, und das Konto kehrt zu seiner Tätigkeit zurück.</li>
   </ul>
-  <div class="warnbox">⚠️ Un captcha détecté arrête les routines (« les routines restent arrêtées ») jusqu’à ce que la vérification soit confirmée comme résolue.</div>
-  <div class="quick"><b>Liens rapides:</b> <a href="#humanization">🫥 Humanisation</a> · <a href="#captcha">◎ Captcha</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="warnbox">⚠️ Eine erkannte Captcha stoppt die Abläufe („Abläufe bleiben gestoppt“), bis die Überprüfung als gelöst bestätigt ist.</div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#humanization">🫥 Humanisierung</a> · <a href="#captcha">◎ Captcha</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ HUMANIZATION ============ -->
 <section class="page" id="humanization">
-  <h1><span class="pic">🫥</span> Humanisation (Humanization)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Humanisation</strong></li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">🫥</span> Humanisierung</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>Humanisierung</strong></li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>“Ajoute une attente aléatoire avant les clics, les dialogues, le ramassage, l’inventaire, les récompenses et les étapes de connexion. Il ne fait qu’ajouter du temps, il n’en retire jamais : le bot devient un peu plus lent et moins régulier.”</li>
-    <li>“Ajoute une marge aléatoire allant jusqu’à 30 s lorsque le bot revérifie s’il peut continuer après une attente, et jusqu’à 90 s lors d’un redémarrage automatique.”</li>
-    <li><strong>Pauses de session</strong> : définissez une durée de travail actif ; à son terme, le bot arrête les routines, essaie de retourner en ville avec un parchemin de retour et se repose — avec une variation de ±30 % sur les minutages, et reprend selon le mode et la carte.</li>
-    <li>Effectue occasionnellement de petites rotations de caméra sans utiliser la souris physique, en respectant les restrictions de chaque activité.</li>
-    <li>L’AFK Farm elle-même peut prendre de courtes pauses d’allure humaine — “1 à 8 min sur place, en réagissant aux agressions” (AFK Farm uniquement, pendant la chasse).</li>
+    <li>„Fügt vor Klicks, Gesprächen, Beute, Inventar, Belohnungen und Anmeldeschritten eine zufällige Wartezeit ein. Es wird nur Zeit addiert, nie abgezogen: Der Bot wird etwas langsamer und unregelmäßiger.“</li>
+    <li>„Addiert einen zufälligen Spielraum von bis zu 30 s, wenn der Bot nach einer Wartezeit erneut prüft, ob er fortfahren kann, und von bis zu 90 s beim automatischen Neustart.“</li>
+    <li><strong>Sitzungspausen</strong>: lege eine aktive Arbeitszeit fest; nach ihrem Ende stoppt der Bot die Abläufe, versucht mit einer Rückkehrrolle in die Stadt zurückzukehren und ruht — mit einer Variation von ±30 % bei den Zeitangaben; die Fortsetzung richtet sich nach Modus und Karte.</li>
+    <li>Führt gelegentliche kleine Kameradrehungen aus, ohne die physische Maus zu benutzen, und beachtet dabei die Einschränkungen jeder Aktivität.</li>
+    <li>Die AFK-Farmen selbst können kurze, menschenähnliche Pausen einlegen — „1 bis 8 min am Platz, auf Aggression reagierend“ (nur AFK-Farmen, während der Jagd).</li>
   </ul>
-  <div class="dangerbox">⚠️ L’Humanisation réduit la régularité des actions du bot, mais <strong>elle ne garantit pas de protection contre les sanctions</strong>. Utilisez-la à vos propres risques.</div>
-  <div class="quick"><b>Liens rapides:</b> <a href="#speed-fov">⚡ Vitesse &amp; FOV</a> · <a href="#faq">❓ FAQ</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="dangerbox">⚠️ Die Humanisierung verringert die Regelmäßigkeit der Bot-Aktionen, aber <strong>sie garantiert keinen Schutz vor Bestrafung</strong>. Benutzung auf eigenes Risiko.</div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#speed-fov">⚡ Speed &amp; FOV</a> · <a href="#faq">❓ FAQ</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ SPEED/FOV ============ -->
 <section class="page" id="speed-fov">
-  <h1><span class="pic">⚡</span> Vitesse &amp; FOV (Speed/FOV)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre de configuration (par profil) → onglet <strong>Vitesse/FOV</strong></li></ol>
-  <h2>Ce qu’il fait</h2>
+  <h1><span class="pic">⚡</span> Speed &amp; FOV</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Konfigurieren-Fenster (pro Profil) → Tab <strong>Speed/FOV</strong></li></ol>
+  <h2>Was es macht</h2>
   <ul>
-    <li>Ajuste séparément la <strong>vitesse de déplacement</strong>, la <strong>vitesse d’animation</strong>, la <strong>vitesse d’attaque/combat</strong>, le <strong>champ de vision</strong> et la <strong>distance maximale de la caméra</strong> ; les valeurs sont conservées même lorsque c’est désactivé.</li>
-    <li>Activez/désactivez chaque ajustement et demandez une restauration ; la mise en pause et la fermeture restaurent également les valeurs d’origine.</li>
-    <li><strong>En expédition</strong> : active le réglage de vitesse de la page avec le pourcentage configuré et le désactive à la sortie (20 par défaut).</li>
-    <li><strong>Course Mysterious Track</strong> : augmente la vitesse de déplacement uniquement pendant la course et la rétablit à la fin (20 par défaut ; 0 = désactivé). Pendant la course, le bot évite les plateformes orange, les tornades, les petites créatures et le portail violet, roule sur les plateformes cyan et ramasse les orbes de vitesse et de vie (orbes de vie en priorité quand la vie est basse).</li>
-    <li>Le curseur de vitesse de combat nécessite que le personnage ait rendu l’attribut de vitesse de combat disponible.</li>
+    <li>Passt <strong>Bewegungs-Speed</strong>, <strong>Animations-Speed</strong>, <strong>Angriffs-/Kampf-Speed</strong>, <strong>Gesichtsfeld</strong> und <strong>maximale Kameradistanz</strong> getrennt an; Werte bleiben gespeichert, auch wenn deaktiviert.</li>
+    <li>Jede Anpassung ein-/ausschalten und eine Wiederherstellung anfordern; Pause und Schließen stellen die Originalwerte ebenfalls wieder her.</li>
+    <li><strong>In der Expedition</strong>: schaltet die Speed-Anpassung dieser Seite mit dem konfigurierten Prozentsatz ein und beim Verlassen aus (Standard 20).</li>
+    <li><strong>Mysterious Track-Rennen</strong>: erhöht das Bewegungstempo nur während des Rennens und stellt es am Ende wieder her (Standard 20; 0 = aus). Im Rennen weicht er den orangen Feldern, Tornados, kleinen Kerlchen und dem lila Tor aus, fährt über die türkisen Felder und sammelt Tempo- und Lebenskugeln auf (Lebenskugeln zuerst, wenn das Leben niedrig ist).</li>
+    <li>Der Kampf-Speed-Regler setzt voraus, dass der Charakter das Attribut Kampfgeschwindigkeit verfügbar gemacht hat.</li>
   </ul>
-  <div class="dangerbox">⚠️ Les modifications de vitesse et de FOV sont des modifications visibles. Elles sont optionnelles, désactivées par défaut et utilisées à vos propres risques.</div>
-  <div class="quick"><b>Liens rapides:</b> <a href="#humanization">🫥 Humanisation</a> · <a href="#expedition">🗺 Expédition</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="dangerbox">⚠️ Speed- und FOV-Änderungen sind sichtbare Modifikationen. Sie sind optional, standardmäßig aus, und werden auf eigenes Risiko verwendet.</div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#humanization">🫥 Humanisierung</a> · <a href="#expedition">🗺 Expedition</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ SETTINGS ============ -->
 <section class="page" id="settings">
-  <h1><span class="pic">⚙</span> Paramètres (Settings) &amp; raccourcis clavier</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Où le trouver</h2>
-  <ol><li>Fenêtre principale → Paramètres (“Langue, fenêtre de jeu, confidentialité, mises à jour et données sur cet ordinateur”)</li><li>En jeu : appuyez sur <kbd>F10</kbd> ou utilisez l’icône de la zone de notification à côté de l’horloge</li></ol>
-  <h2>Ce qu’il contient</h2>
+  <h1><span class="pic">⚙</span> Einstellungen &amp; Hotkeys</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Wo du es findest</h2>
+  <ol><li>Hauptfenster → Einstellungen („Sprache, Spielfenster, Datenschutz, Updates und Daten auf diesem Rechner“)</li><li>Im Spiel: <kbd>F10</kbd> drücken oder das Tray-Symbol neben der Uhr</li></ol>
+  <h2>Was drin ist</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Section</th><th>Ce qu’elle fait</th></tr></thead>
+    <thead><tr><th>Bereich</th><th>Funktion</th></tr></thead>
     <tbody>
-      <tr><td>Apparence et langue</td><td>Langue de l’interface et des compétences — 14 langues d’interface, dont l’anglais, le russe, le portugais, l’espagnol, l’allemand, le coréen, le chinois, le turc et d’autres.</td></tr>
-      <tr><td>Fenêtre de jeu</td><td>Mode et taille de la fenêtre : 960 × 540, 1280 × 720, 1600 × 900 (fenêtré ou plein écran).</td></tr>
-      <tr><td>Confidentialité</td><td>Masquer les noms, les classes et les niveaux sur l’écran des comptes.</td></tr>
-      <tr><td>Mises à jour</td><td>Vérifie le canal signé ; toutes les six heures lorsque le bot est arrêté ; “Vérifier les mises à jour” à tout moment.</td></tr>
-      <tr><td>Journaux</td><td>“Historique des activités, interruptions et mises à jour” — journaux par compte pour les rapports de problème.</td></tr>
-      <tr><td>Données sur cet ordinateur</td><td>Exporter/importer les préférences et générer un paquet de diagnostic pour l’assistance.</td></tr>
-      <tr><td>Zone de notification</td><td>Réduire dans la zone de notification ; afficher l’icône de notification ; l’assistant en jeu s’ouvre avec <kbd>F10</kbd> ou via l’icône de notification.</td></tr>
+      <tr><td>Erscheinungsbild und Sprache</td><td>Sprache von Oberfläche und Fähigkeiten — 14 UI-Sprachen, darunter Englisch, Russisch, Portugiesisch, Spanisch, Deutsch, Koreanisch, Chinesisch, Türkisch und mehr.</td></tr>
+      <tr><td>Spielfenster</td><td>Fenstermodus und -größe: 960 × 540, 1280 × 720, 1600 × 900 (Fenster oder Vollbild).</td></tr>
+      <tr><td>Datenschutz</td><td>Namen, Klassen und Stufen auf dem Konten-Bildschirm verbergen.</td></tr>
+      <tr><td>Updates</td><td>Prüft den signierten Kanal; alle sechs Stunden bei gestopptem Bot; „Nach Updates suchen“ jederzeit.</td></tr>
+      <tr><td>Logs</td><td>„Verlauf von Aktivitäten, Unterbrechungen und Updates“ — Logs pro Konto für Problemberichte.</td></tr>
+      <tr><td>Daten auf diesem Rechner</td><td>Einstellungen exportieren/importieren und ein Diagnosepaket für den Support erzeugen.</td></tr>
+      <tr><td>Tray</td><td>In den System-Tray minimieren; Tray-Symbol zeigen; der In-Game-Helfer öffnet mit <kbd>F10</kbd> oder dem Tray-Symbol.</td></tr>
     </tbody>
   </table></div>
-  <h2>Raccourcis clavier</h2>
+  <h2>Hotkeys</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Raccourci</th><th>Fonction</th></tr></thead>
+    <thead><tr><th>Hotkey</th><th>Zweck</th></tr></thead>
     <tbody>
-      <tr><td>Raccourci principal</td><td>Contrôle principal en jeu.</td></tr>
-      <tr><td>Raccourci secondaire</td><td>Contrôle secondaire.</td></tr>
-      <tr><td>Raccourci de pause</td><td>Met en pause/reprend l’activité en cours.</td></tr>
-      <tr><td>Raccourci de burst de stigmas</td><td>Déclenche le burst configuré.</td></tr>
-      <tr><td>Raccourci de blocage</td><td>Bloque le traitement des entrées tant qu’il est maintenu.</td></tr>
+      <tr><td>Haupt-Hotkey</td><td>Primäre Steuerung im Spiel.</td></tr>
+      <tr><td>Sekundärer Hotkey</td><td>Sekundäre Steuerung.</td></tr>
+      <tr><td>Pause-Hotkey</td><td>Pausiert/setzt die aktuelle Aktivität fort.</td></tr>
+      <tr><td>Stigma-Burst-Hotkey</td><td>Löst den konfigurierten Burst aus.</td></tr>
+      <tr><td>Block-Hotkey</td><td>Blockiert die Eingabeverarbeitung, solange er gehalten wird.</td></tr>
     </tbody>
   </table></div>
-  <div class="quick"><b>Liens rapides:</b> <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#install">🚀 Mises à jour</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#troubleshoot">🩹 Fehlerbehebung</a> · <a href="#install">🚀 Updates</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ TROUBLESHOOTING ============ -->
 <section class="page" id="troubleshoot">
-  <h1><span class="pic">🩹</span> Dépannage (Troubleshooting)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h2>Symptôme → solution</h2>
+  <h1><span class="pic">🩹</span> Fehlerbehebung</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h2>Symptom → Lösung</h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Symptôme</th><th>Que faire</th></tr></thead>
+    <thead><tr><th>Symptom</th><th>Was tun</th></tr></thead>
     <tbody>
-      <tr><td>Autorisation refusée / “Réponse de licence invalide”</td><td>Mettez à jour l’application et le plugin sur le canal signé ; si le lien de connexion a été actualisé, l’application affiche “Connectez-vous avec votre clé.”</td></tr>
-      <tr><td>Clé liée à un autre PC</td><td>Connectez-vous et confirmez le transfert : EVA déplace la clé vers ce PC (le déplacement retire 9 heures au temps restant de la clé).</td></tr>
-      <tr><td>Le jeu ne démarre pas via le bot</td><td>Le bot recherche dans les bibliothèques Steam, le registre, le jeu ouvert et les dossiers “NC\AION 2” ; vérifiez le chemin Steam par défaut <code>…\steamapps\common\AION2</code> et cliquez à nouveau sur Démarrer.</td></tr>
-      <tr><td>“AION2 n’est pas resté ouvert après trois tentatives”</td><td>Vérifiez le jeu ou Steam ; le bot indique combien de lancements ont échoué et pourquoi.</td></tr>
-      <tr><td>Erreur anti-cheat <code>0xE0000015</code> / <code>0xE0000027</code></td><td>Un jeu a été ouvert avant l’outil multi-comptes. Fermez les jeux en trop ainsi que VK, rouvrez VK, puis n’ouvrez que les jeux des comptes.</td></tr>
-      <tr><td>Connexion bloquée</td><td>Le bot attend jusqu’à 10 minutes, puis s’arrête : traitez la fenêtre en question et cliquez à nouveau sur Démarrer. Steam lancé en tant qu’administrateur garde la connexion à l’intérieur.</td></tr>
-      <tr><td>Le proxy ne démarre pas</td><td>Installez/autorisez <code>proxy-engine host process</code> dans le pare-feu (privé + public) ; .NET Framework 4.7.2+ requis ; après l’installation du pilote Windows Packet Filter, redémarrez si demandé ; si le dossier proxy-engine est incomplet — réinstallez le bot.</td></tr>
-      <tr><td>“Impossible de confirmer l’IPv4 sortante via SOCKS5 et HTTPS”</td><td>Vérifiez les identifiants du proxy (utilisateur/mot de passe SOCKS5) et les diagnostics par étape ; une étape de test dépassant 8 s y est signalée.</td></tr>
-      <tr><td>Avertissement de fuite IPv6</td><td>Le lancement est annulé volontairement — “afin qu’aucune connexion ne sorte hors du proxy”. Corrigez l’IPv6 du système ou utilisez le mode TUN.</td></tr>
-      <tr><td>Captcha non résolu à temps</td><td>Le jeu du compte est fermé puis rouvert via la connexion normale ; une sanction restrictive met en pause toutes les activités de ce compte jusqu’à son terme.</td></tr>
-      <tr><td>Le personnage reste immobile</td><td>Ouvrez la fenêtre du jeu et vérifiez la présence d’un dialogue ou d’une vérification ; le gardien de fenêtres ferme les fenêtres résiduelles lors de la tentative suivante.</td></tr>
-      <tr><td>La collecte ne démarre pas</td><td>La limite quotidienne de collecte du serveur est peut-être atteinte — la collecte est reportée jusqu’au reset.</td></tr>
-      <tr><td>Crash du jeu signalé</td><td>Le bot lit l’entrée du Journal d’événements Windows (application défaillante AION2.exe), la signale et redémarre le compte.</td></tr>
+      <tr><td>Autorisierung abgelehnt / „Ungültige Lizenzantwort“</td><td>Aktualisiere App und Plugin über den signierten Kanal; wurde der Anmeldelink erneuert, zeigt die App „Mit deinem Schlüssel eingeben“.</td></tr>
+      <tr><td>Schlüssel an einen anderen PC gebunden</td><td>Melde dich an und bestätige die Übertragung: EVA zieht den Schlüssel auf diesen PC um (der Umzug kostet 9 Stunden der Schlüsselzeit).</td></tr>
+      <tr><td>Spiel startet nicht über den Bot</td><td>Der Bot durchsucht Steam-Bibliotheken, die Registry, das geöffnete Spiel und „NC\AION 2“-Ordner; prüfe den Steam-Standardpfad <code>…\steamapps\common\AION2</code> und klicke erneut auf Starten.</td></tr>
+      <tr><td>„AION2 blieb nach drei Versuchen nicht offen“</td><td>Prüfe das Spiel bzw. Steam; der Bot meldet, wie viele Starts fehlschlugen und warum.</td></tr>
+      <tr><td>Anti-Cheat-Fehler <code>0xE0000015</code> / <code>0xE0000027</code></td><td>Ein Spiel wurde geöffnet, bevor das Multi-Account-Tool lief. Schließe die zusätzlichen Spiele und VK, öffne VK erneut, und öffne dann nur die Spiele der Konten.</td></tr>
+      <tr><td>Anmeldung hängt</td><td>Der Bot wartet bis zu 10 Minuten und stoppt dann: kläre das Fenster und klicke erneut auf Starten. Als Administrator geöffnetes Steam behält die Anmeldung in sich.</td></tr>
+      <tr><td>Proxy startet nicht</td><td>Installiere/erlaube <code>proxy-engine host process</code> in der Firewall (privat + öffentlich); .NET Framework 4.7.2+ nötig; nach der Installation des Windows-Paketfilter-Treibers bei Aufforderung neu starten; ist der proxy-engine-Ordner unvollständig — den Bot neu installieren.</td></tr>
+      <tr><td>„Ausgehendes IPv4 über SOCKS5 und HTTPS konnte nicht bestätigt werden“</td><td>Prüfe die Proxy-Zugangsdaten (SOCKS5-Benutzer/Passwort) und die Diagnose pro Schritt; ein Testschritt über 8 s wird dort markiert.</td></tr>
+      <tr><td>IPv6-Leck-Warnung</td><td>Der Start wird absichtlich abgebrochen — „damit keine Verbindung am Proxy vorbeigeht“. Behebe das IPv6 des Systems oder nutze den TUN-Modus.</td></tr>
+      <tr><td>Captcha nicht rechtzeitig gelöst</td><td>Das Spiel des Kontos wird geschlossen und über die normale Anmeldung wieder geöffnet; eine restriktive Strafe pausiert alle Aktivitäten dieses Kontos, bis sie endet.</td></tr>
+      <tr><td>Charakter steht still</td><td>Öffne das Spielfenster und prüfe auf einen Dialog oder eine Überprüfung; der Fensterwächter schließt übrig gebliebene Fenster beim nächsten Versuch.</td></tr>
+      <tr><td>Sammeln startet nicht</td><td>Das tägliche Sammellimit des Servers ist vielleicht erreicht — das Sammeln wird bis zum Zurücksetzen verschoben.</td></tr>
+      <tr><td>Spielabsturz gemeldet</td><td>Der Bot liest den Eintrag der Windows-Ereignisprotokolle (abstürzende Anwendung AION2.exe), meldet ihn und startet das Konto neu.</td></tr>
     </tbody>
   </table></div>
-  <h2>Pour une demande au support</h2>
+  <h2>Für eine Support-Anfrage</h2>
   <ol>
-    <li>Ouvrez les <strong>journaux</strong> du compte (Paramètres → Journaux) : “Historique des activités, interruptions et mises à jour”.</li>
-    <li>Générez le <strong>paquet de diagnostic</strong> (Paramètres → données sur cet ordinateur).</li>
-    <li>Joignez les deux à votre ticket dans le <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">Discord de la communauté</a>.</li>
+    <li>Öffne die <strong>Logs</strong> des Kontos (Einstellungen → Logs): „Verlauf von Aktivitäten, Unterbrechungen und Updates“.</li>
+    <li>Erzeuge das <strong>Diagnosepaket</strong> (Einstellungen → Daten auf diesem Rechner).</li>
+    <li>Hänge beides an dein Ticket im <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">Community-Discord</a> an.</li>
   </ol>
-  <div class="quick"><b>Liens rapides:</b> <a href="#faq">❓ FAQ</a> · <a href="#install">🚀 Installation &amp; mises à jour</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#faq">❓ FAQ</a> · <a href="#install">🚀 Installation &amp; Updates</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ FAQ ============ -->
 <section class="page" id="faq">
   <h1><span class="pic">❓</span> FAQ</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <h3>Est-ce une macro ou un hack ?</h3>
-  <p>C’est une suite externe d’automatisation et de gestion de comptes : elle pilote le jeu via sa propre interface, avec des ajustements optionnels de Vitesse/FOV clairement séparés et désactivés par défaut.</p>
-  <h3>Puis-je être banni ?</h3>
-  <p>Toute automatisation comporte un risque. Le bot inclut l’Humanisation (attentes aléatoires, pauses de session, petits mouvements de caméra), et le vendeur déclare clairement qu’il <strong>ne garantit pas de protection contre les sanctions</strong>.</p>
-  <h3>Toutes les classes sont-elles prises en charge ?</h3>
-  <p>Les neuf classes : Gladiator, Templar, Assassin, Ranger, Sorcerer, Spiritmaster, Cleric, Chanter et Brawler. Le Spiritmaster choisit un esprit permanent (Eau, Feu, Vent ou Terre) ; les classes à distance disposent de leurs propres réglages d’esquive.</p>
-  <h3>Puis-je lancer plusieurs fenêtres de jeu à la fois ?</h3>
-  <p>Oui — avec l’outil multi-comptes (VK) requis par la version BOT MULTI. Chaque compte dispose de sa propre instance Steam et d’un emplacement dans la grille de fenêtres (de 1 × 1 à 6 × 6). La version Single ne prend pas en charge VK.</p>
-  <h3>Que se passe-t-il quand l’inventaire est plein ?</h3>
-  <p>Les Routines s’en chargent : l’entrepôt stocke les Transformations spéciales, les matériaux d’artisanat et la nourriture après la tentative de démontage, le Marché libère de la place en mettant des objets en vente, et une option “Extraire aussi les objets échangeables” (ajoutée en 5.5.0) permet au nettoyage des objets d’extraire les équipements échangeables des couleurs choisies — jamais les améliorations, les objets équipés ni les objets de quête.</p>
-  <h3>Gère-t-il le captcha en jeu ?</h3>
-  <p>Oui — automatiquement : le service EVA intégré le résout pour chaque client, sans clé nécessaire (une clé YesCaptcha est optionnelle), jusqu’à trois tentatives ; sans solution, il rentre proprement et attend la fin d’une éventuelle sanction.</p>
-  <h3>Quels serveurs sont pris en charge ?</h3>
-  <p>La liste des serveurs est groupée par région — Amérique du Nord (Est/Ouest), Europe, Amérique du Sud et autres — et est mise à jour avec l’application (elle est livrée en tant que données, pas codée en dur).</p>
-  <h3>Est-ce payant ?</h3>
-  <p>La licence est une clé carte valable <strong>1 mois</strong> ; selon la politique de la boutique, il n’y a <strong>aucun remboursement</strong>.</p>
-  <h3>Comment mettre à jour ?</h3>
-  <p>Automatiquement : l’application vérifie le canal signé toutes les six heures lorsqu’elle est arrêtée, attend l’arrêt des comptes, puis se ferme, se met à jour et se rouvre elle-même — le jeu reste ouvert.</p>
-  <div class="quick"><b>Liens rapides:</b> <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Communauté &amp; assistance</a> ·
-  🛠 <strong>Un problème ? Contactez unic.tools (U.Tools)</strong> · <a href="#troubleshoot">🩹 Dépannage</a> · <a href="#home">📚 Table des matières</a></div>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <h3>Ist es ein Makro oder ein Hack?</h3>
+  <p>Es ist eine externe Automatisierungs- und Kontoverwaltungssuite: Sie steuert das Spiel über dessen eigene Oberfläche, mit optionalen Speed/FOV-Anpassungen, die klar getrennt und standardmäßig aus sind.</p>
+  <h3>Kann ich gebannt werden?</h3>
+  <p>Jede Automatisierung birgt ein Risiko. Der Bot enthält die Humanisierung (zufällige Wartezeiten, Sitzungspausen, kleine Kamerabewegungen), und der Anbieter stellt klar, dass er <strong>keinen Schutz vor Bestrafung garantiert</strong>.</p>
+  <h3>Unterstützt es jede Klasse?</h3>
+  <p>Alle neun Klassen: Gladiator, Templer, Assassine, Jäger, Zauberer, Beschwörer, Kleriker, Kantor und Faustkämpfer. Der Beschwörer wählt einen permanenten Geist (Wasser, Feuer, Wind oder Erde); Fernkampfklassen bekommen eigene Ausweich-Einstellungen.</p>
+  <h3>Kann ich mehrere Spielfenster gleichzeitig laufen lassen?</h3>
+  <p>Ja — mit dem Multi-Account-Tool (VK), das die BOT-MULTI-Version voraussetzt. Jedes Konto bekommt seine eigene Steam-Instanz und einen Platz im Fensterraster (1 × 1 bis 6 × 6). Die Einzelversion unterstützt VK nicht.</p>
+  <h3>Was passiert bei vollem Inventar?</h3>
+  <p>Die Abläufe decken das ab: das Lagerhaus lagert Besondere Verwandlung, Handwerksmaterialien und Speisen nach dem Zerlegungsversuch ein, der Markt schafft Platz, indem er Gegenstände anbietet, und eine Option „Auch handelbare Gegenstände zerlegen“ (hinzugefügt in 5.5.0) lässt das Item-Aufräumen handelbare Ausrüstung der gewählten Farben zerlegen — nie Aufwertungen, getragene Items oder Quest-Items.</p>
+  <h3>Behandelt es die Captcha im Spiel?</h3>
+  <p>Ja — automatisch: der eingebaute EVA-Dienst löst sie für jeden Kunden, kein Schlüssel nötig (ein YesCaptcha-Schlüssel ist optional), bis zu drei Versuche; ohne Lösung steigt er sauber wieder ein und wartet eine Strafe ab.</p>
+  <h3>Welche Server werden unterstützt?</h3>
+  <p>Die Serverliste ist nach Region gruppiert — Nordamerika (Ost/West), Europa, Südamerika und andere — und wird mit der App aktualisiert (sie kommt als Daten mit, nicht hartkodiert).</p>
+  <h3>Kostet es Geld?</h3>
+  <p>Die Lizenz ist ein Karten-Schlüssel, gültig für <strong>1 Monat</strong>; der Shop-Richtlinie nach gibt es <strong>keine Rückerstattung</strong>.</p>
+  <h3>Wie aktualisiere ich?</h3>
+  <p>Automatisch: Die App prüft den signierten Kanal alle sechs Stunden bei gestopptem Bot, wartet, bis die Konten stoppen, und schließt sich dann, aktualisiert und öffnet sich von selbst — das Spiel bleibt offen.</p>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Community &amp; support</a> ·
+  🛠 <strong>Probleme? Wende dich an unic.tools (U.Tools)</strong> · <a href="#troubleshoot">🩹 Fehlerbehebung</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ CHANGELOG ============ -->
 <section class="page" id="changelog">
-  <h1><span class="pic">📰</span> Dernières mises à jour</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
-  <p>L’application embarque ses notes de version ; les entrées les plus récentes (en anglais, telles qu’affichées dans l’application) :</p>
+  <h1><span class="pic">📰</span> Neueste Updates</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
+  <p>Die App bringt ihre Release-Notizen mit; die neuesten Einträge (Deutsch, wie in der App gezeigt):</p>
   <div id="changelog-body"><!-- filled by script from CHANGELOG_DATA --></div>
-  <h2>Bon à savoir</h2>
+  <h2>Gut zu wissen</h2>
   <ul>
-    <li>27 versions sont enregistrées dans les notes intégrées, de la 3.7.0 à la 5.14.0 — le système de mise à jour les installe via le manifeste signé.</li>
-    <li>Les notes sont localisées : chaque entrée existe dans les 14 langues d’interface, dont le russe.</li>
+    <li>27 Releases sind in den eingebauten Notizen erfasst, von 3.7.0 bis 5.14.0 — das Update-System installiert sie über das signierte Manifest.</li>
+    <li>Die Notizen sind lokalisiert: Jeder Eintrag existiert in allen 14 Oberflächensprachen, auch im Russischen.</li>
   </ul>
-  <div class="quick"><b>Liens rapides:</b> <a href="#install">🚀 Fonctionnement des mises à jour</a> · <a href="#specs">📐 Caractéristiques</a> · <a href="#home">📚 Table des matières</a></div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a href="#install">🚀 So funktionieren Updates</a> · <a href="#specs">📐 Technische Daten</a> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 <!-- ============ SPECS ============ -->
 <section class="page" id="specs">
-  <h1><span class="pic">📐</span> Caractéristiques (Specifications)</h1>
-  <a class="back tocopen" href="#home">← Table des matières</a>
+  <h1><span class="pic">📐</span> Technische Daten</h1>
+  <a class="back tocopen" href="#home">← Inhaltsverzeichnis</a>
   <div class="tablewrap"><table>
     <tbody>
-      <tr><td>Types de comptes</td><td>Steam, Purple</td></tr>
-      <tr><td>Méthodes de connexion (Purple)</td><td>NC, Google</td></tr>
-      <tr><td>Prise en charge du proxy</td><td>SOCKS5 (exclusif par compte), TUN exclusif, IPv4 intégrée (expérimentale)</td></tr>
-      <tr><td>Résolutions de jeu</td><td>960 × 540, 1280 × 720, 1600 × 900</td></tr>
-      <tr><td>Service de captcha</td><td>Clé YesCaptcha / solveur intégré, jusqu’à 3 tentatives</td></tr>
-      <tr><td>Limite quotidienne de farm de Kinah</td><td>1 000 000 (renouvelée à 04:00)</td></tr>
-      <tr><td>Prérequis en Ode d’expédition</td><td>40 (Krall/Unu), 60 (Temple de Feu)</td></tr>
-      <tr><td>Conditions d’entrée dans l’Abysse</td><td>Niveau 45, 1000 points de puissance, 3 minutes et plus au sol, 90 % d’énergie de vol</td></tr>
-      <tr><td>Limite de niveau des autoquêtes</td><td>Configurable ; 0 = aucune limite</td></tr>
-      <tr><td>Limites de mort</td><td>10 pour les missions, 5 pour les expéditions (valeurs par défaut)</td></tr>
-      <tr><td>Activités prises en charge</td><td>Autoquête, Expédition, Donjons scellés, Minage automatique, Abysse, AFK Farm</td></tr>
-      <tr><td>Langues</td><td>Langue de l’interface et des compétences configurable — 14 langues d’interface</td></tr>
-      <tr><td>Classes</td><td>Gladiator, Templar, Assassin, Ranger, Sorcerer, Spiritmaster, Cleric, Chanter, Brawler</td></tr>
-      <tr><td>Durée du produit</td><td>1 mois</td></tr>
-      <tr><td>Politique de remboursement</td><td>Aucun remboursement</td></tr>
-      <tr><td>OS recommandé</td><td>Windows 10 / Windows 11 (64 bits)</td></tr>
+      <tr><td>Kontotypen</td><td>Steam, Purple</td></tr>
+      <tr><td>Anmeldemethoden (Purple)</td><td>NC, Google</td></tr>
+      <tr><td>Proxy-Unterstützung</td><td>SOCKS5 (exklusiv pro Konto), TUN exklusiv, eingebautes IPv4 (experimentell)</td></tr>
+      <tr><td>Spielauflösungen</td><td>960 × 540, 1280 × 720, 1600 × 900</td></tr>
+      <tr><td>Captcha-Dienst</td><td>YesCaptcha-Schlüssel / eingebauter Löser, bis zu 3 Versuche</td></tr>
+      <tr><td>Tägliches Kinah-Farm-Limit</td><td>1.000.000 (erneuert sich um 04:00)</td></tr>
+      <tr><td>Ode-Anforderungen der Expedition</td><td>40 (Krall/Unu), 60 (Feuertempel)</td></tr>
+      <tr><td>Eintrittsvoraussetzungen Abyss</td><td>Stufe 45, 1000 Kraftpunkte, 3+ Minuten auf dem Stockwerk, 90 % Flugenergie</td></tr>
+      <tr><td>Stufenlimit der Autoquest</td><td>Konfigurierbar; 0 = kein Limit</td></tr>
+      <tr><td>Todeslimits</td><td>10 für Missionen, 5 für Expeditionen (Standardwerte)</td></tr>
+      <tr><td>Unterstützte Aktivitäten</td><td>Autoquest, Expedition, Versiegelte Verliese, Auto-Bergbau, Abyss, AFK-Farmen</td></tr>
+      <tr><td>Sprachen</td><td>Sprache von Oberfläche und Fähigkeiten konfigurierbar — 14 UI-Sprachen</td></tr>
+      <tr><td>Klassen</td><td>Gladiator, Templer, Assassine, Jäger, Zauberer, Beschwörer, Kleriker, Kantor, Faustkämpfer</td></tr>
+      <tr><td>Produktdauer</td><td>1 Monat</td></tr>
+      <tr><td>Rückerstattungsrichtlinie</td><td>Keine Rückerstattung</td></tr>
+      <tr><td>Empfohlenes OS</td><td>Windows 10 / Windows 11 (64-Bit)</td></tr>
     </tbody>
   </table></div>
-  <div class="warnbox">⚠️ <strong>La version BOT MULTI requiert l’outil VK Multi-Account</strong> pour s’ouvrir et fonctionner. Si vous ne l’avez pas, choisissez la “1 ACCOUNT VERSION”. La “1 ACCOUNT VERSION” ne prend pas en charge le fonctionnement avec VK Multi-Account.</div>
-  <div class="quick"><b>Liens rapides:</b> <a class="buybtn" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 Acheter EVA</a> · <a href="https://gofile.io/d/CoXeoihC" target="_blank" rel="noopener">⬇️ Télécharger EVA</a> · <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Communauté &amp; assistance</a> ·
-  🛠 <strong>Un problème ? Contactez unic.tools (U.Tools)</strong> · <a href="#home">📚 Table des matières</a></div>
+  <div class="warnbox">⚠️ <strong>Die BOT-MULTI-Version benötigt das VK-Multi-Account-Tool</strong> zum Öffnen und Funktionieren. Wenn du es nicht hast, wähle die „1-ACCOUNT-VERSION“. Die „1-ACCOUNT-VERSION“ unterstützt den Betrieb mit VK Multi-Account nicht.</div>
+  <div class="quick"><b>Schnellzugriffe:</b> <a class="buybtn" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 EVA kaufen</a> · <a href="https://gofile.io/d/CoXeoihC" target="_blank" rel="noopener">⬇️ EVA herunterladen</a> · <a href="https://discord.gg/nKSm6wp2Jj" target="_blank" rel="noopener">💬 Community &amp; support</a> ·
+  🛠 <strong>Probleme? Wende dich an unic.tools (U.Tools)</strong> · <a href="#home">📚 Inhaltsverzeichnis</a></div>
 </section>
 
 </main>
 </div>
 
 <script>
-/* changelog data (EN notes from the app's release-notes.json, versions 5.14.0-5.4.0) */
+/* Changelog-Daten (DE-Notizen aus der release-notes.json der App, Versionen 5.14.0-5.4.0) */
 const CHANGELOG=[
- {v:"5.14.0",n:["Krall: in Conquest the bot now opens the reward chest after the final boss before leaving (it used to leave without the chest).","Autoquest and expeditions: the combat distance now respects the real range of your skills, so ranged classes no longer stand too far from the boss without hitting."]},
- {v:"5.8.0",n:["Proxy released: turn on the switch in the Proxy tab, choose the account for each proxy and click Start. On the first account with a proxy the bot sets up the network driver and the engine by itself, with nothing for you to download. “(beta)” was removed from the name.","Purple accounts also open with a proxy: the game Purple opens only connects after it is bound to the account’s proxy, never through your real IP."]},
- {v:"5.7.0",n:["Execution order: in the character switch, the padlock became the gear, like the other rows; the settings window is wider and shows the full descriptions."]},
- {v:"5.6.0",n:["Execution order: the character switch padlock opens a settings window (create characters up to the total, and the total); nothing changes without Save."]},
- {v:"5.5.0",n:["Warehouse: with the inventory full during the AFK Farm, the character finishes the current fight without pulling another and goes to store the items; if attacked before the teleport, it fights back and tries again. The Market does the same.","Inventory: new option “Also extract tradable items” right below the dismantle colors; with it, tradable equipment of the checked colors is extracted too (never upgrades, worn items or quest items).","Market: its own section in Routines, and items are listed by highest total value (price × quantity), keeping the chosen price rule.","Sealed Dungeons gets its own tab in Configure, with “Start only”. The daily Kinah limit of the AFK Farm moves to the AFK Farm tab: with “Start only” the Farm stops at the limit; in the Execution order it moves on to the next item.","Accounts: the “Character” field is now called “Slot”. Choosing the free slot (“Create Character”) makes EVA create the character with the same class, server and race; locked slots are never touched.","Execution order: new tab “When everything is done, switch character” — when the order is done, the account moves to the next character and repeats, in a loop; optionally it creates characters up to the chosen total.","Auto mining: the automatic Kibelisk teleport to far points (over 500 m) was removed; the character travels to the point along the way.","Interface: the Configure window is wider and shows the full name of every tab."]},
- {v:"5.4.0",n:["Auto mining: gathers only inside the area of each route point; ores on the way between points are ignored. On arrival it gathers every ore in the area, nearest first.","Auto mining: with flight energy below your minimum, the Odyle is left for later and the character goes to a ground ore or the next point. If the point only has Odyle, it waits for the energy as before.","Auto mining: a point more than 500 m away is reached through the Kibelisk nearest to it (uses 1 Return Scroll), like the Autoquest; every new start begins at the point nearest the character.","Interface: the mouse wheel over a selection box or number field no longer changes the value (it scrolls the page); changing an option that rebuilds the page, such as the expedition type, no longer jumps to the top."]}
+ {v:"5.14.0",n:["Krall: In der Eroberung öffnet der Bot jetzt die Belohnungstruhe nach dem Schlussboss, bevor er verlässt (früher verließ er ohne die Truhe).","Autoquest und Expeditionen: Der Kampfabstand beachtet jetzt die echte Reichweite deiner Fähigkeiten, sodass Fernkampfklassen nicht mehr zu weit vom Boss stehen, ohne zu treffen."]},
+ {v:"5.8.0",n:["Proxy veröffentlicht: Schalte den Schalter im Tab Proxy ein, wähle das Konto für jeden Proxy und klicke auf Starten. Beim ersten Konto mit Proxy richtet der Bot Netzwerktreiber und Engine von selbst ein — nichts für dich herunterzuladen. „(beta)“ wurde aus dem Namen entfernt.","Auch Purple-Konten öffnen mit einem Proxy: Das Spiel Purple verbindet sich erst, nachdem es an den Proxy des Kontos gebunden wurde, nie über deine echte IP."]},
+ {v:"5.7.0",n:["Ausführungsreihenfolge: Beim Charakterwechsel wurde das Schloss zum Zahnrad, wie in den anderen Zeilen; das Einstellungsfenster ist breiter und zeigt die vollständigen Beschreibungen."]},
+ {v:"5.6.0",n:["Ausführungsreihenfolge: Das Schloss des Charakterwechsels öffnet ein Einstellungsfenster (Charaktere bis zur Gesamtzahl erstellen, und die Gesamtzahl); ohne Speichern ändert sich nichts."]},
+ {v:"5.5.0",n:["Lagerhaus: Bei vollem Inventar während der AFK-Farmen beendet der Charakter den aktuellen Kampf ohne einen weiteren herbeizuziehen und geht zum Einlagern der Items; wird er vor dem Teleport angegriffen, wehrt er sich und versucht es erneut. Der Markt macht es genauso.","Inventar: Neue Option „Auch handelbare Gegenstände zerlegen“ direkt unter den Zerlegungsfarben; mit ihr wird auch handelbare Ausrüstung der angehakten Farben zerlegt (nie Aufwertungen, getragene Items oder Quest-Items).","Markt: eigener Bereich in den Abläufen, und Items werden nach dem höchsten Gesamtwert gelistet (Preis × Menge), wobei die gewählte Preisregel bleibt.","Versiegelte Verliese bekommen einen eigenen Tab im Konfigurieren-Fenster, mit „Nur starten“. Das tägliche Kinah-Limit der AFK-Farmen wechselt in den Tab AFK-Farmen: Mit „Nur starten“ stoppt das Farmen am Limit; in der Ausführungsreihenfolge geht es zum nächsten Punkt über.","Konten: Das Feld „Charakter“ heißt jetzt „Platz“. Wählt man den freien Platz („Charakter erstellen“), erstellt EVA den Charakter mit derselben Klasse, demselben Server und demselben Volk; gesperrte Plätze werden nie angetastet.","Ausführungsreihenfolge: Neuer Tab „Wenn alles erledigt ist, Charakter wechseln“ — ist die Reihenfolge fertig, wechselt das Konto zum nächsten Charakter und wiederholt sie, in einer Schleife; optional erstellt es Charaktere bis zur gewählten Gesamtzahl.","Auto-Bergbau: Der automatische Kibelisk-Teleport zu fernen Punkten (über 500 m) wurde entfernt; der Charakter reist entlang des Wegs zum Punkt.","Oberfläche: Das Konfigurieren-Fenster ist breiter und zeigt den vollständigen Namen jedes Tabs."]},
+ {v:"5.4.0",n:["Auto-Bergbau: sammelt nur im Gebiet jedes Routenpunkts; Erze unterwegs zwischen den Punkten werden ignoriert. Bei der Ankunft sammelt er jedes Erz im Gebiet, das nächste zuerst.","Auto-Bergbau: Bei Flugenergie unter deinem Minimum bleibt das Odyle für später liegen, und der Charakter geht zu einem Bodenerz oder zum nächsten Punkt. Hat der Punkt nur Odyle, wartet er wie bisher auf die Energie.","Auto-Bergbau: Ein mehr als 500 m entfernter Punkt wird über den nächstgelegenen Kibelisk erreicht (verbraucht 1 Rückkehrrolle), wie in der Autoquest; jeder neue Start beginnt am Punkt, der dem Charakter am nächsten liegt.","Oberfläche: Das Mausrad über einem Auswahlfeld oder Zahlenfeld ändert den Wert nicht mehr (es scrollt die Seite); das Ändern einer Option, die die Seite neu aufbaut, wie der Expeditionsart, springt nicht mehr nach oben."]}
 ];
 const el=document.getElementById("changelog-body");
 CHANGELOG.forEach(r=>{const d=document.createElement("div");d.className="card";d.style.margin="12px 0";
@@ -831,8 +865,8 @@ document.getElementById("q").addEventListener("input",e=>{toc.open=true;const v=
  document.querySelectorAll(".navitem").forEach(a=>{a.style.display=!v||(a.dataset.search||"").toLowerCase().includes(v)||a.textContent.toLowerCase().includes(v)?"":"none";});});
 fit();show();
 document.querySelectorAll('.vidbox').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();
-const f=document.createElement('iframe');f.src=a.dataset.emb+"?autoplay=1";f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;
-a.replaceWith(f);f.focus();}));
+const w=a.closest('.vidwrap');const f=document.createElement('iframe');f.src=a.dataset.emb+"?autoplay=1";
+f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;w.replaceChildren(f);f.focus();}));
 
 </script>
 <img class="corner-gif" src="fpq6jxrms3tf1.gif" alt="EVA" loading="lazy" decoding="async">
