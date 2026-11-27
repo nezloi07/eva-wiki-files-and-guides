@@ -116,12 +116,13 @@ li{margin:var(--s2) 0}
 .devbox b{color:var(--ink)}
 .devbox>div{margin-top:8px}
 .devbox a{color:var(--accent);font-weight:600}
-.vidbox{position:relative;display:block;border-radius:var(--r3);overflow:hidden;box-shadow:var(--shadow-md);margin:var(--s5) 0 0;background:#000;text-decoration:none}
-.vidbox img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
-.vidbox .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(61,217,208,.92);display:grid;place-items:center;font-size:22px;color:#04121a;box-shadow:0 6px 20px rgba(0,0,0,.5);transition:transform var(--fast)}
-.vidbox:hover .play{transform:translate(-50%,-50%) scale(1.12)}
-.vidbox b{position:absolute;left:16px;bottom:14px;color:#fff;font-size:16px;text-shadow:0 2px 8px rgba(0,0,0,.75)}
-.vidbox iframe{width:100%;aspect-ratio:16/9;display:block;border:0}
+.vidwrap{position:relative;width:100%;aspect-ratio:16/9;margin:0 0 var(--s5);border-radius:var(--r3);overflow:hidden;box-shadow:var(--shadow-md);background:#000}
+.vidwrap .vidbox{position:absolute;inset:0;display:block;text-decoration:none}
+.vidwrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vidwrap .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:rgba(61,217,208,.92);display:grid;place-items:center;font-size:24px;color:#04121a;box-shadow:0 6px 22px rgba(0,0,0,.55);transition:transform var(--fast)}
+.vidwrap .vidbox:hover .play{transform:translate(-50%,-50%) scale(1.12)}
+.vidwrap .cap{position:absolute;left:16px;bottom:14px;color:#fff;font-size:16px;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.75)}
+.vidwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 @media print{aside,.quick,.back{display:none}.page{display:block!important}.layout{grid-template-columns:1fr}}
 </style>
 </head>
@@ -224,7 +225,6 @@ li{margin:var(--s2) 0}
     <li>The multi-account version requires the VK Multi-Account tool; the single version does not support VK.</li>
   </ul>
 
-  <a class="vidbox" href="https://youtu.be/1HZz8YenJMY" data-emb="https://www.youtube.com/embed/1HZz8YenJMY" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/1HZz8YenJMY/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/1HZz8YenJMY/hqdefault';" alt="First launch" loading="lazy"><span class="play">▶</span><b>First launch</b></a>
   <div class="quick"><b>Quick links:</b>
   <a class="buybtn" href="https://unicom.market/product/aion-2-software-hlp/" target="_blank" rel="noopener">🛒 Buy EVA</a> ·
   <a href="https://gofile.io/d/CoXeoihC" target="_blank" rel="noopener">⬇️ Download EVA</a> · <a class="act" href="https://mega.nz/file/83gnHBxZ#1LDcohUBpjDLMivcN0MkXXlF837O5gwOuWS9rDLVrCk" target="_blank" rel="noopener">⬇️ Alternative Download (MEGA)</a> ·
@@ -859,8 +859,8 @@ document.getElementById("q").addEventListener("input",e=>{toc.open=true;const v=
  document.querySelectorAll(".navitem").forEach(a=>{a.style.display=!v||(a.dataset.search||"").toLowerCase().includes(v)||a.textContent.toLowerCase().includes(v)?"":"none";});});
 fit();show();
 document.querySelectorAll('.vidbox').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();
-const f=document.createElement('iframe');f.src=a.dataset.emb+"?autoplay=1";f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;
-a.replaceWith(f);f.focus();}));
+const w=a.closest('.vidwrap');const f=document.createElement('iframe');f.src=a.dataset.emb+"?autoplay=1";
+f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;w.replaceChildren(f);f.focus();}));
 
 </script>
 <img class="corner-gif" src="fpq6jxrms3tf1.gif" alt="EVA" loading="lazy" decoding="async">
